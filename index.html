@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digitalis — ARM64-to-x86_64 Binary Translation</title>
+  <meta name="description" content="Run ARM64 Android apps on x86_64 emulators. Digitalis translates ARM64 instructions to native x86_64 machine code at runtime using JIT compilation.">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LCH8R0W6KL');
+  </script>
+</head>
+<body>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <h1 class="hero-title">DIGITALIS</h1>
+      <p class="hero-tagline">ARM64-to-x86_64 binary translation for Android</p>
+      <div class="hero-buttons">
+        <a href="#getting-started" class="btn btn-primary">Get Started</a>
+        <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener" class="btn btn-secondary">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Architecture -->
+  <section id="architecture">
+    <div class="container">
+      <h2 class="section-title">Architecture</h2>
+      <p class="section-desc"><a href="https://cs.android.com/android/platform/superproject/main/+/main:frameworks/libs/binary_translation/" target="_blank" rel="noopener">Berberis</a> is AOSP's binary translation framework, part of Android's NativeBridge system. It provides the core infrastructure for translating guest architecture instructions to host machine code at runtime — including a JIT compiler, an interpreter, an instruction decoder, syscall emulation, and proxy libraries. Berberis currently supports RISC-V-to-x86_64 translation in upstream AOSP.</p>
+
+      <div class="pipeline-label">Berberis (upstream AOSP)</div>
+      <div class="pipeline">
+        <div class="pipeline-step">RISC-V APK</div>
+        <span class="pipeline-arrow">&rarr;</span>
+        <div class="pipeline-step">NativeBridge</div>
+        <span class="pipeline-arrow">&rarr;</span>
+        <div class="pipeline-step">JIT / Interpreter</div>
+        <span class="pipeline-arrow">&rarr;</span>
+        <div class="pipeline-step">x86_64 Host</div>
+      </div>
+
+      <p class="section-desc">Digitalis extends Berberis with an ARM64 backend, enabling ARM64-only Android apps to run on x86_64 emulators. It reuses Berberis's translation infrastructure while adding ARM64 instruction decoding, JIT code generation, and interpreter support.</p>
+
+      <div class="pipeline-label">Digitalis (this project)</div>
+      <div class="pipeline">
+        <div class="pipeline-step">ARM64 APK</div>
+        <span class="pipeline-arrow">&rarr;</span>
+        <div class="pipeline-step">NativeBridge</div>
+        <span class="pipeline-arrow">&rarr;</span>
+        <div class="pipeline-step">JIT / Interpreter</div>
+        <span class="pipeline-arrow">&rarr;</span>
+        <div class="pipeline-step">x86_64 Host</div>
+      </div>
+
+      <div class="arch-details">
+        <div class="arch-detail">
+          <h3>JIT Compiler (Lite Translator)</h3>
+          <p>Translates ARM64 regions to native x86_64 machine code. Handles ~98% of instructions. Translated regions are cached for reuse.</p>
+          <span class="tag">~98% coverage</span>
+        </div>
+        <div class="arch-detail">
+          <h3>Interpreter</h3>
+          <p>Per-instruction fallback for syscalls, complex SIMD operations, and edge cases the JIT can't handle.</p>
+          <span class="tag">fallback path</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>JIT Compiler</h3>
+          <p>Lite Translator converts ARM64 to native x86_64 machine code. Translated regions are cached for reuse, delivering near-native performance.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Interpreter Fallback</h3>
+          <p>Per-instruction execution for syscalls, complex SIMD, and anything the JIT can't handle. Ensures complete ARM64 coverage.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Proxy Libraries</h3>
+          <p>Vulkan, libc, libm forwarded to host APIs. GPU-accelerated rendering via GFXStream VkDecoder for full Vulkan support.</p>
+        </div>
+        <div class="feature-card">
+          <h3>21 Sample Apps</h3>
+          <p>Ported NDK samples prove end-to-end translation: Vulkan, OpenGL ES, audio, camera, sensors, and more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Getting Started -->
+  <section id="getting-started">
+    <div class="container">
+      <h2 class="section-title">Getting Started</h2>
+
+      <div class="terminal">
+        <div><span class="comment"># Clone</span></div>
+        <div><span class="prompt">$ </span><span class="command">mkdir digitalis &amp;&amp; cd digitalis</span></div>
+        <div><span class="prompt">$ </span><span class="command">repo init -b android-latest-release -u git@github.com:DigitalisX64/manifest.git</span></div>
+        <div><span class="prompt">$ </span><span class="command">repo sync -c -d --no-tags --force-sync</span></div>
+        <div>&nbsp;</div>
+        <div><span class="comment"># Build</span></div>
+        <div><span class="prompt">$ </span><span class="command">source build/envsetup.sh</span></div>
+        <div><span class="prompt">$ </span><span class="command">lunch sdk_phone64_x86_64_digitalis-trunk_staging-userdebug</span></div>
+        <div><span class="prompt">$ </span><span class="command">m</span></div>
+        <div>&nbsp;</div>
+        <div><span class="comment"># Run emulator</span></div>
+        <div><span class="prompt">$ </span><span class="command">emulator -memory 4096 -writable-system -partition-size 65536 -qemu -cpu host &amp;</span></div>
+        <div>&nbsp;</div>
+        <div><span class="comment"># Install and test</span></div>
+        <div><span class="prompt">$ </span><span class="command">cd sample/hellodigitalis &amp;&amp; ./gradlew assembleDebug</span></div>
+        <div><span class="prompt">$ </span><span class="command">adb install hello-vulkan/build/outputs/apk/debug/hello-vulkan-debug.apk</span></div>
+        <div><span class="prompt">$ </span><span class="command">adb shell am start -n com.example.hellodigitalis/android.app.NativeActivity</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sample Apps -->
+  <section id="samples">
+    <div class="container">
+      <h2 class="section-title">Sample Apps</h2>
+      <p class="section-desc">ARM64-only APKs running on an x86_64 emulator via NativeBridge translation.</p>
+
+      <div class="terminal">
+        <div><span class="comment"># Build all sample modules (ARM64-only APKs)</span></div>
+        <div><span class="prompt">$ </span><span class="command">cd sample/hellodigitalis &amp;&amp; ./gradlew assembleDebug</span></div>
+        <div>&nbsp;</div>
+        <div><span class="comment"># Install and run</span></div>
+        <div><span class="prompt">$ </span><span class="command">adb install hello-vulkan/build/outputs/apk/debug/hello-vulkan-debug.apk</span></div>
+        <div><span class="prompt">$ </span><span class="command">adb shell am start -n com.example.hellodigitalis/android.app.NativeActivity</span></div>
+        <div><span class="success">&#10003; Vulkan triangle rendered via NativeBridge translation</span></div>
+      </div>
+
+      <div class="samples-grid">
+        <div class="sample-item">hello-vulkan</div>
+        <div class="sample-item">hello-gl2</div>
+        <div class="sample-item">gles3jni</div>
+        <div class="sample-item">teapots-classic</div>
+        <div class="sample-item">teapots-more</div>
+        <div class="sample-item">teapots-textured</div>
+        <div class="sample-item">native-activity</div>
+        <div class="sample-item">native-audio</div>
+        <div class="sample-item">native-codec</div>
+        <div class="sample-item">native-midi</div>
+        <div class="sample-item">hello-jni</div>
+        <div class="sample-item">hello-jniCallback</div>
+        <div class="sample-item">endless-tunnel</div>
+        <div class="sample-item">bitmap-plasma</div>
+        <div class="sample-item">camera-basic</div>
+        <div class="sample-item">camera-texture-view</div>
+        <div class="sample-item">sensor-graph</div>
+        <div class="sample-item">sanitizers</div>
+        <div class="sample-item">vectorization</div>
+        <div class="sample-item">orderfile</div>
+        <div class="sample-item">exceptions</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>Apache 2.0 License &middot; <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></p>
+      <p>Built on AOSP Berberis framework</p>
+    </div>
+  </footer>
+
+</body>
+</html>

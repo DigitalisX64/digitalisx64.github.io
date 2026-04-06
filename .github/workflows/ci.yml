@@ -1,0 +1,36 @@
+name: Verify Site
+
+on:
+  pull_request:
+    branches: [android-latest-release]
+  push:
+    branches: [android-latest-release]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files exist
+        run: |
+          for f in index.html style.css serve.sh; do
+            test -f "$f" || { echo "Missing: $f"; exit 1; }
+          done
+          echo "All required files present"
+
+      - name: Validate HTML
+        run: |
+          pip install html5validator
+          html5validator --root . --also-check-css index.html
+
+      - name: Verify serve.sh is executable
+        run: test -x serve.sh
+
+      - name: Test local preview starts
+        run: |
+          ./serve.sh 8080 &
+          sleep 1
+          curl -sf http://localhost:8080/ | head -1 | grep -q '<!DOCTYPE html>'
+          echo "Preview server works"
+          kill %1

@@ -1,0 +1,347 @@
+:root {
+  --bg: #0d1117;
+  --bg-secondary: #161b22;
+  --text: #c9d1d9;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --border: #21262d;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- Hero --- */
+
+.hero {
+  text-align: center;
+  padding: 120px 0 80px;
+}
+
+.hero-title {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.hero-tagline {
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  margin-top: 16px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.hero-buttons {
+  margin-top: 32px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* --- Sections --- */
+
+section {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  max-width: 700px;
+}
+
+#architecture .section-desc {
+  max-width: 100%;
+}
+
+.section-desc a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.section-desc a:hover {
+  text-decoration: underline;
+}
+
+/* --- Architecture pipeline --- */
+
+.pipeline-label {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  margin-top: 24px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.pipeline-step {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 24px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--text);
+}
+
+.pipeline-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  padding: 0 12px;
+}
+
+.arch-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.arch-detail {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.arch-detail h3 {
+  color: var(--accent);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.arch-detail p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.arch-detail .tag {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  color: var(--green);
+  font-family: monospace;
+  margin-top: 8px;
+}
+
+/* --- Features grid --- */
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.feature-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.feature-card h3 {
+  color: var(--accent);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.feature-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* --- Terminal block --- */
+
+.terminal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  overflow-x: auto;
+}
+
+.terminal .prompt {
+  color: var(--green);
+}
+
+.terminal .command {
+  color: var(--text);
+}
+
+.terminal .output {
+  color: var(--text-secondary);
+}
+
+.terminal .success {
+  color: var(--green);
+}
+
+.terminal .comment {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* --- Samples grid --- */
+
+.samples-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.sample-item {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+/* --- Code blocks --- */
+
+pre {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+code {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  color: var(--text);
+}
+
+/* --- Footer --- */
+
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.footer p {
+  margin-top: 8px;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+  }
+
+  .hero {
+    padding: 80px 0 60px;
+  }
+
+  section {
+    padding: 60px 0;
+  }
+
+  .features-grid,
+  .arch-details {
+    grid-template-columns: 1fr;
+  }
+
+  .pipeline {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pipeline-arrow {
+    transform: rotate(90deg);
+    padding: 4px 0;
+  }
+}
