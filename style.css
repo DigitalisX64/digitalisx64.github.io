@@ -311,6 +311,290 @@ code {
   margin-top: 8px;
 }
 
+/* --- Architecture page: sub-hero --- */
+
+.subhero {
+  text-align: left;
+  padding: 80px 0 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.breadcrumb a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.subhero-title {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 2rem;
+  color: var(--accent);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.subhero-tagline {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: 24px;
+}
+
+.subhero-tagline code,
+.section-desc code {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.88em;
+  color: var(--text);
+}
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+}
+
+.toc a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.toc a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* --- Inline SVG diagrams --- */
+
+.diagram {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+}
+
+.diagram-pipeline {
+  max-width: 540px;
+}
+
+.diagram .node {
+  fill: var(--bg-secondary);
+  stroke: var(--border);
+  stroke-width: 1;
+  transition: stroke 0.15s, filter 0.15s;
+}
+
+.diagram .node-accent {
+  stroke: var(--accent);
+}
+
+.diagram .node-success {
+  stroke: var(--green);
+}
+
+.diagram .node-group { cursor: default; }
+.diagram .node-group:hover .node {
+  stroke: var(--accent);
+  filter: drop-shadow(0 0 4px rgba(88, 166, 255, 0.35));
+}
+
+.diagram .node-label-top {
+  fill: var(--text);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  text-anchor: middle;
+}
+
+.diagram .node-label-sub {
+  fill: var(--text-secondary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.diagram .node-label-mono {
+  fill: var(--green);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.diagram .arrow {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.diagram .arrow-head {
+  fill: var(--accent);
+}
+
+.diagram .edge-label {
+  fill: var(--text-secondary);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+}
+
+.diagram .lane-label {
+  fill: var(--text-secondary);
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  text-anchor: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.diagram .lane-divider {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+/* --- Register map --- */
+
+.register-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.reg-col h3 {
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 12px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.reg-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0;
+}
+
+.reg-cell {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  text-align: center;
+  cursor: help;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.reg-cell:hover {
+  border-color: var(--accent);
+}
+
+.reg-pool { color: var(--green); }
+.reg-pool-warn { color: #d29922; border-color: rgba(210, 153, 34, 0.4); }
+.reg-reserved {
+  color: var(--accent);
+  grid-column: 1 / -1;
+  text-align: left;
+}
+.reg-spill {
+  color: var(--text-secondary);
+  grid-column: 1 / -1;
+  text-align: left;
+}
+
+.reg-footnote {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* --- Code block (architecture page) --- */
+
+.codeblock {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  overflow-x: auto;
+  color: var(--text);
+  white-space: pre;
+}
+
+.code-comment {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* --- Module table --- */
+
+.module-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.module-table th,
+.module-table td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+
+.module-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.module-table th {
+  background: var(--bg);
+  color: var(--accent);
+  font-weight: 600;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.85rem;
+}
+
+.module-table td:first-child {
+  white-space: nowrap;
+  color: var(--green);
+}
+
+.module-table td code {
+  color: var(--green);
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+.module-table tbody tr:hover {
+  background: rgba(88, 166, 255, 0.04);
+}
+
 /* --- Responsive --- */
 
 @media (max-width: 768px) {
@@ -343,5 +627,29 @@ code {
   .pipeline-arrow {
     transform: rotate(90deg);
     padding: 4px 0;
+  }
+
+  .subhero-title {
+    font-size: 1.5rem;
+  }
+
+  .register-map {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .reg-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .module-table th,
+  .module-table td {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .module-table td:first-child {
+    white-space: normal;
+    word-break: break-all;
   }
 }

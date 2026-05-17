@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digitalis Architecture — How ARM64 Becomes x86_64</title>
+  <meta name="description" content="A diagrammed walkthrough of Digitalis: the end-to-end translation pipeline, dual JIT + interpreter dispatch, ARM64-to-x86_64 register mapping, translation lifecycle, NZCV flag emulation, and proxy library forwarding.">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LCH8R0W6KL');
+  </script>
+</head>
+<body>
+
+  <!-- Sub-hero -->
+  <header class="subhero">
+    <div class="container">
+      <p class="breadcrumb"><a href="./">Digitalis</a> &nbsp;/&nbsp; Architecture</p>
+      <h1 class="subhero-title">How Digitalis Translates ARM64 to x86_64</h1>
+      <p class="subhero-tagline">From <code>am start</code> to the first executed x86_64 instruction &mdash; diagrammed.</p>
+      <nav class="toc">
+        <a href="#pipeline">1. Pipeline</a>
+        <a href="#dispatch">2. Dual Dispatch</a>
+        <a href="#registers">3. Register Mapping</a>
+        <a href="#lifecycle">4. Translation Lifecycle</a>
+        <a href="#flags">5. NZCV Flags</a>
+        <a href="#proxy">6. Proxy Libraries</a>
+        <a href="#modules">7. Module Map</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 1. Pipeline -->
+  <section id="pipeline">
+    <div class="container">
+      <h2 class="section-title">1. End-to-End Pipeline</h2>
+      <p class="section-desc">When you launch an <code>arm64-v8a</code> APK on a Digitalis emulator, Android's NativeBridge hands control to <code>libberberis_arm64.so</code>. From that point every ARM64 instruction inside the app and its libraries flows through the translator until it reaches the host x86_64 CPU or GPU. Hover any node for details.</p>
+
+      <svg class="diagram diagram-pipeline" viewBox="0 0 520 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipeline from ARM64 APK launch to host execution">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" class="arrow-head"/>
+          </marker>
+        </defs>
+
+        <g class="node-group">
+          <rect class="node" x="110" y="20"  width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="45">ARM64 APK (arm64-v8a only)</text>
+          <text class="node-label-sub" x="260" y="64">installed as a normal Android app</text>
+          <title>The app ships only arm64-v8a native libs. Android Package Manager treats it as foreign-ABI and routes execution through NativeBridge.</title>
+        </g>
+        <line class="arrow" x1="260" y1="76" x2="260" y2="100" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node" x="110" y="106" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="131">Android Framework (x86_64 host)</text>
+          <text class="node-label-sub" x="260" y="150">ActivityManager, Zygote, PackageManager</text>
+          <title>The Android framework itself runs as native x86_64. It is unmodified — Digitalis lives below it.</title>
+        </g>
+        <line class="arrow" x1="260" y1="162" x2="260" y2="186" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node node-accent" x="110" y="192" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="217">NativeBridge &mdash; libberberis_arm64.so</text>
+          <text class="node-label-sub" x="260" y="236">AOSP plug-in point for foreign ABIs</text>
+          <title>Android calls into libberberis_arm64.so for every guest-ABI library load and JNI entry. This is the wedge that lets a non-native ABI run.</title>
+        </g>
+        <line class="arrow" x1="260" y1="248" x2="260" y2="272" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node" x="110" y="278" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="303">Guest Loader (TinyLoader)</text>
+          <text class="node-label-sub" x="260" y="322">maps ARM64 linker64 and dependent libs</text>
+          <title>A minimal ELF loader brings the ARM64 dynamic linker (linker64) into the process so the guest stack can self-bootstrap.</title>
+        </g>
+        <line class="arrow" x1="260" y1="334" x2="260" y2="358" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node" x="110" y="364" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="389">ARM64 App Code &amp; Libraries</text>
+          <text class="node-label-sub" x="260" y="408">app .so + libc, libm, libvulkan (guest)</text>
+          <title>The app's own ARM64 code plus the ARM64 system libraries from system/lib64/arm64/.</title>
+        </g>
+        <line class="arrow" x1="260" y1="420" x2="260" y2="444" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node node-accent" x="110" y="450" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="475">Translator: JIT &nbsp;|&nbsp; Interpreter</text>
+          <text class="node-label-sub" x="260" y="494">ARM64 instructions &rarr; x86_64 machine code</text>
+          <title>Hot regions are JIT-compiled; instructions the JIT can't handle fall back to the interpreter.</title>
+        </g>
+        <line class="arrow" x1="260" y1="506" x2="260" y2="530" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node" x="110" y="536" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="561">Proxy Libraries (ARM64 stubs)</text>
+          <text class="node-label-sub" x="260" y="580">libberberis_proxy_libvulkan.so, libc.so, &hellip;</text>
+          <title>When guest code calls a system API, the call is redirected (via ld.config.arm64.txt) to a proxy stub that marshals arguments and switches to the host implementation.</title>
+        </g>
+        <line class="arrow" x1="260" y1="592" x2="260" y2="616" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node" x="110" y="622" width="300" height="56" rx="8"/>
+          <text class="node-label-top" x="260" y="647">Host x86_64 APIs &amp; GPU</text>
+          <text class="node-label-sub" x="260" y="666">host libvulkan + GFXStream VkDecoder</text>
+          <title>Host implementations actually run on the x86_64 CPU and the host GPU; Vulkan calls reach the host GPU via GFXStream's VkDecoder.</title>
+        </g>
+        <line class="arrow" x1="260" y1="678" x2="260" y2="702" marker-end="url(#arrowhead)"/>
+
+        <g class="node-group">
+          <rect class="node node-success" x="110" y="708" width="300" height="42" rx="8"/>
+          <text class="node-label-top" x="260" y="734">Pixels on screen</text>
+          <title>The user sees rendered frames identical to running the same APK on a real ARM64 device.</title>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 2. Dual Dispatch -->
+  <section id="dispatch">
+    <div class="container">
+      <h2 class="section-title">2. Dual Dispatch &mdash; JIT and Interpreter</h2>
+      <p class="section-desc">Every ARM64 instruction is handled by one of two execution engines. The JIT covers the fast path; the interpreter is the safety net.</p>
+
+      <div class="arch-details">
+        <div class="arch-detail">
+          <h3>Lite Translator (JIT)</h3>
+          <p>Translates contiguous ARM64 regions to native x86_64 machine code. Output is stored in a per-process translation cache and reused on subsequent entries. Handles integer ops, branches, loads/stores, system instructions, and most NEON/SIMD.</p>
+          <span class="tag">~98% of instructions</span>
+        </div>
+        <div class="arch-detail">
+          <h3>Interpreter (Fallback)</h3>
+          <p>Per-instruction execution for things the JIT punts on: syscalls, complex SIMD (pairwise, widening, permute, across-lanes, CRC32), scalar conversions, and any decoder edge case. A region terminates JIT compilation when it hits an interpreter-only opcode.</p>
+          <span class="tag">fallback path</span>
+        </div>
+      </div>
+
+      <p class="section-desc" style="margin-top:32px">When the dispatcher reaches a guest PC for the first time, the decoder peeks at the instruction. If the JIT can handle it, a region is compiled. If not, a special <code>kInterpreted</code> marker is installed at that PC so the next entry routes straight to the interpreter &mdash; avoiding infinite recompile loops.</p>
+    </div>
+  </section>
+
+  <!-- 3. Register Mapping -->
+  <section id="registers">
+    <div class="container">
+      <h2 class="section-title">3. Register Mapping</h2>
+      <p class="section-desc">ARM64 exposes 31 general-purpose registers (X0&ndash;X30) plus SP and PC. x86_64 has 16. After reserving RAX for the guest PC, RBP for the ThreadState pointer, and RSP for the host stack, the JIT has <strong>13 GP slots</strong> to pin guest registers into. Anything that doesn't fit lives in <em>ThreadState memory</em> and is spilled to/from a temp on demand.</p>
+
+      <div class="register-map">
+        <div class="reg-col">
+          <h3>x86_64 host pool (13 slots)</h3>
+          <ul class="reg-list">
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">RBX</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">RSI</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">RDI</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R8</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R9</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R10</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R11</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R12</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R13</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R14</li>
+            <li class="reg-cell reg-pool" title="Allocatable, no special handling">R15</li>
+            <li class="reg-cell reg-pool reg-pool-warn" title="Needs save/restore around DIV and MUL">RDX *</li>
+            <li class="reg-cell reg-pool reg-pool-warn" title="Needs save/restore around variable shifts">RCX *</li>
+          </ul>
+          <p class="reg-footnote">* RDX/RCX are reserved by specific x86 ops, so the allocator saves and restores them around DIV/MUL and variable shifts.</p>
+        </div>
+
+        <div class="reg-col">
+          <h3>x86_64 reserved</h3>
+          <ul class="reg-list">
+            <li class="reg-cell reg-reserved" title="Holds the current guest ARM64 program counter">RAX &rarr; guest PC</li>
+            <li class="reg-cell reg-reserved" title="Holds a pointer to ThreadState, where spilled guest registers and per-thread state live">RBP &rarr; ThreadState *</li>
+            <li class="reg-cell reg-reserved" title="Host stack pointer; never touched by the translator">RSP &rarr; host stack</li>
+          </ul>
+          <h3 style="margin-top:24px">ThreadState memory</h3>
+          <ul class="reg-list">
+            <li class="reg-cell reg-spill" title="All 31 guest GP registers live here when not pinned to a host register">X0&hellip;X30 (spilled)</li>
+            <li class="reg-cell reg-spill" title="Guest stack pointer">SP</li>
+            <li class="reg-cell reg-spill" title="Guest condition flags, in ARM NZCV layout">NZCV</li>
+            <li class="reg-cell reg-spill" title="Guest SIMD/FP register file">V0&hellip;V31</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="section-desc" style="margin-top:32px">When all 13 pool slots are taken and another guest register is needed, the allocator picks a temp, loads the guest value from <code>ThreadState</code>, uses it, and stores it back &mdash; rather than terminating the region. This keeps JIT regions long enough to amortize entry overhead.</p>
+    </div>
+  </section>
+
+  <!-- 4. Translation Lifecycle -->
+  <section id="lifecycle">
+    <div class="container">
+      <h2 class="section-title">4. Translation Lifecycle</h2>
+      <p class="section-desc">What happens between an ARM64 byte sequence in memory and an x86_64 byte sequence the host CPU executes.</p>
+
+      <svg class="diagram diagram-cycle" viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Translation lifecycle: decode, dispatch, JIT or interpret, cache, execute">
+        <defs>
+          <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" class="arrow-head"/>
+          </marker>
+        </defs>
+
+        <!-- Row 1: Guest PC -->
+        <g class="node-group">
+          <rect class="node" x="20" y="20" width="160" height="56" rx="8"/>
+          <text class="node-label-top" x="100" y="45">Guest PC</text>
+          <text class="node-label-sub" x="100" y="64">next ARM64 byte address</text>
+          <title>The translator is always invoked at some guest program counter — the address of the next ARM64 instruction to run.</title>
+        </g>
+        <line class="arrow" x1="180" y1="48" x2="216" y2="48" marker-end="url(#arrowhead2)"/>
+
+        <g class="node-group">
+          <rect class="node" x="220" y="20" width="160" height="56" rx="8"/>
+          <text class="node-label-top" x="300" y="45">Translation Cache</text>
+          <text class="node-label-sub" x="300" y="64">guest PC &rarr; host code?</text>
+          <title>Per-process map from guest PC to host code. A hit jumps straight to executing the cached x86_64.</title>
+        </g>
+
+        <!-- Hit branch -->
+        <line class="arrow" x1="380" y1="48" x2="516" y2="48" marker-end="url(#arrowhead2)"/>
+        <text class="edge-label" x="448" y="40">cache hit</text>
+        <g class="node-group">
+          <rect class="node node-success" x="520" y="20" width="170" height="56" rx="8"/>
+          <text class="node-label-top" x="605" y="45">Execute x86_64</text>
+          <text class="node-label-sub" x="605" y="64">host CPU runs translated code</text>
+          <title>The host CPU executes the cached translation. On exit, control returns to the dispatcher with an updated guest PC.</title>
+        </g>
+
+        <!-- Miss branch -->
+        <line class="arrow" x1="300" y1="76" x2="300" y2="120" marker-end="url(#arrowhead2)"/>
+        <text class="edge-label" x="332" y="100">cache miss</text>
+
+        <g class="node-group">
+          <rect class="node node-accent" x="220" y="126" width="160" height="56" rx="8"/>
+          <text class="node-label-top" x="300" y="151">Decoder</text>
+          <text class="node-label-sub" x="300" y="170">classify ARM64 opcode</text>
+          <title>The decoder unpacks the 32-bit ARM64 instruction bits and classifies it. Dispatch order is delicate: many groups share encoding prefixes.</title>
+        </g>
+        <line class="arrow" x1="300" y1="182" x2="300" y2="216" marker-end="url(#arrowhead2)"/>
+
+        <!-- Diamond -->
+        <g class="node-group">
+          <polygon class="node node-accent" points="300,224 380,260 300,296 220,260"/>
+          <text class="node-label-top" x="300" y="265">JIT-able?</text>
+          <title>If the lite translator has a handler for this opcode, the region is compiled. Otherwise the interpreter takes over.</title>
+        </g>
+
+        <!-- Yes -> JIT -->
+        <line class="arrow" x1="380" y1="260" x2="516" y2="260" marker-end="url(#arrowhead2)"/>
+        <text class="edge-label" x="448" y="252">yes</text>
+        <g class="node-group">
+          <rect class="node" x="520" y="232" width="170" height="56" rx="8"/>
+          <text class="node-label-top" x="605" y="257">Lite Translator (JIT)</text>
+          <text class="node-label-sub" x="605" y="276">emit x86_64, install in cache</text>
+          <title>Translates a contiguous region of ARM64 to x86_64 machine code, installs the result in the translation cache, then jumps to it.</title>
+        </g>
+
+        <!-- No -> Interpreter -->
+        <line class="arrow" x1="220" y1="260" x2="184" y2="260" marker-end="url(#arrowhead2)"/>
+        <text class="edge-label" x="200" y="252">no</text>
+        <g class="node-group">
+          <rect class="node" x="20" y="232" width="160" height="56" rx="8"/>
+          <text class="node-label-top" x="100" y="257">Interpreter</text>
+          <text class="node-label-sub" x="100" y="276">install kInterpreted marker</text>
+          <title>Runs the instruction in software and installs a kInterpreted marker at this PC so future entries skip JIT compilation entirely.</title>
+        </g>
+
+        <!-- Both feed back to Execute via cache -->
+        <line class="arrow" x1="605" y1="232" x2="605" y2="76" marker-end="url(#arrowhead2)"/>
+        <line class="arrow" x1="100" y1="232" x2="100" y2="120"/>
+        <line class="arrow" x1="100" y1="120" x2="216" y2="120"/>
+        <line class="arrow" x1="216" y1="120" x2="216" y2="48" marker-end="url(#arrowhead2)"/>
+      </svg>
+
+      <p class="section-desc" style="margin-top:32px">On region exit (a branch out, a syscall, register pressure, a JIT-unsupported opcode), control returns to the dispatcher with a new guest PC and the loop repeats.</p>
+    </div>
+  </section>
+
+  <!-- 5. NZCV Flag Emulation -->
+  <section id="flags">
+    <div class="container">
+      <h2 class="section-title">5. NZCV Flag Emulation</h2>
+      <p class="section-desc">ARM64 stores condition flags in <strong>NZCV</strong> (Negative, Zero, Carry, oVerflow). x86_64 stores them in <strong>RFLAGS</strong> with a different layout. Every flag-setting ARM64 op needs to leave behind something the next conditional can read in ARM's format.</p>
+
+      <p class="section-desc">For most flag-setting ops, the JIT emits the natural x86 instruction (which sets RFLAGS) and then captures the relevant bits into ARM's NZCV format using this pattern:</p>
+
+      <pre class="codeblock"><span class="code-comment">; after the flag-setting op (e.g. ADD, SUB, AND)</span>
+LAHF                  <span class="code-comment">; load SF, ZF, AF, PF, CF from RFLAGS into AH</span>
+SETO  AL              <span class="code-comment">; capture OF (overflow) into AL</span>
+AND   AX, &lt;mask&gt;      <span class="code-comment">; isolate N, Z, C, V bits</span>
+MOVW  [rbp+nzcv], AX  <span class="code-comment">; store packed NZCV into ThreadState</span></pre>
+
+      <p class="section-desc" style="margin-top:24px">A subtle trap: <code>PUSH</code>/<code>POP</code> on x86_64 do <em>not</em> change RFLAGS, but <code>SUB</code>/<code>ADD RSP, imm</code> <em>do</em>. So when the JIT spills temporaries before <code>LAHF</code>, it has to use <code>PUSH</code>/<code>POP</code> or <code>LEA</code> &mdash; never <code>SUB RSP</code> &mdash; or the captured flags reflect the spill instead of the guest op.</p>
+    </div>
+  </section>
+
+  <!-- 6. Proxy Libraries -->
+  <section id="proxy">
+    <div class="container">
+      <h2 class="section-title">6. Proxy Library Forwarding</h2>
+      <p class="section-desc">If every guest API call had to be translated instruction-by-instruction down through the entire system library stack, performance would collapse. Digitalis intercepts well-known library boundaries and hands the call to the <em>host</em> implementation directly. Each proxy library is an ARM64 stub that marshals arguments and switches to the host x86_64 ABI.</p>
+
+      <svg class="diagram diagram-proxy" viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Proxy library forwarding from guest call to host implementation">
+        <defs>
+          <marker id="arrowhead3" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" class="arrow-head"/>
+          </marker>
+        </defs>
+
+        <!-- Lane labels -->
+        <text class="lane-label" x="100" y="20">Guest ARM64</text>
+        <text class="lane-label" x="360" y="20">Proxy (ARM64 stub)</text>
+        <text class="lane-label" x="620" y="20">Host x86_64</text>
+
+        <!-- Lane separators -->
+        <line class="lane-divider" x1="220" y1="36" x2="220" y2="260"/>
+        <line class="lane-divider" x1="500" y1="36" x2="500" y2="260"/>
+
+        <g class="node-group">
+          <rect class="node" x="20" y="56" width="180" height="60" rx="8"/>
+          <text class="node-label-top" x="110" y="82">app code calls</text>
+          <text class="node-label-mono" x="110" y="102">vkCreateInstance(&hellip;)</text>
+          <title>The app's ARM64 code makes a normal dynamic call to a Vulkan symbol.</title>
+        </g>
+        <line class="arrow" x1="200" y1="86" x2="276" y2="86" marker-end="url(#arrowhead3)"/>
+
+        <g class="node-group">
+          <rect class="node node-accent" x="280" y="56" width="200" height="60" rx="8"/>
+          <text class="node-label-top" x="380" y="82">libberberis_proxy_libvulkan.so</text>
+          <text class="node-label-sub" x="380" y="102">marshal args, switch ABI</text>
+          <title>ld.config.arm64.txt redirects the dlsym to the proxy stub. The stub repacks args from the AAPCS64 ABI to the System V x86_64 ABI.</title>
+        </g>
+        <line class="arrow" x1="480" y1="86" x2="556" y2="86" marker-end="url(#arrowhead3)"/>
+
+        <g class="node-group">
+          <rect class="node node-success" x="560" y="56" width="140" height="60" rx="8"/>
+          <text class="node-label-top" x="630" y="82">host libvulkan.so</text>
+          <text class="node-label-sub" x="630" y="102">x86_64 driver</text>
+          <title>The host's native x86_64 Vulkan implementation runs the call. For Vulkan it forwards to GFXStream's VkDecoder which talks to the host GPU.</title>
+        </g>
+
+        <!-- return path -->
+        <line class="arrow" x1="630" y1="172" x2="630" y2="140" marker-start="url(#arrowhead3)"/>
+        <text class="edge-label" x="640" y="160">return</text>
+
+        <g class="node-group">
+          <rect class="node" x="560" y="176" width="140" height="60" rx="8"/>
+          <text class="node-label-top" x="630" y="202">VkResult</text>
+          <text class="node-label-sub" x="630" y="222">in x86_64 ABI</text>
+          <title>The host call returns a result in x86_64 registers.</title>
+        </g>
+        <line class="arrow" x1="558" y1="206" x2="482" y2="206" marker-end="url(#arrowhead3)"/>
+
+        <g class="node-group">
+          <rect class="node node-accent" x="280" y="176" width="200" height="60" rx="8"/>
+          <text class="node-label-top" x="380" y="202">proxy stub</text>
+          <text class="node-label-sub" x="380" y="222">repack result for guest</text>
+          <title>The proxy puts the return value into the guest's expected register slots (AAPCS64).</title>
+        </g>
+        <line class="arrow" x1="278" y1="206" x2="202" y2="206" marker-end="url(#arrowhead3)"/>
+
+        <g class="node-group">
+          <rect class="node" x="20" y="176" width="180" height="60" rx="8"/>
+          <text class="node-label-top" x="110" y="202">guest receives</text>
+          <text class="node-label-mono" x="110" y="222">VkInstance</text>
+          <title>The app sees a normal Vulkan return — it has no idea the host driver is x86_64.</title>
+        </g>
+      </svg>
+
+      <p class="section-desc" style="margin-top:32px">There are <strong>21 proxy libraries</strong> covering libc, libm, libvulkan, libEGL, libGLESv1_CM/v2/v3, libOpenSLES, libaaudio, libamidi, libandroid, libcamera2ndk, libmediandk, libbinder_ndk, libneuralnetworks, libjnigraphics, libnativewindow, and friends. The set of guest-to-proxy redirects is declared in <code>system/etc/ld.config.arm64.txt</code>.</p>
+    </div>
+  </section>
+
+  <!-- 7. Module Map -->
+  <section id="modules">
+    <div class="container">
+      <h2 class="section-title">7. Module Map</h2>
+      <p class="section-desc">Where each piece of the translator lives in the AOSP source tree. All paths are under <code>frameworks/libs/binary_translation/</code>.</p>
+
+      <table class="module-table">
+        <thead>
+          <tr><th>Path</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>lite_translator/arm64_to_x86_64/</code></td><td>JIT compiler &mdash; emits x86_64 for integer, branch, load/store, system, and most SIMD ops.</td></tr>
+          <tr><td><code>interpreter/arm64/</code></td><td>Per-instruction fallback for syscalls, complex SIMD (pairwise, widening, permute), CRC32, and scalar conversions.</td></tr>
+          <tr><td><code>decoder/include/berberis/decoder/arm64/</code></td><td>ARM64 instruction bit-field decoding (<code>decoder.h</code>, <code>semantics_player.h</code>). Dispatch order matters &mdash; opcodes share prefixes.</td></tr>
+          <tr><td><code>runtime/arm64/</code></td><td>Translation cache, dispatch loop, region lifecycle management.</td></tr>
+          <tr><td><code>kernel_api/</code></td><td>Linux syscall forwarding, futex workarounds, pthread_once deadlock fixups, BSS partial-page zeroing.</td></tr>
+          <tr><td><code>guest_loader/</code></td><td>ELF loader (TinyLoader), NativeBridge initialization, hand-off into the guest stack.</td></tr>
+          <tr><td><code>android_api/</code></td><td>Proxy libraries &mdash; ARM64 stubs that forward to host x86_64 implementations.</td></tr>
+          <tr><td><code>prebuilt/</code></td><td>Static configuration including <code>ld.config.arm64.txt</code>, which redirects guest dynamic-linker resolution onto the proxy stubs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p><a href="./">&larr; Back to overview</a></p>
+      <p>Apache 2.0 License &middot; <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></p>
+      <p>Built on AOSP Berberis framework</p>
+    </div>
+  </footer>
+
+</body>
+</html>
