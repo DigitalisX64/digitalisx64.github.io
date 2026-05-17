@@ -522,7 +522,9 @@ MUL X0, X1, X2     <span class="code-comment">; 0x9b027c20</span></pre>
                 <pre class="codeblock">push rdx                  <span class="code-comment">; preserve any guest</span>
                           <span class="code-comment">; reg pinned to rdx</span>
 mov  rax, [rbp + x1_off]
-mul  qword [rbp + x2_off] <span class="code-comment">; RDX:RAX = RAX * mem</span>
+mov  rcx, [rbp + x2_off]
+mul  rcx                  <span class="code-comment">; RDX:RAX = RAX * rcx</span>
+                          <span class="code-comment">; (unsigned register MUL)</span>
 mov  [rbp + x0_off], rax
 pop  rdx                  <span class="code-comment">; restore</span></pre>
                 <p class="tab-note">x86 <code>mul</code> clobbers both RAX and RDX. The allocator keeps RDX in the GP pool but must <code>push</code>/<code>pop</code> it across MUL/DIV. <code>PUSH</code> is used (not <code>SUB RSP</code>) so RFLAGS isn't disturbed &mdash; same reason as the NZCV-capture sequence.</p>
@@ -604,7 +606,7 @@ mov  [rax], ecx           <span class="code-comment">; plain store -- x86</span>
                 <h4>ARM64 source</h4>
                 <pre class="codeblock"><span class="code-comment">; if [X2] == W0: [X2] = W1</span>
 <span class="code-comment">; W0 := old [X2] in any case</span>
-CAS W0, W1, [X2]   <span class="code-comment">; 0x88a07c40</span></pre>
+CAS W0, W1, [X2]   <span class="code-comment">; 0x88a07c41</span></pre>
                 <p class="tab-note">ARMv8.1 atomic CAS. Returns the original value of <code>[X2]</code> in <code>W0</code> &mdash; success is detected by the caller comparing it to the expected value.</p>
               </div>
               <div>
@@ -816,7 +818,7 @@ mov  [rbp + x0_off], rax</pre>
             <div class="two-col">
               <div>
                 <h4>ARM64 source</h4>
-                <pre class="codeblock">MOVK X0, #0xbeef, LSL #16  <span class="code-comment">; 0xf2a7ddc0</span></pre>
+                <pre class="codeblock">MOVK X0, #0xbeef, LSL #16  <span class="code-comment">; 0xf2b7dde0</span></pre>
                 <p class="tab-note">Overwrites bits [31:16] of <code>X0</code> with <code>0xbeef</code>; keeps every other bit. Chained MOVZ + MOVK + MOVK + MOVK builds an arbitrary 64-bit immediate.</p>
               </div>
               <div>
@@ -908,7 +910,7 @@ mov  [rbp + x0_off], rcx</pre>
             <div class="two-col">
               <div>
                 <h4>ARM64 source</h4>
-                <pre class="codeblock">LDADD W0, W1, [X2]   <span class="code-comment">; 0xb8200040</span></pre>
+                <pre class="codeblock">LDADD W0, W1, [X2]   <span class="code-comment">; 0xb8200041</span></pre>
                 <p class="tab-note">Atomically: <code>old = *X2; *X2 = old + W0; W1 = old</code>. Implements <code>std::atomic&lt;int&gt;::fetch_add</code>. SWP, LDSET, LDEOR, LDCLR, LDSMAX, LDSMIN, LDUMAX, LDUMIN are the family siblings.</p>
               </div>
               <div>
@@ -1024,15 +1026,15 @@ ret                        <span class="code-comment">; exit to dispatcher</span
             <div class="two-col">
               <div>
                 <h4>ARM64 source</h4>
-                <pre class="codeblock">MRS X0, DCZID_EL0  <span class="code-comment">; 0xd53b0080</span></pre>
+                <pre class="codeblock">MRS X0, DCZID_EL0  <span class="code-comment">; 0xd53b00e0</span></pre>
                 <p class="tab-note">Reads an ARM system register into a GP register. <code>DCZID_EL0</code> reports cache-line-zeroing capability and is queried by Bionic on startup. Many other system regs (TPIDR_EL0, MIDR, etc.) are also handled.</p>
               </div>
               <div>
                 <h4>JIT emits (x86_64)</h4>
                 <pre class="codeblock"><span class="code-comment">; per-register synthesized constant</span>
-<span class="code-comment">; (DCZID_EL0 = 0x4 = block size 64B,</span>
-<span class="code-comment">; DZP=0)</span>
-mov  qword [rbp + x0_off], 0x4</pre>
+<span class="code-comment">; (DCZID_EL0 = 0x10, DZP=1 -- DC ZVA</span>
+<span class="code-comment">; is reported unavailable)</span>
+mov  qword [rbp + x0_off], 0x10</pre>
                 <p class="tab-note">Most MRS reads compile to an immediate move &mdash; the &ldquo;value&rdquo; of the guest system register is synthesized by Berberis. DCZID_EL0 specifically was added in commit <code>039ecab2</code> after Bionic startup broke.</p>
               </div>
             </div>
@@ -1378,7 +1380,7 @@ movdqa  [rbp + v0_off], xmm0</pre>
         </defs>
 
         <text class="lane-label" x="140" y="22">Hash map (guest PC &rarr; entry)</text>
-        <text class="lane-label" x="620" y="22">Translation cache memory (R+W+X)</text>
+        <text class="lane-label" x="620" y="22">Translation cache memory (W^X · dual-mapped)</text>
 
         <!-- Hash map column -->
         <g class="node-group">
@@ -1438,7 +1440,7 @@ movdqa  [rbp + v0_off], xmm0</pre>
 
         <!-- Footer note -->
         <text class="node-label-sub" x="440" y="310">Region terminators: branch out, call, syscall, register pressure, or any JIT-unsupported opcode</text>
-        <text class="node-label-sub" x="440" y="328">Cache is R+W+X; the JIT writes new code into it and the host CPU executes from the same page.</text>
+        <text class="node-label-sub" x="440" y="328">Cache is W^X: same memfd mapped twice &mdash; R+X view for the CPU, R+W alias for the JIT writes.</text>
       </svg>
 
       <div class="callout-grid">
@@ -1547,18 +1549,18 @@ MOVW  [rbp+nzcv], AX  <span class="code-comment">; store packed NZCV into Thread
         </g>
         <g class="node-group">
           <rect class="node node-warn" x="240" y="248" width="200" height="46" rx="6"/>
-          <text class="node-label-mono" x="340" y="276">pthread_once / call_once</text>
-          <title>Recursive-call deadlock fixup &mdash; the guest's once-flag bookkeeping would otherwise self-block.</title>
-        </g>
-        <g class="node-group">
-          <rect class="node node-warn" x="460" y="248" width="200" height="46" rx="6"/>
-          <text class="node-label-mono" x="560" y="276">mmap (file-backed)</text>
+          <text class="node-label-mono" x="340" y="276">mmap (file-backed)</text>
           <title>BSS partial-page zeroing after a file-backed mapping when the file ends mid-page &mdash; required by NDK 28+ APK lib loads.</title>
         </g>
         <g class="node-group">
-          <rect class="node node-warn" x="680" y="248" width="180" height="46" rx="6"/>
-          <text class="node-label-mono" x="770" y="276">struct-layout args</text>
+          <rect class="node node-warn" x="460" y="248" width="200" height="46" rx="6"/>
+          <text class="node-label-mono" x="560" y="276">struct-layout args</text>
           <title>A few syscalls take structs whose layout differs between ABIs; those are recopied with the right field offsets.</title>
+        </g>
+        <g class="node-group">
+          <rect class="node node-warn" x="680" y="248" width="180" height="46" rx="6"/>
+          <text class="node-label-mono" x="770" y="276">errno mapping</text>
+          <title>The guest expects ARM/Linux errno values; if a host syscall fails with an x86_64 errno that differs, it's translated back into the guest's expected value.</title>
         </g>
       </svg>
 
@@ -1568,12 +1570,12 @@ MOVW  [rbp+nzcv], AX  <span class="code-comment">; store packed NZCV into Thread
           <p>The guest stores its futex word at an ARM64-translated address; the host kernel reads it directly. Most cases are pass-through, but a few argument types (uaddr2, value bag) need bit-width-aware handling.</p>
         </div>
         <div class="callout">
-          <h4>pthread_once / call_once</h4>
-          <p>Naive forwarding of <code>__cxa_guard_acquire</code> through the proxy can deadlock when guest TLS doesn't agree with the host's view of who holds the once-flag. The kernel_api workaround short-circuits the guard for one-shot init.</p>
-        </div>
-        <div class="callout">
           <h4>mmap BSS zeroing</h4>
           <p>When an NDK 28+ APK's <code>.so</code> ends mid-page, the file-backed mmap leaves the page tail uninitialized. <code>sys_mman_emulation.cc</code> explicitly zeroes the tail so BSS appears as expected to the guest linker.</p>
+        </div>
+        <div class="callout">
+          <h4>errno mapping</h4>
+          <p>Host x86_64 syscall returns are converted into the guest's ARM/Linux errno convention. A handful of syscalls also have struct-layout args that get recopied with the right field offsets.</p>
         </div>
         <div class="callout">
           <h4>Why interpreter-only?</h4>
@@ -1675,7 +1677,7 @@ MOVW  [rbp+nzcv], AX  <span class="code-comment">; store packed NZCV into Thread
           <tr><td><code>interpreter/arm64/</code></td><td>Per-instruction fallback for syscalls, complex SIMD (pairwise, widening, permute), CRC32, and scalar conversions.</td></tr>
           <tr><td><code>decoder/include/berberis/decoder/arm64/</code></td><td>ARM64 instruction bit-field decoding (<code>decoder.h</code>, <code>semantics_player.h</code>). Dispatch order matters &mdash; opcodes share prefixes.</td></tr>
           <tr><td><code>runtime/arm64/</code></td><td>Translation cache, dispatch loop, region lifecycle management.</td></tr>
-          <tr><td><code>kernel_api/</code></td><td>Linux syscall forwarding, futex workarounds, pthread_once deadlock fixups, BSS partial-page zeroing.</td></tr>
+          <tr><td><code>kernel_api/</code></td><td>Linux syscall forwarding, futex workarounds, errno mapping, BSS partial-page zeroing.</td></tr>
           <tr><td><code>guest_loader/</code></td><td>ELF loader (TinyLoader), NativeBridge initialization, hand-off into the guest stack.</td></tr>
           <tr><td><code>android_api/</code></td><td>Proxy libraries &mdash; ARM64 stubs that forward to host x86_64 implementations.</td></tr>
           <tr><td><code>prebuilt/</code></td><td>Static configuration including <code>ld.config.arm64.txt</code>, which redirects guest dynamic-linker resolution onto the proxy stubs.</td></tr>
