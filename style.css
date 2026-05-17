@@ -346,7 +346,36 @@ code {
 .subhero-tagline {
   color: var(--text-secondary);
   font-size: 1.05rem;
+  margin-bottom: 16px;
+}
+
+.source-banner {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
   margin-bottom: 24px;
+}
+
+.source-banner a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.source-banner a:hover {
+  text-decoration: underline;
+}
+
+.source-banner code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.85em;
+  color: var(--text);
 }
 
 .subhero-tagline code,
