@@ -634,11 +634,17 @@ code {
   background: var(--bg-secondary);
 }
 
-#ex-add:checked ~ .tab-buttons label[for="ex-add"],
-#ex-mov:checked ~ .tab-buttons label[for="ex-mov"],
-#ex-ldr:checked ~ .tab-buttons label[for="ex-ldr"],
-#ex-cbz:checked ~ .tab-buttons label[for="ex-cbz"],
-#ex-bl:checked  ~ .tab-buttons label[for="ex-bl"] {
+#ex-add:checked  ~ .tab-buttons label[for="ex-add"],
+#ex-adds:checked ~ .tab-buttons label[for="ex-adds"],
+#ex-mov:checked  ~ .tab-buttons label[for="ex-mov"],
+#ex-adrp:checked ~ .tab-buttons label[for="ex-adrp"],
+#ex-ldr:checked  ~ .tab-buttons label[for="ex-ldr"],
+#ex-stp:checked  ~ .tab-buttons label[for="ex-stp"],
+#ex-cbz:checked  ~ .tab-buttons label[for="ex-cbz"],
+#ex-beq:checked  ~ .tab-buttons label[for="ex-beq"],
+#ex-csel:checked ~ .tab-buttons label[for="ex-csel"],
+#ex-bl:checked   ~ .tab-buttons label[for="ex-bl"],
+#ex-fmov:checked ~ .tab-buttons label[for="ex-fmov"] {
   color: var(--accent);
   background: var(--bg-secondary);
   border-bottom-color: var(--accent);
@@ -652,11 +658,17 @@ code {
   display: none;
 }
 
-#ex-add:checked ~ .tab-panels .pp-ex-add,
-#ex-mov:checked ~ .tab-panels .pp-ex-mov,
-#ex-ldr:checked ~ .tab-panels .pp-ex-ldr,
-#ex-cbz:checked ~ .tab-panels .pp-ex-cbz,
-#ex-bl:checked  ~ .tab-panels .pp-ex-bl {
+#ex-add:checked  ~ .tab-panels .pp-ex-add,
+#ex-adds:checked ~ .tab-panels .pp-ex-adds,
+#ex-mov:checked  ~ .tab-panels .pp-ex-mov,
+#ex-adrp:checked ~ .tab-panels .pp-ex-adrp,
+#ex-ldr:checked  ~ .tab-panels .pp-ex-ldr,
+#ex-stp:checked  ~ .tab-panels .pp-ex-stp,
+#ex-cbz:checked  ~ .tab-panels .pp-ex-cbz,
+#ex-beq:checked  ~ .tab-panels .pp-ex-beq,
+#ex-csel:checked ~ .tab-panels .pp-ex-csel,
+#ex-bl:checked   ~ .tab-panels .pp-ex-bl,
+#ex-fmov:checked ~ .tab-panels .pp-ex-fmov {
   display: block;
 }
 

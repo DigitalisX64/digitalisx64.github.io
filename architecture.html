@@ -155,17 +155,29 @@
 
       <div class="tabbed">
         <input type="radio" name="ex" id="ex-add" checked>
+        <input type="radio" name="ex" id="ex-adds">
         <input type="radio" name="ex" id="ex-mov">
+        <input type="radio" name="ex" id="ex-adrp">
         <input type="radio" name="ex" id="ex-ldr">
+        <input type="radio" name="ex" id="ex-stp">
         <input type="radio" name="ex" id="ex-cbz">
+        <input type="radio" name="ex" id="ex-beq">
+        <input type="radio" name="ex" id="ex-csel">
         <input type="radio" name="ex" id="ex-bl">
+        <input type="radio" name="ex" id="ex-fmov">
 
         <div class="tab-buttons">
           <label for="ex-add">ADD</label>
+          <label for="ex-adds">ADDS</label>
           <label for="ex-mov">MOVZ</label>
+          <label for="ex-adrp">ADRP+ADD</label>
           <label for="ex-ldr">LDR</label>
+          <label for="ex-stp">STP (pre-idx)</label>
           <label for="ex-cbz">CBZ</label>
+          <label for="ex-beq">B.EQ</label>
+          <label for="ex-csel">CSEL</label>
           <label for="ex-bl">BL</label>
+          <label for="ex-fmov">FMOV X,D</label>
         </div>
 
         <div class="tab-panels">
@@ -263,6 +275,140 @@ BL  foo            <span class="code-comment">; 0x94000000</span>
 mov  rax, &lt;callee_pc&gt;     <span class="code-comment">; guest PC of foo</span>
 ret                       <span class="code-comment">; exit to dispatcher</span></pre>
                 <p class="tab-note">BL always terminates the JIT region. The dispatcher looks up <code>&lt;callee_pc&gt;</code> in the translation cache and enters the callee.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-adds">
+            <h3 class="tab-h">ADDS X0, X1, X2 &mdash; add and set NZCV</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64</span>
+ADDS X0, X1, X2    <span class="code-comment">; 0xab020020</span></pre>
+                <p class="tab-note">Same as ADD but additionally updates the <strong>NZCV</strong> condition flags. The next conditional instruction (B.cc, CSEL, CSET&hellip;) will read those flags.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov   rax, [rbp + x1_off]
+add   rax, [rbp + x2_off] <span class="code-comment">; sets RFLAGS</span>
+mov   [rbp + x0_off], rax
+lahf                      <span class="code-comment">; SF/ZF/CF -&gt; AH</span>
+seto  al                  <span class="code-comment">; OF -&gt; AL</span>
+and   ax, 0xc101          <span class="code-comment">; isolate N,Z,C,V</span>
+mov   [rbp + nzcv_off], ax</pre>
+                <p class="tab-note">The four-instruction flag-capture tail is the same pattern documented in <a href="#flags">Section 7</a>. <code>PUSH</code>/<code>POP</code> &mdash; not <code>SUB RSP</code> &mdash; are used for any spills between <code>add</code> and <code>lahf</code> because <code>SUB</code> would clobber RFLAGS.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-adrp">
+            <h3 class="tab-h">ADRP + ADD &mdash; PC-relative address (PIC pattern)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 &mdash; produce &amp;foo</span>
+ADRP X0, foo            <span class="code-comment">; 0x90000000+imm</span>
+ADD  X0, X0, :lo12:foo  <span class="code-comment">; 0x91000000+imm</span></pre>
+                <p class="tab-note">ARM64 has no <code>movabs</code>-equivalent. PIC code addresses globals via this two-instruction pair: ADRP loads the page (bits 63:12), ADD adds the low 12 bits.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock"><span class="code-comment">; emit-time constant fold</span>
+<span class="code-comment">; both halves of the address  </span>
+<span class="code-comment">; are known when the region  </span>
+<span class="code-comment">; is compiled</span>
+mov  rax, &lt;foo_addr&gt;
+mov  [rbp + x0_off], rax</pre>
+                <p class="tab-note">The lite translator recognizes the ADRP/ADD pair and collapses it to a single immediate load &mdash; one of the JIT's most-frequent win patterns since every function call to a global goes through it.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-stp">
+            <h3 class="tab-h">STP X29, X30, [SP, #-16]! &mdash; function prologue</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64</span>
+STP X29, X30, [SP, #-16]!  <span class="code-comment">; 0xa9bf7bfd</span></pre>
+                <p class="tab-note">Pushes the saved frame pointer (X29) and return address (X30) onto the guest stack in one instruction, with <em>pre-index</em> writeback (SP is updated before the store). The single most common function-prologue opcode.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + sp_off]
+sub  rax, 16              <span class="code-comment">; pre-decrement SP</span>
+mov  rcx, [rbp + x29_off]
+mov  [rax],     rcx       <span class="code-comment">; store X29</span>
+mov  rcx, [rbp + x30_off]
+mov  [rax + 8], rcx       <span class="code-comment">; store X30</span>
+mov  [rbp + sp_off], rax  <span class="code-comment">; write SP back</span></pre>
+                <p class="tab-note">Pair load/store with pre/post-index turns into one address computation, two memory ops, and a single SP write-back. Post-index (no <code>!</code>) instead stores first, then updates.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-beq">
+            <h3 class="tab-h">B.EQ .Ltarget &mdash; conditional branch on Z flag</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64</span>
+B.EQ .Ltarget      <span class="code-comment">; 0x54000000+imm</span></pre>
+                <p class="tab-note">14 ARM64 condition codes (EQ, NE, CS/HS, CC/LO, MI, PL, VS, VC, HI, LS, GE, LT, GT, LE) all decode to a Boolean function of NZCV. <code>EQ</code> means &ldquo;Z == 1&rdquo;.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movzx eax, word ptr      <span class="code-comment">; load packed NZCV</span>
+      [rbp + nzcv_off]
+test  ax, 0x4000          <span class="code-comment">; Z bit</span>
+jnz   L_target_host       <span class="code-comment">; branch if Z=1</span></pre>
+                <p class="tab-note">Each cc maps to a different mask + test + Jcc trio. Worth noting: the JIT picks <code>jnz</code> here rather than <code>je</code> because Z=1 in NZCV means the masked bit is non-zero in the captured word.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-csel">
+            <h3 class="tab-h">CSEL X0, X1, X2, EQ &mdash; conditional select</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64</span>
+CSEL X0, X1, X2, EQ  <span class="code-comment">; 0x9a820020</span></pre>
+                <p class="tab-note">Branchless &ldquo;X0 = (Z == 1) ? X1 : X2&rdquo;. Pair instructions CSINC, CSINV, CSNEG add a +1/~/-1 to the &ldquo;else&rdquo; operand. Critical for compiler-generated branchless code paths.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movzx eax, word ptr [rbp + nzcv_off]
+test  ax, 0x4000           <span class="code-comment">; Z bit</span>
+mov   rax, [rbp + x2_off]  <span class="code-comment">; else value</span>
+mov   rdx, [rbp + x1_off]  <span class="code-comment">; then value</span>
+cmovnz rax, rdx            <span class="code-comment">; pick on Z=1</span>
+mov   [rbp + x0_off], rax</pre>
+                <p class="tab-note">x86's <code>cmovcc</code> family maps cleanly onto ARM CSEL. The allocator must temporarily reserve RDX for the &ldquo;then&rdquo; value here &mdash; one of the cases where RDX leaves the general pool.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-fmov">
+            <h3 class="tab-h">FMOV X0, D0 &mdash; cross-bank register move (the one with the bug)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 &mdash; copy bits of FP D0</span>
+<span class="code-comment">; (lower 64 of V0) into GP X0</span>
+FMOV X0, D0        <span class="code-comment">; 0x9e660000</span></pre>
+                <p class="tab-note">Bridges the FP/SIMD register file (V0&ndash;V31) and the GP register file. Doesn't actually convert anything &mdash; just reinterprets the bytes. ARM64 has FMOV X,D and FMOV D,X as a pair.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock"><span class="code-comment">; if V0 is pinned to xmm10, the</span>
+<span class="code-comment">; allocator must flush xmm10 to</span>
+<span class="code-comment">; [rbp + v0_off] FIRST &mdash; the bug</span>
+<span class="code-comment">; was skipping that flush</span>
+movq rax, qword ptr [rbp + v0_off]
+mov  [rbp + x0_off], rax</pre>
+                <p class="tab-note">The FMOV cross-bank case had a real cache-coherency bug (fixed in commit <code>23f12f72</code>): if the source FP register was sitting in a host XMM and the destination GP register wasn't pinned, the JIT could read a stale ThreadState slot. Cross-bank moves must always go through memory.</p>
               </div>
             </div>
           </div>
