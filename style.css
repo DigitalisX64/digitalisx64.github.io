@@ -595,6 +595,163 @@ code {
   background: rgba(88, 166, 255, 0.04);
 }
 
+/* --- Tabbed worked example --- */
+
+.tabbed {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabbed input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab-buttons label {
+  padding: 12px 20px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.tab-buttons label:hover {
+  color: var(--text);
+  background: var(--bg-secondary);
+}
+
+#ex-add:checked ~ .tab-buttons label[for="ex-add"],
+#ex-mov:checked ~ .tab-buttons label[for="ex-mov"],
+#ex-ldr:checked ~ .tab-buttons label[for="ex-ldr"],
+#ex-cbz:checked ~ .tab-buttons label[for="ex-cbz"],
+#ex-bl:checked  ~ .tab-buttons label[for="ex-bl"] {
+  color: var(--accent);
+  background: var(--bg-secondary);
+  border-bottom-color: var(--accent);
+}
+
+.tab-panels {
+  padding: 24px;
+}
+
+.tab-panel {
+  display: none;
+}
+
+#ex-add:checked ~ .tab-panels .pp-ex-add,
+#ex-mov:checked ~ .tab-panels .pp-ex-mov,
+#ex-ldr:checked ~ .tab-panels .pp-ex-ldr,
+#ex-cbz:checked ~ .tab-panels .pp-ex-cbz,
+#ex-bl:checked  ~ .tab-panels .pp-ex-bl {
+  display: block;
+}
+
+.tab-h {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  color: var(--accent);
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.two-col h4 {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.two-col .codeblock {
+  margin-bottom: 12px;
+}
+
+.tab-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.tab-note code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+/* --- Callout cards (used after diagrams) --- */
+
+.callout-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.callout {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 16px 20px;
+}
+
+.callout h4 {
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+.callout p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.callout code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+/* --- Extra diagram variants --- */
+
+.diagram .node-warn {
+  fill: var(--bg-secondary);
+  stroke: #d29922;
+}
+
+.diagram .node-group:hover .node-warn {
+  stroke: #f0b53d;
+  filter: drop-shadow(0 0 4px rgba(210, 153, 34, 0.4));
+}
+
 /* --- Responsive --- */
 
 @media (max-width: 768px) {
@@ -651,5 +808,15 @@ code {
   .module-table td:first-child {
     white-space: normal;
     word-break: break-all;
+  }
+
+  .two-col,
+  .callout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-buttons label {
+    padding: 10px 14px;
+    font-size: 0.82rem;
   }
 }
