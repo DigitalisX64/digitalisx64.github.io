@@ -613,8 +613,28 @@ code {
 .tab-buttons {
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
+  row-gap: 0;
+}
+
+.tab-cat {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px 0 16px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-right: 1px solid var(--border);
+  background: var(--bg-secondary);
+  user-select: none;
+}
+
+.tab-cat:first-child {
+  padding-left: 12px;
 }
 
 .tab-buttons label {
@@ -634,17 +654,58 @@ code {
   background: var(--bg-secondary);
 }
 
+.tabbed input[type="radio"]:checked ~ .tab-buttons label[data-tabid] {
+  /* placeholder, real rules generated per-ID below */
+}
+
 #ex-add:checked  ~ .tab-buttons label[for="ex-add"],
 #ex-adds:checked ~ .tab-buttons label[for="ex-adds"],
+#ex-sub:checked  ~ .tab-buttons label[for="ex-sub"],
+#ex-cmp:checked  ~ .tab-buttons label[for="ex-cmp"],
+#ex-mul:checked  ~ .tab-buttons label[for="ex-mul"],
+#ex-udiv:checked ~ .tab-buttons label[for="ex-udiv"],
+#ex-and:checked  ~ .tab-buttons label[for="ex-and"],
+#ex-orr:checked  ~ .tab-buttons label[for="ex-orr"],
+#ex-eor:checked  ~ .tab-buttons label[for="ex-eor"],
+#ex-tst:checked  ~ .tab-buttons label[for="ex-tst"],
+#ex-lsl:checked  ~ .tab-buttons label[for="ex-lsl"],
+#ex-clz:checked  ~ .tab-buttons label[for="ex-clz"],
 #ex-mov:checked  ~ .tab-buttons label[for="ex-mov"],
+#ex-movk:checked ~ .tab-buttons label[for="ex-movk"],
 #ex-adrp:checked ~ .tab-buttons label[for="ex-adrp"],
+#ex-sxtw:checked ~ .tab-buttons label[for="ex-sxtw"],
 #ex-ldr:checked  ~ .tab-buttons label[for="ex-ldr"],
+#ex-ldrb:checked ~ .tab-buttons label[for="ex-ldrb"],
+#ex-ldp:checked  ~ .tab-buttons label[for="ex-ldp"],
+#ex-str:checked  ~ .tab-buttons label[for="ex-str"],
 #ex-stp:checked  ~ .tab-buttons label[for="ex-stp"],
+#ex-stlr:checked ~ .tab-buttons label[for="ex-stlr"],
+#ex-ldar:checked ~ .tab-buttons label[for="ex-ldar"],
+#ex-cas:checked  ~ .tab-buttons label[for="ex-cas"],
+#ex-ldadd:checked ~ .tab-buttons label[for="ex-ldadd"],
 #ex-cbz:checked  ~ .tab-buttons label[for="ex-cbz"],
+#ex-cbnz:checked ~ .tab-buttons label[for="ex-cbnz"],
+#ex-tbz:checked  ~ .tab-buttons label[for="ex-tbz"],
 #ex-beq:checked  ~ .tab-buttons label[for="ex-beq"],
 #ex-csel:checked ~ .tab-buttons label[for="ex-csel"],
+#ex-cset:checked ~ .tab-buttons label[for="ex-cset"],
 #ex-bl:checked   ~ .tab-buttons label[for="ex-bl"],
-#ex-fmov:checked ~ .tab-buttons label[for="ex-fmov"] {
+#ex-blr:checked  ~ .tab-buttons label[for="ex-blr"],
+#ex-ret:checked  ~ .tab-buttons label[for="ex-ret"],
+#ex-br:checked   ~ .tab-buttons label[for="ex-br"],
+#ex-svc:checked  ~ .tab-buttons label[for="ex-svc"],
+#ex-mrs:checked  ~ .tab-buttons label[for="ex-mrs"],
+#ex-nop:checked  ~ .tab-buttons label[for="ex-nop"],
+#ex-dmb:checked  ~ .tab-buttons label[for="ex-dmb"],
+#ex-fmov:checked ~ .tab-buttons label[for="ex-fmov"],
+#ex-fadd:checked ~ .tab-buttons label[for="ex-fadd"],
+#ex-fmul:checked ~ .tab-buttons label[for="ex-fmul"],
+#ex-fcmp:checked ~ .tab-buttons label[for="ex-fcmp"],
+#ex-scvtf:checked ~ .tab-buttons label[for="ex-scvtf"],
+#ex-fcvtzs:checked ~ .tab-buttons label[for="ex-fcvtzs"],
+#ex-dup:checked  ~ .tab-buttons label[for="ex-dup"],
+#ex-vadd:checked ~ .tab-buttons label[for="ex-vadd"],
+#ex-ld1:checked  ~ .tab-buttons label[for="ex-ld1"] {
   color: var(--accent);
   background: var(--bg-secondary);
   border-bottom-color: var(--accent);
@@ -658,17 +719,54 @@ code {
   display: none;
 }
 
-#ex-add:checked  ~ .tab-panels .pp-ex-add,
-#ex-adds:checked ~ .tab-panels .pp-ex-adds,
-#ex-mov:checked  ~ .tab-panels .pp-ex-mov,
-#ex-adrp:checked ~ .tab-panels .pp-ex-adrp,
-#ex-ldr:checked  ~ .tab-panels .pp-ex-ldr,
-#ex-stp:checked  ~ .tab-panels .pp-ex-stp,
-#ex-cbz:checked  ~ .tab-panels .pp-ex-cbz,
-#ex-beq:checked  ~ .tab-panels .pp-ex-beq,
-#ex-csel:checked ~ .tab-panels .pp-ex-csel,
-#ex-bl:checked   ~ .tab-panels .pp-ex-bl,
-#ex-fmov:checked ~ .tab-panels .pp-ex-fmov {
+#ex-add:checked    ~ .tab-panels .pp-ex-add,
+#ex-adds:checked   ~ .tab-panels .pp-ex-adds,
+#ex-sub:checked    ~ .tab-panels .pp-ex-sub,
+#ex-cmp:checked    ~ .tab-panels .pp-ex-cmp,
+#ex-mul:checked    ~ .tab-panels .pp-ex-mul,
+#ex-udiv:checked   ~ .tab-panels .pp-ex-udiv,
+#ex-and:checked    ~ .tab-panels .pp-ex-and,
+#ex-orr:checked    ~ .tab-panels .pp-ex-orr,
+#ex-eor:checked    ~ .tab-panels .pp-ex-eor,
+#ex-tst:checked    ~ .tab-panels .pp-ex-tst,
+#ex-lsl:checked    ~ .tab-panels .pp-ex-lsl,
+#ex-clz:checked    ~ .tab-panels .pp-ex-clz,
+#ex-mov:checked    ~ .tab-panels .pp-ex-mov,
+#ex-movk:checked   ~ .tab-panels .pp-ex-movk,
+#ex-adrp:checked   ~ .tab-panels .pp-ex-adrp,
+#ex-sxtw:checked   ~ .tab-panels .pp-ex-sxtw,
+#ex-ldr:checked    ~ .tab-panels .pp-ex-ldr,
+#ex-ldrb:checked   ~ .tab-panels .pp-ex-ldrb,
+#ex-ldp:checked    ~ .tab-panels .pp-ex-ldp,
+#ex-str:checked    ~ .tab-panels .pp-ex-str,
+#ex-stp:checked    ~ .tab-panels .pp-ex-stp,
+#ex-stlr:checked   ~ .tab-panels .pp-ex-stlr,
+#ex-ldar:checked   ~ .tab-panels .pp-ex-ldar,
+#ex-cas:checked    ~ .tab-panels .pp-ex-cas,
+#ex-ldadd:checked  ~ .tab-panels .pp-ex-ldadd,
+#ex-cbz:checked    ~ .tab-panels .pp-ex-cbz,
+#ex-cbnz:checked   ~ .tab-panels .pp-ex-cbnz,
+#ex-tbz:checked    ~ .tab-panels .pp-ex-tbz,
+#ex-beq:checked    ~ .tab-panels .pp-ex-beq,
+#ex-csel:checked   ~ .tab-panels .pp-ex-csel,
+#ex-cset:checked   ~ .tab-panels .pp-ex-cset,
+#ex-bl:checked     ~ .tab-panels .pp-ex-bl,
+#ex-blr:checked    ~ .tab-panels .pp-ex-blr,
+#ex-ret:checked    ~ .tab-panels .pp-ex-ret,
+#ex-br:checked     ~ .tab-panels .pp-ex-br,
+#ex-svc:checked    ~ .tab-panels .pp-ex-svc,
+#ex-mrs:checked    ~ .tab-panels .pp-ex-mrs,
+#ex-nop:checked    ~ .tab-panels .pp-ex-nop,
+#ex-dmb:checked    ~ .tab-panels .pp-ex-dmb,
+#ex-fmov:checked   ~ .tab-panels .pp-ex-fmov,
+#ex-fadd:checked   ~ .tab-panels .pp-ex-fadd,
+#ex-fmul:checked   ~ .tab-panels .pp-ex-fmul,
+#ex-fcmp:checked   ~ .tab-panels .pp-ex-fcmp,
+#ex-scvtf:checked  ~ .tab-panels .pp-ex-scvtf,
+#ex-fcvtzs:checked ~ .tab-panels .pp-ex-fcvtzs,
+#ex-dup:checked    ~ .tab-panels .pp-ex-dup,
+#ex-vadd:checked   ~ .tab-panels .pp-ex-vadd,
+#ex-ld1:checked    ~ .tab-panels .pp-ex-ld1 {
   display: block;
 }
 

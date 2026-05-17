@@ -156,28 +156,119 @@
       <div class="tabbed">
         <input type="radio" name="ex" id="ex-add" checked>
         <input type="radio" name="ex" id="ex-adds">
+        <input type="radio" name="ex" id="ex-sub">
+        <input type="radio" name="ex" id="ex-cmp">
+        <input type="radio" name="ex" id="ex-mul">
+        <input type="radio" name="ex" id="ex-udiv">
+        <input type="radio" name="ex" id="ex-and">
+        <input type="radio" name="ex" id="ex-orr">
+        <input type="radio" name="ex" id="ex-eor">
+        <input type="radio" name="ex" id="ex-tst">
+        <input type="radio" name="ex" id="ex-lsl">
+        <input type="radio" name="ex" id="ex-clz">
         <input type="radio" name="ex" id="ex-mov">
+        <input type="radio" name="ex" id="ex-movk">
         <input type="radio" name="ex" id="ex-adrp">
+        <input type="radio" name="ex" id="ex-sxtw">
         <input type="radio" name="ex" id="ex-ldr">
+        <input type="radio" name="ex" id="ex-ldrb">
+        <input type="radio" name="ex" id="ex-ldp">
+        <input type="radio" name="ex" id="ex-str">
         <input type="radio" name="ex" id="ex-stp">
+        <input type="radio" name="ex" id="ex-stlr">
+        <input type="radio" name="ex" id="ex-ldar">
+        <input type="radio" name="ex" id="ex-cas">
+        <input type="radio" name="ex" id="ex-ldadd">
         <input type="radio" name="ex" id="ex-cbz">
+        <input type="radio" name="ex" id="ex-cbnz">
+        <input type="radio" name="ex" id="ex-tbz">
         <input type="radio" name="ex" id="ex-beq">
         <input type="radio" name="ex" id="ex-csel">
+        <input type="radio" name="ex" id="ex-cset">
         <input type="radio" name="ex" id="ex-bl">
+        <input type="radio" name="ex" id="ex-blr">
+        <input type="radio" name="ex" id="ex-ret">
+        <input type="radio" name="ex" id="ex-br">
+        <input type="radio" name="ex" id="ex-svc">
+        <input type="radio" name="ex" id="ex-mrs">
+        <input type="radio" name="ex" id="ex-nop">
+        <input type="radio" name="ex" id="ex-dmb">
         <input type="radio" name="ex" id="ex-fmov">
+        <input type="radio" name="ex" id="ex-fadd">
+        <input type="radio" name="ex" id="ex-fmul">
+        <input type="radio" name="ex" id="ex-fcmp">
+        <input type="radio" name="ex" id="ex-scvtf">
+        <input type="radio" name="ex" id="ex-fcvtzs">
+        <input type="radio" name="ex" id="ex-dup">
+        <input type="radio" name="ex" id="ex-vadd">
+        <input type="radio" name="ex" id="ex-ld1">
 
         <div class="tab-buttons">
+          <span class="tab-cat">Arith</span>
           <label for="ex-add">ADD</label>
           <label for="ex-adds">ADDS</label>
+          <label for="ex-sub">SUB</label>
+          <label for="ex-cmp">CMP</label>
+          <label for="ex-mul">MUL</label>
+          <label for="ex-udiv">UDIV</label>
+
+          <span class="tab-cat">Logic</span>
+          <label for="ex-and">AND</label>
+          <label for="ex-orr">ORR</label>
+          <label for="ex-eor">EOR</label>
+          <label for="ex-tst">TST</label>
+          <label for="ex-lsl">LSL</label>
+          <label for="ex-clz">CLZ</label>
+
+          <span class="tab-cat">Move/Addr</span>
           <label for="ex-mov">MOVZ</label>
+          <label for="ex-movk">MOVK</label>
           <label for="ex-adrp">ADRP+ADD</label>
+          <label for="ex-sxtw">SXTW</label>
+
+          <span class="tab-cat">Memory</span>
           <label for="ex-ldr">LDR</label>
+          <label for="ex-ldrb">LDRB</label>
+          <label for="ex-ldp">LDP</label>
+          <label for="ex-str">STR</label>
           <label for="ex-stp">STP (pre-idx)</label>
+
+          <span class="tab-cat">Atomic</span>
+          <label for="ex-stlr">STLR</label>
+          <label for="ex-ldar">LDAR</label>
+          <label for="ex-cas">CAS</label>
+          <label for="ex-ldadd">LDADD</label>
+
+          <span class="tab-cat">Branch</span>
           <label for="ex-cbz">CBZ</label>
+          <label for="ex-cbnz">CBNZ</label>
+          <label for="ex-tbz">TBZ</label>
           <label for="ex-beq">B.EQ</label>
           <label for="ex-csel">CSEL</label>
+          <label for="ex-cset">CSET</label>
           <label for="ex-bl">BL</label>
+          <label for="ex-blr">BLR</label>
+          <label for="ex-ret">RET</label>
+          <label for="ex-br">BR</label>
+
+          <span class="tab-cat">System</span>
+          <label for="ex-svc">SVC</label>
+          <label for="ex-mrs">MRS</label>
+          <label for="ex-nop">NOP</label>
+          <label for="ex-dmb">DMB</label>
+
+          <span class="tab-cat">FP</span>
           <label for="ex-fmov">FMOV X,D</label>
+          <label for="ex-fadd">FADD</label>
+          <label for="ex-fmul">FMUL</label>
+          <label for="ex-fcmp">FCMP</label>
+          <label for="ex-scvtf">SCVTF</label>
+          <label for="ex-fcvtzs">FCVTZS</label>
+
+          <span class="tab-cat">SIMD</span>
+          <label for="ex-dup">DUP</label>
+          <label for="ex-vadd">ADD V</label>
+          <label for="ex-ld1">LD1</label>
         </div>
 
         <div class="tab-panels">
@@ -409,6 +500,721 @@ FMOV X0, D0        <span class="code-comment">; 0x9e660000</span></pre>
 movq rax, qword ptr [rbp + v0_off]
 mov  [rbp + x0_off], rax</pre>
                 <p class="tab-note">The FMOV cross-bank case had a real cache-coherency bug (fixed in commit <code>23f12f72</code>): if the source FP register was sitting in a host XMM and the destination GP register wasn't pinned, the JIT could read a stale ThreadState slot. Cross-bank moves must always go through memory.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-mul">
+            <h3 class="tab-h">MUL X0, X1, X2 &mdash; multiply (the RDX dance)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 &mdash; alias for</span>
+<span class="code-comment">; MADD X0, X1, X2, XZR</span>
+MUL X0, X1, X2     <span class="code-comment">; 0x9b027c20</span></pre>
+                <p class="tab-note">64x64 -&gt; 64 multiply. The upper 64 bits of the product are dropped. ARM also has UMULH / SMULH for the high half.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">push rdx                  <span class="code-comment">; preserve any guest</span>
+                          <span class="code-comment">; reg pinned to rdx</span>
+mov  rax, [rbp + x1_off]
+mul  qword [rbp + x2_off] <span class="code-comment">; RDX:RAX = RAX * mem</span>
+mov  [rbp + x0_off], rax
+pop  rdx                  <span class="code-comment">; restore</span></pre>
+                <p class="tab-note">x86 <code>mul</code> clobbers both RAX and RDX. The allocator keeps RDX in the GP pool but must <code>push</code>/<code>pop</code> it across MUL/DIV. <code>PUSH</code> is used (not <code>SUB RSP</code>) so RFLAGS isn't disturbed &mdash; same reason as the NZCV-capture sequence.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-lsl">
+            <h3 class="tab-h">LSL X0, X1, X2 &mdash; variable shift (the RCX dance)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 (alias of LSLV)</span>
+LSL X0, X1, X2     <span class="code-comment">; 0x9ac22020</span></pre>
+                <p class="tab-note">Variable shift &mdash; the amount comes from a register, not an immediate. ARM masks the shift amount mod 64; x86 already does the same on 64-bit operands.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">push rcx                  <span class="code-comment">; preserve guest reg</span>
+                          <span class="code-comment">; in rcx, if any</span>
+mov  rcx, [rbp + x2_off]
+mov  rax, [rbp + x1_off]
+shl  rax, cl              <span class="code-comment">; variable shift uses CL</span>
+mov  [rbp + x0_off], rax
+pop  rcx</pre>
+                <p class="tab-note">x86 variable shifts (<code>shl</code>/<code>shr</code>/<code>sar</code> with a register operand) read from <code>CL</code> only. Same pattern as MUL: RCX is part of the GP pool but must be saved across any variable-shift sequence.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-ldp">
+            <h3 class="tab-h">LDP X29, X30, [SP], #16 &mdash; load pair (function epilogue)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 &mdash; post-index writeback</span>
+LDP X29, X30, [SP], #16  <span class="code-comment">; 0xa8c17bfd</span></pre>
+                <p class="tab-note">Pops X29 and X30 off the guest stack and post-increments SP by 16. The mirror image of <code>STP X29, X30, [SP, #-16]!</code>. Every non-leaf function pairs these two.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + sp_off]    <span class="code-comment">; guest SP</span>
+mov  rcx, [rax]             <span class="code-comment">; first 8 bytes</span>
+mov  rdx, [rax + 8]         <span class="code-comment">; next 8 bytes</span>
+mov  [rbp + x29_off], rcx   <span class="code-comment">; store X29</span>
+mov  [rbp + x30_off], rdx   <span class="code-comment">; store X30 (LR)</span>
+add  rax, 16                <span class="code-comment">; post-increment</span>
+mov  [rbp + sp_off], rax</pre>
+                <p class="tab-note">Two loads + one address adjustment + one SP store. Note the post-index here vs pre-index in STP: the LDP form reads from the old SP, then bumps. Often immediately followed by a RET.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-stlr">
+            <h3 class="tab-h">STLR W0, [X1] &mdash; store-release (decoder bug history)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 &mdash; release store, 32-bit</span>
+STLR W0, [X1]      <span class="code-comment">; 0x889ffc20</span></pre>
+                <p class="tab-note">Store with release semantics: all preceding loads/stores must complete before this store becomes visible. The acquire/release counterparts (LDAR, STLR) are how ARM64 implements <code>std::atomic</code> for ordinary data.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]  <span class="code-comment">; guest pointer</span>
+mov  ecx, [rbp + x0_off]  <span class="code-comment">; W0 (low 32 of X0)</span>
+mov  [rax], ecx           <span class="code-comment">; plain store -- x86</span>
+                          <span class="code-comment">; TSO gives release</span>
+                          <span class="code-comment">; semantics for free</span></pre>
+                <p class="tab-note">x86's memory model (TSO) already provides release ordering for normal stores, so the JIT can emit a plain <code>mov</code>. The real-world bug here was in the decoder, not the codegen: STLR shares encoding prefix bits with other load/store-exclusive forms, and dispatch order had to be fixed so STLR didn't get routed to a sibling handler (commit <code>f5876fad</code>).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-cas">
+            <h3 class="tab-h">CAS W0, W1, [X2] &mdash; atomic compare-and-swap</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; if [X2] == W0: [X2] = W1</span>
+<span class="code-comment">; W0 := old [X2] in any case</span>
+CAS W0, W1, [X2]   <span class="code-comment">; 0x88a07c40</span></pre>
+                <p class="tab-note">ARMv8.1 atomic CAS. Returns the original value of <code>[X2]</code> in <code>W0</code> &mdash; success is detected by the caller comparing it to the expected value.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x2_off]   <span class="code-comment">; guest pointer</span>
+mov  eax, [rbp + x0_off]   <span class="code-comment">; expected -&gt; EAX</span>
+mov  edx, [rbp + x1_off]   <span class="code-comment">; new value -&gt; EDX</span>
+lock cmpxchg [rax], edx    <span class="code-comment">; atomic CAS</span>
+mov  [rbp + x0_off], rax   <span class="code-comment">; old value -&gt; W0</span>
+                           <span class="code-comment">; (zero-extends upper 32)</span></pre>
+                <p class="tab-note">CAS maps almost one-to-one onto x86 <code>lock cmpxchg</code>. The historical danger was in the <em>decoder</em>: CAS, SWP, and LDADD share encoding prefixes and can silently route to each other &mdash; SWP-as-CAS would produce wrong results without crashing until a memory boundary surfaced the bug.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-ret">
+            <h3 class="tab-h">RET &mdash; return through LR (X30)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64 &mdash; alias for RET X30</span>
+RET                <span class="code-comment">; 0xd65f03c0</span></pre>
+                <p class="tab-note">Indirect branch through X30 (LR). Conceptually pops nothing &mdash; the return address has been in LR since the BL that called this function. Marks region exit.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x30_off]  <span class="code-comment">; new guest PC = LR</span>
+ret                         <span class="code-comment">; exit to dispatcher</span></pre>
+                <p class="tab-note">Two instructions and the region is done. The dispatcher looks up <code>rax</code> as the next guest PC. Return-address prediction in the host CPU helps: the host <code>ret</code> here is paired with the host <code>call</code> that entered the dispatcher.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-br">
+            <h3 class="tab-h">BR X16 &mdash; indirect branch (jump tables, function pointers)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock"><span class="code-comment">; ARM64</span>
+BR  X16            <span class="code-comment">; 0xd61f0200</span></pre>
+                <p class="tab-note">Jump to the address in <code>X16</code>. PLT thunks and switch-statement jump tables use BR. <code>BLR Xn</code> is the call-with-link variant (writes <code>X30 = PC+4</code> first).</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x16_off]  <span class="code-comment">; new guest PC</span>
+ret                         <span class="code-comment">; exit to dispatcher</span></pre>
+                <p class="tab-note">Same shape as RET, but the target is arbitrary. The dispatcher cache hits if the target has already been translated. Unlike direct branches, the JIT cannot link the next region inline &mdash; the target isn't known until runtime.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-sub">
+            <h3 class="tab-h">SUB X0, X1, X2 &mdash; subtract</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">SUB X0, X1, X2    <span class="code-comment">; 0xcb020020</span></pre>
+                <p class="tab-note">Same shape as ADD but with subtraction. SUBS sets NZCV. ARM's <code>NEG Xd, Xm</code> is <code>SUB Xd, XZR, Xm</code>; <code>NEGS</code> is <code>SUBS XZR</code>.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+sub  rax, [rbp + x2_off]
+mov  [rbp + x0_off], rax</pre>
+                <p class="tab-note">x86 carry flag semantics for subtraction differ from ARM's (ARM C = NOT borrow), so SUBS gets an extra <code>cmc</code> in the flag-capture tail.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-cmp">
+            <h3 class="tab-h">CMP X0, X1 &mdash; compare (alias for SUBS XZR, X0, X1)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">CMP X0, X1        <span class="code-comment">; 0xeb01001f</span></pre>
+                <p class="tab-note">Sets NZCV based on <code>X0 - X1</code>; discards the result. The compiler emits CMP before every conditional that compares two values.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x0_off]
+cmp  rax, [rbp + x1_off]  <span class="code-comment">; sets RFLAGS</span>
+lahf
+seto al
+and  ax, 0xc101
+mov  [rbp + nzcv_off], ax
+<span class="code-comment">; (with cmc for borrow-&gt;C)</span></pre>
+                <p class="tab-note">No result store &mdash; CMP exists purely to set NZCV. Often paired with the next B.cc or CSEL within the same region.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-udiv">
+            <h3 class="tab-h">UDIV X0, X1, X2 &mdash; unsigned divide (RDX:RAX dance)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">UDIV X0, X1, X2   <span class="code-comment">; 0x9ac20820</span></pre>
+                <p class="tab-note">64-bit unsigned divide. ARM defines divide-by-zero to return 0 (no trap), unlike x86 which raises #DE.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">push rdx
+mov  rcx, [rbp + x2_off]
+test rcx, rcx             <span class="code-comment">; divide-by-zero</span>
+jz   L_zero               <span class="code-comment">; -&gt; result = 0</span>
+xor  edx, edx             <span class="code-comment">; clear RDX</span>
+mov  rax, [rbp + x1_off]
+div  rcx                  <span class="code-comment">; RAX = RDX:RAX/rcx</span>
+mov  [rbp + x0_off], rax
+jmp  L_done
+L_zero: mov qword [rbp + x0_off], 0
+L_done: pop rdx</pre>
+                <p class="tab-note">x86 traps on divide-by-zero, so the JIT inserts an explicit zero check to preserve ARM semantics. RDX must be cleared and then saved/restored around the host <code>div</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-and">
+            <h3 class="tab-h">AND X0, X1, X2 &mdash; bitwise and</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">AND X0, X1, X2    <span class="code-comment">; 0x8a020020</span></pre>
+                <p class="tab-note">Trivial bitwise AND. ANDS sets NZCV (only N and Z meaningfully &mdash; C, V cleared). BIC is AND with the second operand inverted.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+and  rax, [rbp + x2_off]
+mov  [rbp + x0_off], rax</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-orr">
+            <h3 class="tab-h">ORR X0, X1, X2 &mdash; bitwise or</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">ORR X0, X1, X2    <span class="code-comment">; 0xaa020020</span></pre>
+                <p class="tab-note">Bitwise OR. <code>MOV Xd, Xm</code> is the alias <code>ORR Xd, XZR, Xm</code>. ORN is OR with second operand inverted.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+or   rax, [rbp + x2_off]
+mov  [rbp + x0_off], rax</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-eor">
+            <h3 class="tab-h">EOR X0, X1, X2 &mdash; bitwise exclusive-or</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">EOR X0, X1, X2    <span class="code-comment">; 0xca020020</span></pre>
+                <p class="tab-note">Bitwise XOR. <code>EOR Xd, Xn, Xn</code> is a common idiom to zero a register without a load; the JIT recognizes it.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+xor  rax, [rbp + x2_off]
+mov  [rbp + x0_off], rax</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-tst">
+            <h3 class="tab-h">TST X0, #mask &mdash; test bits (alias for ANDS XZR, ...)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">TST X0, #0xff     <span class="code-comment">; 0xf2401c1f</span></pre>
+                <p class="tab-note">Computes <code>X0 &amp; mask</code> and sets NZCV (mostly Z). The result is discarded. Used for bit testing before a B.cc.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">test qword [rbp + x0_off], 0xff
+lahf
+seto al
+and  ax, 0xc101
+mov  [rbp + nzcv_off], ax</pre>
+                <p class="tab-note">x86 <code>test</code> sets Z and clears C/V/O &mdash; matches ANDS exactly.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-clz">
+            <h3 class="tab-h">CLZ X0, X1 &mdash; count leading zeros</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">CLZ X0, X1        <span class="code-comment">; 0xdac01020</span></pre>
+                <p class="tab-note">Counts leading zero bits in <code>X1</code>; returns 64 if all zero. Common in floating-point unpacking and bit-scan algorithms.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+lzcnt rax, rax            <span class="code-comment">; BMI1 instruction</span>
+mov  [rbp + x0_off], rax</pre>
+                <p class="tab-note">x86 <code>lzcnt</code> is from BMI1 and matches ARM CLZ exactly (including the all-zeros case). Older CPUs would need <code>bsr</code> + branch for the zero case.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-movk">
+            <h3 class="tab-h">MOVK X0, #0xbeef, LSL #16 &mdash; move with keep</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">MOVK X0, #0xbeef, LSL #16  <span class="code-comment">; 0xf2a7ddc0</span></pre>
+                <p class="tab-note">Overwrites bits [31:16] of <code>X0</code> with <code>0xbeef</code>; keeps every other bit. Chained MOVZ + MOVK + MOVK + MOVK builds an arbitrary 64-bit immediate.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x0_off]
+and  rax, ~0xffff0000     <span class="code-comment">; clear bits 31:16</span>
+or   rax, 0xbeef0000      <span class="code-comment">; set new bits</span>
+mov  [rbp + x0_off], rax</pre>
+                <p class="tab-note">No single x86 op writes 16 bits at a specific shift; mask + OR is the canonical sequence.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-sxtw">
+            <h3 class="tab-h">SXTW X0, W1 &mdash; sign-extend word to doubleword</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">SXTW X0, W1       <span class="code-comment">; 0x93407c20</span>
+                  <span class="code-comment">; alias of SBFM</span></pre>
+                <p class="tab-note">Sign-extends the low 32 bits of <code>X1</code> into the full 64 bits of <code>X0</code>. UXTW (or just MOV) zero-extends.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movsxd rax, dword [rbp + x1_off]
+mov  [rbp + x0_off], rax</pre>
+                <p class="tab-note">x86 <code>movsxd</code> reads 32 bits and sign-extends to 64 in one op. UXTW becomes just <code>mov eax, dword ...</code> (zero-extends naturally).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-ldrb">
+            <h3 class="tab-h">LDRB W0, [X1] &mdash; load byte, zero-extend</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">LDRB W0, [X1]     <span class="code-comment">; 0x39400020</span></pre>
+                <p class="tab-note">Loads 1 byte from <code>[X1]</code> into <code>W0</code>; upper 56 bits of <code>X0</code> are zeroed. LDRH is the halfword variant; LDRSB/LDRSH/LDRSW sign-extend.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov   rax, [rbp + x1_off]
+movzx eax, byte [rax]     <span class="code-comment">; zero-ext 8 -&gt; 32</span>
+                          <span class="code-comment">; (and 32 -&gt; 64 auto)</span>
+mov   [rbp + x0_off], rax</pre>
+                <p class="tab-note">x86 32-bit writes zero-extend to 64 for free, matching ARM's behavior of zeroing the upper half on W-register writes.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-str">
+            <h3 class="tab-h">STR X0, [X1, #16] &mdash; store with offset</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">STR X0, [X1, #16] <span class="code-comment">; 0xf9000820</span></pre>
+                <p class="tab-note">Stores 8 bytes from <code>X0</code> to <code>[X1 + 16]</code>. STRB/STRH/STR(W) for narrower stores.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+mov  rcx, [rbp + x0_off]
+mov  [rax + 16], rcx</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-ldar">
+            <h3 class="tab-h">LDAR W0, [X1] &mdash; load-acquire</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">LDAR W0, [X1]     <span class="code-comment">; 0x88dffc20</span></pre>
+                <p class="tab-note">Load with acquire semantics: no subsequent loads/stores can be reordered before this load. Paired with STLR to implement std::atomic on data-only types.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x1_off]
+mov  ecx, [rax]           <span class="code-comment">; plain load -- x86</span>
+                          <span class="code-comment">; TSO gives acquire</span>
+mov  [rbp + x0_off], rcx</pre>
+                <p class="tab-note">Just like STLR, plain x86 loads already have acquire ordering under TSO. No fence needed for ordinary data.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-ldadd">
+            <h3 class="tab-h">LDADD W0, W1, [X2] &mdash; atomic load-add (the mis-routing case)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">LDADD W0, W1, [X2]   <span class="code-comment">; 0xb8200040</span></pre>
+                <p class="tab-note">Atomically: <code>old = *X2; *X2 = old + W0; W1 = old</code>. Implements <code>std::atomic&lt;int&gt;::fetch_add</code>. SWP, LDSET, LDEOR, LDCLR, LDSMAX, LDSMIN, LDUMAX, LDUMIN are the family siblings.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  rax, [rbp + x2_off]
+mov  ecx, [rbp + x0_off]  <span class="code-comment">; addend</span>
+lock xadd [rax], ecx      <span class="code-comment">; atomic fetch-add</span>
+mov  [rbp + x1_off], rcx  <span class="code-comment">; old value -&gt; W1</span></pre>
+                <p class="tab-note">x86 <code>lock xadd</code> maps directly. The historical decoder bug: LDADD, SWP, and the LDcc family share an encoding prefix &mdash; getting the dispatch order wrong silently routes them to each other (CLAUDE.md flags this as a top pitfall).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-cbnz">
+            <h3 class="tab-h">CBNZ X0, .Ltarget &mdash; branch if non-zero</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">CBNZ X0, .Ltarget <span class="code-comment">; 0xb5000020</span></pre>
+                <p class="tab-note">Mirror of CBZ &mdash; branches when <code>X0 != 0</code>. Does not touch NZCV.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">cmp  qword [rbp + x0_off], 0
+jne  L_target_host</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-tbz">
+            <h3 class="tab-h">TBZ X0, #5, .Lskip &mdash; test bit and branch if zero</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">TBZ X0, #5, .Lskip   <span class="code-comment">; 0x36280020</span></pre>
+                <p class="tab-note">Branches if bit 5 of <code>X0</code> is zero. The encoded bit position is 6 bits (0&ndash;63), so one TBZ covers any single bit. TBNZ is the complement.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">bt   qword [rbp + x0_off], 5
+jnc  L_skip_host          <span class="code-comment">; CF=bit5; jnc=bit==0</span></pre>
+                <p class="tab-note">x86 <code>bt</code> copies the named bit into CF; <code>jnc</code> takes the branch when CF=0.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-cset">
+            <h3 class="tab-h">CSET X0, EQ &mdash; set 1 if condition holds, else 0</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">CSET X0, EQ       <span class="code-comment">; 0x9a9f17e0</span>
+                  <span class="code-comment">; alias of CSINC XZR, XZR, !cond</span></pre>
+                <p class="tab-note">Materializes a Boolean from a condition flag &mdash; the typical idiom for <code>bool b = (a == b)</code>.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movzx eax, word [rbp + nzcv_off]
+test  ax, 0x4000          <span class="code-comment">; Z bit</span>
+setnz al                  <span class="code-comment">; 0 or 1</span>
+movzx rax, al
+mov   [rbp + x0_off], rax</pre>
+                <p class="tab-note">x86's <code>setcc</code> family writes one byte (0 or 1); a <code>movzx</code> widens for the 64-bit guest register.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-blr">
+            <h3 class="tab-h">BLR X3 &mdash; branch with link to register</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">BLR X3            <span class="code-comment">; 0xd63f0060</span></pre>
+                <p class="tab-note">Indirect call: writes <code>X30 = PC + 4</code>, then jumps to address in <code>X3</code>. Used for virtual dispatch and function-pointer invocation.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov  qword [rbp + x30_off], <span class="code-comment">; LR &larr; PC+4</span>
+     &lt;next_guest_pc&gt;
+mov  rax, [rbp + x3_off]   <span class="code-comment">; new guest PC</span>
+ret                         <span class="code-comment">; exit to dispatcher</span></pre>
+                <p class="tab-note">BLR always terminates the region (indirect target). Region linking happens lazily on first execution.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-svc">
+            <h3 class="tab-h">SVC #0 &mdash; supervisor call (syscall trampoline)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">SVC #0            <span class="code-comment">; 0xd4000001</span></pre>
+                <p class="tab-note">Issues a Linux syscall. The syscall number is in <code>X8</code>; arguments in <code>X0&ndash;X5</code>. See <a href="#syscalls">Section 8</a> for the full path.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock"><span class="code-comment">; SVC is interpreter-only</span>
+mov  rax, &lt;svc_pc&gt;        <span class="code-comment">; this guest PC</span>
+mov  rcx, &lt;kInterpreted&gt;
+mov  [translation_cache + ...
+     ], rcx                <span class="code-comment">; install marker</span>
+ret                        <span class="code-comment">; exit to dispatcher</span>
+<span class="code-comment">; dispatcher then routes to</span>
+<span class="code-comment">; interpreter, which handles</span>
+<span class="code-comment">; the actual syscall.</span></pre>
+                <p class="tab-note">SVC always terminates a region. The first time the JIT sees one, it installs <code>kInterpreted</code> at that PC so subsequent entries bypass the JIT.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-mrs">
+            <h3 class="tab-h">MRS X0, DCZID_EL0 &mdash; read system register</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">MRS X0, DCZID_EL0  <span class="code-comment">; 0xd53b0080</span></pre>
+                <p class="tab-note">Reads an ARM system register into a GP register. <code>DCZID_EL0</code> reports cache-line-zeroing capability and is queried by Bionic on startup. Many other system regs (TPIDR_EL0, MIDR, etc.) are also handled.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock"><span class="code-comment">; per-register synthesized constant</span>
+<span class="code-comment">; (DCZID_EL0 = 0x4 = block size 64B,</span>
+<span class="code-comment">; DZP=0)</span>
+mov  qword [rbp + x0_off], 0x4</pre>
+                <p class="tab-note">Most MRS reads compile to an immediate move &mdash; the &ldquo;value&rdquo; of the guest system register is synthesized by Berberis. DCZID_EL0 specifically was added in commit <code>039ecab2</code> after Bionic startup broke.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-nop">
+            <h3 class="tab-h">NOP &mdash; no operation</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">NOP               <span class="code-comment">; 0xd503201f</span>
+                  <span class="code-comment">; alias of HINT #0</span></pre>
+                <p class="tab-note">Useful for alignment padding and for the various HINT codes (YIELD = HINT #1, WFE = HINT #2, &hellip;) which are also encoded as NOP variants.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock"><span class="code-comment">; nothing &mdash; emit no host bytes,</span>
+<span class="code-comment">; advance guest PC by 4</span></pre>
+                <p class="tab-note">Pure NOP costs nothing in the translation. WFE / YIELD on a x86 host are typically also no-ops (or <code>pause</code>) since the host's threading scheduler handles fairness.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-dmb">
+            <h3 class="tab-h">DMB ISH &mdash; data memory barrier, inner-shareable</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">DMB ISH           <span class="code-comment">; 0xd5033bbf</span></pre>
+                <p class="tab-note">Full barrier ordering loads and stores. <code>DMB ISHST</code> is a store barrier; <code>DMB ISHLD</code> is a load barrier. DSB is stronger; ISB is instruction-cache.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mfence                    <span class="code-comment">; full barrier</span>
+<span class="code-comment">; (or `lock or [rsp], 0`</span>
+<span class="code-comment">; on CPUs without MFENCE)</span></pre>
+                <p class="tab-note">x86 TSO covers most ordering for free, so even <code>mfence</code> is rarely needed for ordinary loads/stores. It's emitted for the &ldquo;full fence&rdquo; case to be safe. DMB ISHLD often collapses to nothing.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-fadd">
+            <h3 class="tab-h">FADD D0, D1, D2 &mdash; floating-point add</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">FADD D0, D1, D2   <span class="code-comment">; 0x1e622820</span></pre>
+                <p class="tab-note">Double-precision FP add. ARM and x86 both use IEEE-754 with similar rounding modes &mdash; default round-to-nearest-even.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movsd  xmm0, [rbp + v1_off]
+addsd  xmm0, [rbp + v2_off]
+movsd  [rbp + v0_off], xmm0</pre>
+                <p class="tab-note">Direct mapping. ARM's <code>D</code> registers map to the low 64 bits of the corresponding x86 XMM. Single-precision (<code>S</code>) uses <code>movss</code>/<code>addss</code>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-fmul">
+            <h3 class="tab-h">FMUL D0, D1, D2 &mdash; floating-point multiply</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">FMUL D0, D1, D2   <span class="code-comment">; 0x1e620820</span></pre>
+                <p class="tab-note">Double-precision FP multiply. Has regression tests under <code>lite_translate_region_exec_tests.cc</code> covering chained-multiply patterns &mdash; one of the spots historically hit by codegen bugs.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movsd  xmm0, [rbp + v1_off]
+mulsd  xmm0, [rbp + v2_off]
+movsd  [rbp + v0_off], xmm0</pre>
+                <p class="tab-note">Same pattern as FADD with a different host opcode. FMADD (fused multiply-add) emits <code>vfmadd*</code> when FMA is available, otherwise <code>mulsd</code> + <code>addsd</code> with double rounding.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-fcmp">
+            <h3 class="tab-h">FCMP D0, D1 &mdash; floating-point compare</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">FCMP D0, D1       <span class="code-comment">; 0x1e612000</span></pre>
+                <p class="tab-note">Sets NZCV from comparing <code>D0</code> and <code>D1</code>. Unordered (NaN) comparisons set <code>C = V = 1</code> and clear N, Z.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movsd    xmm0, [rbp + v0_off]
+ucomisd  xmm0, [rbp + v1_off]   <span class="code-comment">; sets RFLAGS</span>
+lahf
+seto     al
+and      ax, 0xc101
+mov      [rbp + nzcv_off], ax</pre>
+                <p class="tab-note"><code>ucomisd</code> sets ZF / PF / CF according to FP comparison, and NaNs set PF; the flag-pack step converts those into ARM's N / Z / C / V bits.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-scvtf">
+            <h3 class="tab-h">SCVTF D0, X0 &mdash; signed int to floating point</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">SCVTF D0, X0      <span class="code-comment">; 0x9e620000</span></pre>
+                <p class="tab-note">Convert signed 64-bit integer to double. UCVTF is the unsigned variant. SCVTF (scalar) is JIT-supported; some vector conversions fall back to the interpreter.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">cvtsi2sd xmm0, qword [rbp + x0_off]
+movsd    [rbp + v0_off], xmm0</pre>
+                <p class="tab-note">Direct mapping to <code>cvtsi2sd</code>. The unsigned case needs a small fixup for values with bit 63 set (x86 has no <code>cvtsi2sd</code> for unsigned 64-bit before AVX-512).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-fcvtzs">
+            <h3 class="tab-h">FCVTZS X0, D0 &mdash; convert float to signed int (truncate)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">FCVTZS X0, D0     <span class="code-comment">; 0x9e780000</span></pre>
+                <p class="tab-note">Convert double to int64 with round-toward-zero. ARM saturates on out-of-range; x86's <code>cvttsd2si</code> returns <code>INT_MIN</code> as a sentinel.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movsd     xmm0, [rbp + v0_off]
+cvttsd2si rax, xmm0       <span class="code-comment">; truncate</span>
+mov       [rbp + x0_off], rax
+<span class="code-comment">; (+ saturating fixup branch for</span>
+<span class="code-comment">; out-of-range to match ARM)</span></pre>
+                <p class="tab-note">The saturation fix-up is one of the small fiddly details where ARM and x86 disagree at boundaries; a handful of conversions fall back to interpreter for that reason.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-dup">
+            <h3 class="tab-h">DUP V0.4S, W0 &mdash; broadcast scalar to vector</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">DUP V0.4S, W0     <span class="code-comment">; 0x4e040c00</span></pre>
+                <p class="tab-note">Replicates the 32-bit scalar <code>W0</code> into all four lanes of <code>V0</code>. The element-from-vector form (<code>DUP Vd.&lt;T&gt;, Vn.&lt;T&gt;[idx]</code>) is also JIT-supported.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movd       xmm0, dword [rbp + x0_off]
+pshufd     xmm0, xmm0, 0   <span class="code-comment">; broadcast lane 0</span>
+movdqa     [rbp + v0_off], xmm0</pre>
+                <p class="tab-note">SSE2 <code>pshufd</code> with imm8 = 0 replicates the source's first lane to all four output lanes. With AVX2, a single <code>vpbroadcastd</code> does the whole thing.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-vadd">
+            <h3 class="tab-h">ADD V0.4S, V1.4S, V2.4S &mdash; vector integer add</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">ADD V0.4S, V1.4S, V2.4S  <span class="code-comment">; 0x4ea28420</span></pre>
+                <p class="tab-note">Four-lane SIMD integer add. 16B / 8H / 4S / 2D arrangements give 128 bits of work per cycle on the host. Most basic SIMD arithmetic is JIT-supported.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">movdqa  xmm0, [rbp + v1_off]
+paddd   xmm0, [rbp + v2_off] <span class="code-comment">; packed 32-bit add</span>
+movdqa  [rbp + v0_off], xmm0</pre>
+                <p class="tab-note">ARM <code>ADD .4S</code> = x86 <code>paddd</code>. Other widths map to <code>paddb</code> / <code>paddw</code> / <code>paddq</code>. Pairwise / widening / across-lanes versions fall back to the interpreter.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-panel pp-ex-ld1">
+            <h3 class="tab-h">LD1 {V0.4S}, [X0] &mdash; vector load (one register)</h3>
+            <div class="two-col">
+              <div>
+                <h4>ARM64 source</h4>
+                <pre class="codeblock">LD1 {V0.4S}, [X0]  <span class="code-comment">; 0x4c407800</span></pre>
+                <p class="tab-note">Loads 128 bits from <code>[X0]</code> into <code>V0</code>. Multi-register forms (LD2, LD3, LD4 with de-interleaving) and per-element forms (<code>LD1 {V0.S}[lane]</code>) are interpreter-only because of the complex bit-decoding.</p>
+              </div>
+              <div>
+                <h4>JIT emits (x86_64)</h4>
+                <pre class="codeblock">mov     rax, [rbp + x0_off]
+movdqu  xmm0, [rax]
+movdqa  [rbp + v0_off], xmm0</pre>
+                <p class="tab-note">Unaligned movdqu because ARM LD1 doesn't require alignment. The interpreter path for multi-reg LDn handles the de-interleave with explicit shuffles.</p>
               </div>
             </div>
           </div>
