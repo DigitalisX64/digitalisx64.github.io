@@ -91,7 +91,7 @@
         </div>
         <div class="feature-card">
           <h3>Proxy Libraries</h3>
-          <p>Vulkan, libc, libm forwarded to host APIs. GPU-accelerated rendering via GFXStream VkDecoder for full Vulkan support.</p>
+          <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
         </div>
         <div class="feature-card">
           <h3>43 Sample Apps</h3>
