@@ -24,6 +24,7 @@
       <p class="hero-tagline">ARM64-to-x86_64 binary translation for Android</p>
       <div class="hero-buttons">
         <a href="#getting-started" class="btn btn-primary">Get Started</a>
+        <a href="apps.html" class="btn btn-secondary">Verified Apps</a>
         <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener" class="btn btn-secondary">GitHub</a>
       </div>
     </div>
@@ -94,8 +95,8 @@
           <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
         </div>
         <div class="feature-card">
-          <h3>43 Sample Apps</h3>
-          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, and ARM-extension probes prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3, OpenSLES + AAudio, camera, MIDI, sensors, NDK binder, NNAPI, plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, CRC32/CRC32C, and SHA/AES crypto.</p>
+          <h3>48 Sample Apps</h3>
+          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, and full-engine samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro), OpenSLES + AAudio, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines, and Tencent MMKV native storage, plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, CRC32/CRC32C, and SHA/AES crypto.</p>
         </div>
       </div>
     </div>
@@ -188,7 +189,14 @@
         <div class="sample-item">hello-libc-libm</div>
         <div class="sample-item">hello-bti</div>
         <div class="sample-item">hello-superpack-regress</div>
+        <div class="sample-item">hello-gles3</div>
+        <div class="sample-item">hello-reactnative</div>
+        <div class="sample-item">hello-lynx</div>
+        <div class="sample-item">hello-mmkv</div>
+        <div class="sample-item">hello-qt</div>
       </div>
+
+      <p class="section-desc" style="margin-top:24px">Beyond the in-tree samples, real unmodified third-party ARM64 APKs are tracked on the <a href="apps.html">Verified Apps</a> page.</p>
     </div>
   </section>
 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verified Apps — Digitalis</title>
+  <meta name="description" content="Third-party ARM64-only Android apps verified running on an x86_64 emulator via Digitalis binary translation — app names, package names, and verification status.">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LCH8R0W6KL');
+  </script>
+</head>
+<body>
+
+  <!-- Sub-hero -->
+  <header class="subhero">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Home</a> / Verified Apps</div>
+      <h1 class="subhero-title">Verified Apps</h1>
+      <p class="subhero-tagline">Third-party <strong>ARM64-only</strong> Android apps run on an x86_64 emulator via Digitalis NativeBridge translation — no recompilation. This is the verification status of real, unmodified APKs (distinct from the in-tree <a href="index.html#samples">sample apps</a>).</p>
+      <div class="source-banner">
+        Each app below is an unmodified arm64-v8a APK launched on the Digitalis x86_64 emulator. A crash is treated as a translator bug and fixed in-surface; entries marked <em>blocked</em> are gated by GMS/auth or an obfuscated anti-emulator integrity check that aborts the app independent of translation correctness.
+      </div>
+    </div>
+  </header>
+
+  <!-- Status legend -->
+  <section style="padding-top:32px">
+    <div class="container">
+      <div class="status-legend">
+        <span><span class="badge badge-pass">Verified</span> launches and runs with no crash</span>
+        <span><span class="badge badge-blocked">Blocked</span> not translator-fixable (anti-emulator / GMS)</span>
+      </div>
+
+      <!-- Verified -->
+      <h2 class="section-title">Verified</h2>
+      <table class="module-table">
+        <thead>
+          <tr><th>App</th><th>Package</th><th>Stack</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Crossy Road</td><td class="pkg"><code>com.yodo1.crossyroad</code></td><td>Unity (IL2CPP)</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Temple Run 2</td><td class="pkg"><code>com.imangi.templerun2</code></td><td>Unity (IL2CPP)</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Temple Run</td><td class="pkg"><code>com.imangi.templerun</code></td><td>Unity</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Subway Surfers</td><td class="pkg"><code>com.kiloo.subwaysurf</code></td><td>Unity</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Hill Climb Racing</td><td class="pkg"><code>com.fingersoft.hillclimb</code></td><td>Native engine</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Space Mafia</td><td class="pkg"><code>com.innersloth.spacemafia</code></td><td>Unity</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Tencent App Store (应用宝)</td><td class="pkg"><code>com.tencent.android.qqdownloader</code></td><td>Native</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>QQ Input (QQ输入法)</td><td class="pkg"><code>com.tencent.qqpinyin</code></td><td>Native IME (MMKV/Tinker)</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Vulkan Caps Viewer</td><td class="pkg"><code>de.saschawillems.vulkancapsviewer</code></td><td>Qt 6 + Vulkan</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Firefox</td><td class="pkg"><code>org.mozilla.firefox</code></td><td>Gecko</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Baidu Maps (百度地图)</td><td class="pkg"><code>com.baidu.BaiduMap</code></td><td>Native map engine + GL</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>NetEase Cloud Music (网易云音乐)</td><td class="pkg"><code>com.netease.cloudmusic</code></td><td>React Native + Hermes</td><td><span class="badge badge-pass">Verified</span></td></tr>
+        </tbody>
+      </table>
+
+      <!-- Blocked -->
+      <h2 class="section-title" style="margin-top:48px">Known limitations</h2>
+      <p class="section-desc">These are blocked in the <strong>Digitalis test environment specifically</strong> — a bare, GMS-less AOSP emulator image. They ship Google Mobile Services dependencies and/or obfuscated anti-emulator integrity protectors that abort at startup <em>after</em> their native libraries load cleanly under translation. That is an environment/app-policy refusal, <strong>not a translation error</strong>. The Digitalis test environment does not represent a production environment that ships GMS — on a GMS-equipped device or emulator these apps may run normally, so a "Blocked" status here is not a statement about Digitalis translation correctness.</p>
+      <table class="module-table">
+        <thead>
+          <tr><th>App</th><th>Package</th><th>Reason</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Hill Climb Racing 2</td><td class="pkg"><code>com.fingersoft.hcr2</code></td><td>Obfuscated integrity protector (<code>yez.d "01"</code>) + Google Play dependency</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
+          <tr><td>Clash of Clans</td><td class="pkg"><code>com.supercell.clashofclans</code></td><td>Obfuscated integrity protector (<code>xlebgahq.ab "02"</code>) + Google Play dependency</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
+        </tbody>
+      </table>
+
+      <p class="section-desc" style="margin-top:32px">Status reflects manual verification on the Digitalis emulator and evolves as fixes land. App and package names are the publishers'; trademarks belong to their respective owners. Listing here indicates translation compatibility only, not affiliation or endorsement.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p><a href="index.html">Home</a> &middot; Apache 2.0 License &middot; <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></p>
+      <p>Built on AOSP Berberis framework</p>
+    </div>
+  </footer>
+
+</body>
+</html>
