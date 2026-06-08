@@ -57,6 +57,7 @@
           <tr><td>Baidu Maps (百度地图)</td><td class="pkg"><code>com.baidu.BaiduMap</code></td><td>Native map engine + GL</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>NetEase Cloud Music (网易云音乐)</td><td class="pkg"><code>com.netease.cloudmusic</code></td><td>React Native + Hermes</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>Brave Browser</td><td class="pkg"><code>com.brave.browser</code></td><td>Chromium</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>AliExpress</td><td class="pkg"><code>com.alibaba.aliexpresshd</code></td><td>Native + system WebView + SecurityGuard</td><td><span class="badge badge-pass">Verified</span></td></tr>
         </tbody>
       </table>
 
@@ -73,7 +74,6 @@
           <tr><td>Amazon Shopping</td><td class="pkg"><code>com.amazon.mShop.android.shopping</code></td><td>Google Play Services / Firebase dependency (native hidden-API-exemption abort fixed under translation; process now stays alive and reaches the GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
           <tr><td>Microsoft Teams</td><td class="pkg"><code>com.microsoft.teams</code></td><td>OneAuth + Google Play Services dependency (native hidden-API-exemption abort fixed under translation; now reaches the OneAuth/GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
           <tr><td>Kuaishou (快手)</td><td class="pkg"><code>com.smile.gifmaker</code></td><td>Anti-emulator integrity SDK (<code>com.kuaishou.weapon</code> + <code>lsusb</code>/<code>lspci</code>/<code>netstat</code> and <code>/sys/.../vhci_hcd</code>, <code>/proc/iomem</code> hardware probing); native libraries load and run cleanly under translation, then the app self-exits on emulator detection (no native crash)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-          <tr><td>AliExpress</td><td class="pkg"><code>com.alibaba.aliexpresshd</code></td><td>Alibaba SecurityGuard anti-tamper SDK (<code>libsgmainso</code>): reads <code>/proc/self/maps</code> and manually resolves and <em>directly calls</em> host system-lib symbols (<code>sqlite3_libversion_number</code>, <code>sqlite3_open_v2</code>, … — i.e. it uses the in-process system WebView's host x86_64 <code>libsqlite.so</code> as a real SQLite engine), bypassing the guest loader/PLT. An anti-hook technique that branches into non-translatable host code. Fully supporting it requires a complete host-<code>libsqlite</code> proxy (per-function ABI marshalling + host→guest callbacks), a large separate feature</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
         </tbody>
       </table>
 
