@@ -56,6 +56,7 @@
           <tr><td>Firefox</td><td class="pkg"><code>org.mozilla.firefox</code></td><td>Gecko</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>Baidu Maps (百度地图)</td><td class="pkg"><code>com.baidu.BaiduMap</code></td><td>Native map engine + GL</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>NetEase Cloud Music (网易云音乐)</td><td class="pkg"><code>com.netease.cloudmusic</code></td><td>React Native + Hermes</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Brave Browser</td><td class="pkg"><code>com.brave.browser</code></td><td>Chromium</td><td><span class="badge badge-pass">Verified</span></td></tr>
         </tbody>
       </table>
 
@@ -71,6 +72,7 @@
           <tr><td>Clash of Clans</td><td class="pkg"><code>com.supercell.clashofclans</code></td><td>Obfuscated integrity protector (<code>xlebgahq.ab "02"</code>) + Google Play dependency</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
           <tr><td>Amazon Shopping</td><td class="pkg"><code>com.amazon.mShop.android.shopping</code></td><td>Google Play Services / Firebase dependency (native hidden-API-exemption abort fixed under translation; process now stays alive and reaches the GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
           <tr><td>Microsoft Teams</td><td class="pkg"><code>com.microsoft.teams</code></td><td>OneAuth + Google Play Services dependency (native hidden-API-exemption abort fixed under translation; now reaches the OneAuth/GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
+          <tr><td>Kuaishou (快手)</td><td class="pkg"><code>com.smile.gifmaker</code></td><td>Anti-emulator integrity SDK (<code>com.kuaishou.weapon</code> + <code>lsusb</code>/<code>lspci</code>/<code>netstat</code> and <code>/sys/.../vhci_hcd</code>, <code>/proc/iomem</code> hardware probing); native libraries load and run cleanly under translation, then the app self-exits on emulator detection (no native crash)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
         </tbody>
       </table>
 
