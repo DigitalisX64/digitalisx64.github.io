@@ -24,7 +24,7 @@
       <h1 class="subhero-title">Verified Apps</h1>
       <p class="subhero-tagline">Third-party <strong>ARM64-only</strong> Android apps run on an x86_64 emulator via Digitalis NativeBridge translation — no recompilation. This is the verification status of real, unmodified APKs (distinct from the in-tree <a href="index.html#samples">sample apps</a>).</p>
       <div class="source-banner">
-        Each app below is an unmodified arm64-v8a APK launched on the Digitalis x86_64 emulator. A crash is treated as a translator bug and fixed in-surface; entries marked <em>blocked</em> are gated by GMS/auth or an obfuscated anti-emulator integrity check that aborts the app independent of translation correctness.
+        Each app below is an unmodified arm64-v8a APK launched on the Digitalis x86_64 emulator. A crash is treated as a translator bug and fixed in-surface; entries marked <em>blocked</em> are gated by GMS/auth or an obfuscated anti-emulator integrity check that aborts the app independent of translation correctness. Vulkan apps render through GFXStream's VkDecoder, and OpenGL ES apps through ANGLE (OpenGL ES on Vulkan), both on the host GPU.
       </div>
     </div>
   </header>

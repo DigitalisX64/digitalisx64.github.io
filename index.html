@@ -92,11 +92,11 @@
         </div>
         <div class="feature-card">
           <h3>Proxy Libraries</h3>
-          <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
+          <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
         </div>
         <div class="feature-card">
-          <h3>48 Sample Apps</h3>
-          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, and full-engine samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro), OpenSLES + AAudio, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines, and Tencent MMKV native storage, plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, CRC32/CRC32C, and SHA/AES crypto.</p>
+          <h3>49 Sample Apps</h3>
+          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, and full-engine samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines, and Tencent MMKV native storage, plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, CRC32/CRC32C, and SHA/AES crypto.</p>
         </div>
       </div>
     </div>
@@ -190,6 +190,7 @@
         <div class="sample-item">hello-bti</div>
         <div class="sample-item">hello-superpack-regress</div>
         <div class="sample-item">hello-gles3</div>
+        <div class="sample-item">hello-msaa</div>
         <div class="sample-item">hello-reactnative</div>
         <div class="sample-item">hello-lynx</div>
         <div class="sample-item">hello-mmkv</div>
