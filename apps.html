@@ -34,6 +34,7 @@
     <div class="container">
       <div class="status-legend">
         <span><span class="badge badge-pass">Verified</span> launches and runs with no crash</span>
+        <span><span class="badge badge-partial">Partial</span> passes the launch gate with an intermittent residual crash</span>
         <span><span class="badge badge-blocked">Blocked</span> not translator-fixable (anti-emulator / GMS)</span>
       </div>
 
@@ -54,10 +55,22 @@
           <tr><td>QQ Input (QQ输入法)</td><td class="pkg"><code>com.tencent.qqpinyin</code></td><td>Native IME (MMKV/Tinker)</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>Vulkan Caps Viewer</td><td class="pkg"><code>de.saschawillems.vulkancapsviewer</code></td><td>Qt 6 + Vulkan</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>Firefox</td><td class="pkg"><code>org.mozilla.firefox</code></td><td>Gecko</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Baidu Maps (百度地图)</td><td class="pkg"><code>com.baidu.BaiduMap</code></td><td>Native map engine + GL; launches and renders cleanly (no crash across an 18-launch + 10-minute soak)</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Baidu Maps (百度地图)</td><td class="pkg"><code>com.baidu.BaiduMap</code></td><td>Native map engine + GL; launches and renders cleanly (no crash across an 18-launch + 10-minute soak). A <code>:SandBoxProcess</code> sub-process JNI abort (the sofire anti-tamper SDK passed a null class to <code>GetStaticFieldID</code>, which the emulator's CheckJNI turned into a process-fatal abort) is fixed under translation — Berberis returns a null field id instead of aborting, matching production behavior</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>NetEase Cloud Music (网易云音乐)</td><td class="pkg"><code>com.netease.cloudmusic</code></td><td>React Native + Hermes</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>Brave Browser</td><td class="pkg"><code>com.brave.browser</code></td><td>Chromium</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>AliExpress</td><td class="pkg"><code>com.alibaba.aliexpresshd</code></td><td>Native + system WebView + SecurityGuard</td><td><span class="badge badge-pass">Verified</span></td></tr>
+        </tbody>
+      </table>
+
+      <!-- Partial -->
+      <h2 class="section-title" style="margin-top:48px">Partial</h2>
+      <p class="section-desc">These pass the launch-stability gate and survive most launches, but still have an intermittent residual crash that is being worked on in-surface.</p>
+      <table class="module-table">
+        <thead>
+          <tr><th>App</th><th>Package</th><th>Status detail</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Kuaishou (快手)</td><td class="pkg"><code>com.smile.gifmaker</code></td><td>Now passes the launch gate and survives most launches. Two anti-tamper aborts from the <code>com.kuaishou.weapon</code> SDK are neutralized under translation: the fdsan fd-ownership aborts (guest <code>close</code>/<code>close_range</code>/<code>dup3</code> no longer corrupt host fd ownership) and a SIGALRM deadman-timer watchdog (the SDK arms a handler-less timer expecting its integrity check to finish first; under translation the check runs slower and the timer fires, so Berberis defaults the host SIGALRM disposition to ignore for the arm64 guest). The remaining intermittent crash is a media-path library gap, not anti-tamper: Kwai's media player calls into the host <code>libgui.so</code> — a private SurfaceFlinger/GPU system library with no guest copy — which can't be translated</td><td><span class="badge badge-partial">Partial</span></td></tr>
         </tbody>
       </table>
 
@@ -73,7 +86,6 @@
           <tr><td>Clash of Clans</td><td class="pkg"><code>com.supercell.clashofclans</code></td><td>Obfuscated integrity protector (<code>xlebgahq.ab "02"</code>) + Google Play dependency</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
           <tr><td>Amazon Shopping</td><td class="pkg"><code>com.amazon.mShop.android.shopping</code></td><td>Google Play Services / Firebase dependency (native hidden-API-exemption abort fixed under translation; process now stays alive and reaches the GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
           <tr><td>Microsoft Teams</td><td class="pkg"><code>com.microsoft.teams</code></td><td>OneAuth + Google Play Services dependency (native hidden-API-exemption abort fixed under translation; now reaches the OneAuth/GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-          <tr><td>Kuaishou (快手)</td><td class="pkg"><code>com.smile.gifmaker</code></td><td>Anti-emulator integrity SDK (<code>com.kuaishou.weapon</code>). The fdsan fd-ownership aborts that killed it early are fixed under translation (guest <code>close</code>/<code>close_range</code>/<code>dup3</code> no longer corrupt host fd ownership), so it now passes the launch-stability gate; in a longer soak the weapon SDK still self-exits via a deterministic jump into host code after detecting the emulator</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
         </tbody>
       </table>
 

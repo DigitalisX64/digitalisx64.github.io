@@ -47,7 +47,7 @@
         <div class="pipeline-step">x86_64 Host</div>
       </div>
 
-      <p class="section-desc">Digitalis extends Berberis with an ARM64 backend, enabling ARM64-only Android apps to run on x86_64 emulators. It reuses Berberis's translation infrastructure while adding ARM64 instruction decoding, JIT code generation, and interpreter support.</p>
+      <p class="section-desc">Digitalis extends Berberis with an ARM64 backend, enabling ARM64-only Android apps to run on x86_64 emulators. It reuses Berberis's translation infrastructure while adding ARM64 instruction decoding, JIT code generation, and interpreter support. Guest code runs through three tiers: an interpreter, a single-pass lite translator (first gear) for cold regions, and an optimizing heavy translator (second gear) that engages on hot regions.</p>
 
       <div class="pipeline-label">Digitalis (this project)</div>
       <div class="pipeline">
@@ -55,21 +55,26 @@
         <span class="pipeline-arrow">&rarr;</span>
         <div class="pipeline-step">NativeBridge</div>
         <span class="pipeline-arrow">&rarr;</span>
-        <div class="pipeline-step">JIT / Interpreter</div>
+        <div class="pipeline-step">Interpreter / Lite / Heavy JIT</div>
         <span class="pipeline-arrow">&rarr;</span>
         <div class="pipeline-step">x86_64 Host</div>
       </div>
 
       <div class="arch-details">
         <div class="arch-detail">
-          <h3>JIT Compiler (Lite Translator)</h3>
-          <p>Translates ARM64 regions to native x86_64 machine code. Handles ~98% of instructions. Translated regions are cached for reuse.</p>
-          <span class="tag">~98% coverage</span>
-        </div>
-        <div class="arch-detail">
           <h3>Interpreter</h3>
           <p>Per-instruction fallback for syscalls, complex SIMD operations, and edge cases the JIT can't handle.</p>
           <span class="tag">fallback path</span>
+        </div>
+        <div class="arch-detail">
+          <h3>Lite Translator (first gear)</h3>
+          <p>Single-pass JIT that translates cold ARM64 regions to native x86_64 machine code. Handles ~98% of instructions. Translated regions are cached for reuse.</p>
+          <span class="tag">~98% coverage</span>
+        </div>
+        <div class="arch-detail">
+          <h3>Heavy Optimizer (second gear)</h3>
+          <p>An optimizing JIT that engages on hot regions via a hotness counter. It does global register allocation and loop optimization across a whole region — neutral-or-faster than the lite tier, with up to ~2x speedups on register-pressure-heavy loops.</p>
+          <span class="tag">hot-region tier</span>
         </div>
       </div>
 
@@ -83,8 +88,8 @@
       <h2 class="section-title">Features</h2>
       <div class="features-grid">
         <div class="feature-card">
-          <h3>JIT Compiler</h3>
-          <p>Lite Translator converts ARM64 to native x86_64 machine code. Translated regions are cached for reuse, delivering near-native performance.</p>
+          <h3>Two-Gear JIT Compiler</h3>
+          <p>The Lite Translator converts cold ARM64 regions to native x86_64 in a single pass; an optimizing Heavy Translator re-compiles hot regions with global register allocation and loop optimization. Translated regions are cached for reuse. The heavy tier is neutral-or-faster than the lite tier in general, with up to ~2x speedups on register-pressure-heavy loops.</p>
         </div>
         <div class="feature-card">
           <h3>Interpreter Fallback</h3>
