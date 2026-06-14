@@ -100,7 +100,7 @@
           <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
         </div>
         <div class="feature-card">
-          <h3>84 Sample Apps</h3>
+          <h3>85 Sample Apps</h3>
           <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, full-engine samples, and third-party native-library integration samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio + Oboe, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines; media and imaging (ijkplayer, libVLC, FFmpegKit, Fresco, GPUImage, libpag, gif-drawable, PDFium, RenderScript Toolkit); vision/ML (OpenCV, TensorFlow Lite, LiteRT-LM, PyTorch Mobile, ncnn, ZXing, Tesseract OCR); crypto/DB/storage (SQLCipher, Conscrypt, libsignal, Realm, ObjectBox, MMKV, zstd, QuickJS, Cronet); AndroidX-native (sqlite-bundled, graphics-path, camera-core, tracing-perfetto, AppSearch/Icing, Ink); plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, LDXP/STXP, CRC32/CRC32C, and SHA/AES crypto.</p>
         </div>
       </div>
@@ -232,6 +232,7 @@
         <div class="sample-item">hello-realm</div>
         <div class="sample-item">hello-aes</div>
         <div class="sample-item">hello-cronet</div>
+        <div class="sample-item">hello-webview-functor</div>
         <div class="sample-item">hello-ldxp</div>
         <div class="sample-item">hello-cntvct</div>
         <div class="sample-item">hello-sigaction</div>

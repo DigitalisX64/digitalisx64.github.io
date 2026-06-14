@@ -59,6 +59,7 @@
           <tr><td>NetEase Cloud Music (网易云音乐)</td><td class="pkg"><code>com.netease.cloudmusic</code></td><td>React Native + Hermes</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>Brave Browser</td><td class="pkg"><code>com.brave.browser</code></td><td>Chromium</td><td><span class="badge badge-pass">Verified</span></td></tr>
           <tr><td>AliExpress</td><td class="pkg"><code>com.alibaba.aliexpresshd</code></td><td>Native + system WebView + SecurityGuard</td><td><span class="badge badge-pass">Verified</span></td></tr>
+          <tr><td>Douyin (抖音)</td><td class="pkg"><code>com.ss.android.ugc.aweme</code></td><td>Native UI (ByteDance Lynx) + WebView hardware-accel draw functor; launches and survives. Its Lynx native UI library called <code>android::RegisterDrawFunctor</code> during WebView initialization — a symbol in the WebView hardware-accel support library <code>libwebviewchromium_plat_support</code> that used to abort the process as an uncovered proxy trampoline (<code>Bad '&lt;sym&gt;' call</code>). It is now covered in-surface and forwarded to the host WebView support library, with a valid host <code>JNIEnv</code> obtained by attaching the calling worker thread to the host VM</td><td><span class="badge badge-pass">Verified</span></td></tr>
         </tbody>
       </table>
 
