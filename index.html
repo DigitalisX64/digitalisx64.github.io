@@ -100,8 +100,8 @@
           <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
         </div>
         <div class="feature-card">
-          <h3>85 Sample Apps</h3>
-          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, full-engine samples, and third-party native-library integration samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio + Oboe, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines; media and imaging (ijkplayer, libVLC, FFmpegKit, Fresco, GPUImage, libpag, gif-drawable, PDFium, RenderScript Toolkit); vision/ML (OpenCV, TensorFlow Lite, LiteRT-LM, PyTorch Mobile, ncnn, ZXing, Tesseract OCR); crypto/DB/storage (SQLCipher, Conscrypt, libsignal, Realm, ObjectBox, MMKV, zstd, QuickJS, Cronet); AndroidX-native (sqlite-bundled, graphics-path, camera-core, tracing-perfetto, AppSearch/Icing, Ink); plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, LDXP/STXP, CRC32/CRC32C, and SHA/AES crypto.</p>
+          <h3>104 Sample Apps</h3>
+          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, full-engine samples, and third-party native-library integration samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio + Oboe, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines; media, codecs and RTC (ijkplayer, libVLC, FFmpegKit, WebRTC); imaging, maps and vector graphics (Fresco, GPUImage, libpag, gif-drawable, PDFium, RenderScript Toolkit, libavif, Rive, MapLibre); vision/ML/speech (OpenCV, TensorFlow Lite, LiteRT-LM, PyTorch Mobile, ncnn, ZXing, Tesseract OCR, ONNX Runtime, MediaPipe, Vosk); crypto (SQLCipher, Conscrypt, libsignal, MMKV, libsodium, Argon2, Themis); databases/storage (Realm, ObjectBox, Couchbase Lite, Tencent WCDB, zstd); JS engines and JNI bridges (QuickJS, Duktape, J2V8, Javet, JavaCPP, JNA, fbjni); networking (Cronet, WireGuard, libtorrent4j); AndroidX-native (sqlite-bundled, graphics-path, camera-core, tracing-perfetto, AppSearch/Icing, Ink); plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, LDXP/STXP, CRC32/CRC32C, and SHA/AES crypto.</p>
         </div>
       </div>
     </div>
@@ -236,6 +236,26 @@
         <div class="sample-item">hello-ldxp</div>
         <div class="sample-item">hello-cntvct</div>
         <div class="sample-item">hello-sigaction</div>
+        <div class="sample-item">hello-maplibre</div>
+        <div class="sample-item">hello-couchbase</div>
+        <div class="sample-item">hello-wcdb</div>
+        <div class="sample-item">hello-vosk</div>
+        <div class="sample-item">hello-onnxruntime</div>
+        <div class="sample-item">hello-mediapipe</div>
+        <div class="sample-item">hello-rive</div>
+        <div class="sample-item">hello-avif</div>
+        <div class="sample-item">hello-webrtc</div>
+        <div class="sample-item">hello-wireguard</div>
+        <div class="sample-item">hello-libtorrent4j</div>
+        <div class="sample-item">hello-duktape</div>
+        <div class="sample-item">hello-j2v8</div>
+        <div class="sample-item">hello-javet</div>
+        <div class="sample-item">hello-javacpp</div>
+        <div class="sample-item">hello-jna</div>
+        <div class="sample-item">hello-fbjni</div>
+        <div class="sample-item">hello-libsodium</div>
+        <div class="sample-item">hello-argon2</div>
+        <div class="sample-item">hello-themis</div>
       </div>
 
       <p class="section-desc" style="margin-top:24px">Beyond the in-tree samples, real unmodified third-party ARM64 APKs are tracked on the <a href="apps.html">Verified Apps</a> page.</p>
