@@ -100,8 +100,8 @@
           <p>21 host libraries &mdash; Vulkan, libc/libm, EGL/GLES, AAudio, camera, NDK binder, NNAPI, JNI helpers &mdash; forwarded to native x86_64 implementations, with GPU-accelerated Vulkan via GFXStream VkDecoder. OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU. Symbols the auto-generated marshallers can't handle are covered in-surface with custom trampolines, including JNIEnv translation and host&rarr;guest callbacks.</p>
         </div>
         <div class="feature-card">
-          <h3>104 Sample Apps</h3>
-          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, full-engine samples, and third-party native-library integration samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio + Oboe, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines; media, codecs and RTC (ijkplayer, libVLC, FFmpegKit, WebRTC); imaging, maps and vector graphics (Fresco, GPUImage, libpag, gif-drawable, PDFium, RenderScript Toolkit, libavif, Rive, MapLibre); vision/ML/speech (OpenCV, TensorFlow Lite, LiteRT-LM, PyTorch Mobile, ncnn, ZXing, Tesseract OCR, ONNX Runtime, MediaPipe, Vosk); crypto (SQLCipher, Conscrypt, libsignal, MMKV, libsodium, Argon2, Themis); databases/storage (Realm, ObjectBox, Couchbase Lite, Tencent WCDB, zstd); JS engines and JNI bridges (QuickJS, Duktape, J2V8, Javet, JavaCPP, JNA, fbjni); networking (Cronet, WireGuard, libtorrent4j); AndroidX-native (sqlite-bundled, graphics-path, camera-core, tracing-perfetto, AppSearch/Icing, Ink); plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, LDXP/STXP, CRC32/CRC32C, and SHA/AES crypto.</p>
+          <h3>116 Sample Apps</h3>
+          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, full-engine samples, and third-party native-library integration samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio + Oboe, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines; media, codecs and RTC (ijkplayer, libVLC, FFmpegKit, WebRTC); imaging, maps and vector graphics (Fresco, GPUImage, libpag, gif-drawable, PDFium, RenderScript Toolkit, libavif, Rive, MapLibre); vision/ML/speech (OpenCV, TensorFlow Lite, LiteRT-LM, PyTorch Mobile, ncnn, ZXing, Tesseract OCR, ONNX Runtime, MediaPipe, Vosk); crypto (SQLCipher, Conscrypt, libsignal, MMKV, libsodium, Argon2, Themis); databases/storage (Realm, ObjectBox, Couchbase Lite, Tencent WCDB, zstd); JS engines and JNI bridges (QuickJS, Duktape, J2V8, Javet, JavaCPP, JNA, fbjni); networking (Cronet, WireGuard, libtorrent4j); AndroidX-native (sqlite-bundled, graphics-path, camera-core, tracing-perfetto, AppSearch/Icing, Ink); plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, LDXP/STXP, CRC32/CRC32C, and SHA/AES crypto. The newest additions bring a numeric/scientific tier (OpenBLAS, FFTW, GSL), 2D physics (Box2D), image processing and OCR pre-processing (libyuv, Leptonica), fast compression (Snappy), Bitcoin-curve ECDSA (secp256k1), and Google&rsquo;s Filament physically-based renderer with glTF loading (gltfio) &mdash; including <code>hello-filament-render</code>, which draws a lit glTF cube on screen through Filament&rsquo;s Vulkan backend, unblocked by a new guest <code>libgui.so</code> stub so Filament&rsquo;s on-screen present path no longer faults.</p>
         </div>
       </div>
     </div>
@@ -256,6 +256,17 @@
         <div class="sample-item">hello-libsodium</div>
         <div class="sample-item">hello-argon2</div>
         <div class="sample-item">hello-themis</div>
+        <div class="sample-item">hello-snappy</div>
+        <div class="sample-item">hello-libyuv</div>
+        <div class="sample-item">hello-secp256k1</div>
+        <div class="sample-item">hello-openblas</div>
+        <div class="sample-item">hello-fftw</div>
+        <div class="sample-item">hello-gsl</div>
+        <div class="sample-item">hello-leptonica</div>
+        <div class="sample-item">hello-box2d</div>
+        <div class="sample-item">hello-filament</div>
+        <div class="sample-item">hello-gltfio</div>
+        <div class="sample-item">hello-filament-render</div>
       </div>
 
       <p class="section-desc" style="margin-top:24px">Beyond the in-tree samples, real unmodified third-party ARM64 APKs are tracked on the <a href="apps.html">Verified Apps</a> page.</p>
