@@ -1,3 +1,8 @@
+---
+# Front matter so Jekyll renders the latest-post highlight below the hero.
+# The rest of this page is plain HTML and is passed through unchanged.
+layout: null
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +35,22 @@
       </div>
     </div>
   </header>
+
+  <!-- Latest post -->
+  {% assign latest = site.posts.first %}{% if latest %}
+  <section class="latest-post-section">
+    <div class="container">
+      <a class="latest-post" href="{{ latest.url | relative_url }}">
+        <span class="latest-post-flag">Latest post</span>
+        <span class="latest-post-body">
+          <span class="latest-post-title">{{ latest.title }}</span>
+          <span class="latest-post-meta"><time datetime="{{ latest.date | date_to_xmlschema }}">{{ latest.date | date: "%B %-d, %Y" }}</time>{% if latest.summary %} &middot; {{ latest.summary }}{% endif %}</span>
+        </span>
+        <span class="latest-post-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </section>
+  {% endif %}
 
   <!-- Architecture -->
   <section id="architecture">

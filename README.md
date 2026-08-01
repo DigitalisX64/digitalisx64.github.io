@@ -9,8 +9,9 @@ Landing page for the [Digitalis](https://github.com/DigitalisX64) project — AR
 ./serve.sh 3000   # custom port
 ```
 
-Uses Jekyll when it is installed, and falls back to a plain file server (which
-serves `index.html` and `apps.html`, but not the blog).
+Uses Jekyll when it is installed. Without it, the last build in `_site` is
+served instead — the sources cannot be served raw any more, since `index.html`
+carries front matter for its latest-post highlight.
 
 ## Writing a Post
 

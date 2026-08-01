@@ -935,6 +935,74 @@ code {
   filter: drop-shadow(0 0 4px rgba(210, 153, 34, 0.4));
 }
 
+/* --- Home: latest post highlight --- */
+
+.latest-post-section {
+  padding: 0 0 64px;
+  border-top: 0;
+}
+
+.latest-post {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: 8px;
+  padding: 20px 24px;
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+
+.latest-post:hover {
+  border-color: var(--accent);
+  border-left-color: var(--green);
+}
+
+.latest-post-flag {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 1px solid rgba(63, 185, 80, 0.4);
+  border-radius: 999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+
+.latest-post-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.latest-post-title {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.latest-post:hover .latest-post-title {
+  color: var(--accent);
+}
+
+.latest-post-meta {
+  display: block;
+  margin-top: 4px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.latest-post-arrow {
+  color: var(--accent);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
 /* --- Blog: post list --- */
 
 .post-list {
@@ -1179,6 +1247,17 @@ code {
   .tab-buttons label {
     padding: 10px 14px;
     font-size: 0.82rem;
+  }
+
+  .latest-post {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .latest-post-arrow {
+    display: none;
   }
 
   .post-card {
