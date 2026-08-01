@@ -33,6 +33,36 @@ echo 'fs.inotify.max_user_watches=524288' | sudo tee /etc/sysctl.d/60-inotify.co
 The other half of the fix is to stop watching what does not need watching — in
 VS Code, add the AOSP checkout to `files.watcherExclude`.
 
+## Adding a Verified App
+
+The apps page is generated from [`_data/apps.yml`](_data/apps.yml) — the page
+itself contains no app data. Add an entry to the list matching its status:
+
+```yaml
+verified:
+  - name: "Some App"
+    package: com.example.someapp
+    stack: "Unity (IL2CPP)"
+    notes: >-      # optional; inline <code> and <em> are allowed
+      What was fixed under translation, if anything worth recording.
+```
+
+Use `reason:` instead of `stack:` for a blocked app. The tables, the per-status
+counts, and the search and filter controls all follow from the file, and a
+status whose list is empty disappears from the page.
+
+## Linting
+
+```bash
+pip install yamllint pymarkdownlnt pyyaml
+./lint.sh
+```
+
+Checks YAML syntax, Markdown, and the app data against its schema — required
+fields, a well-formed package id, no duplicate packages, `reason` only on
+blocked apps, and no stray HTML tags in prose. CI runs the same script, then
+builds the site and validates the generated HTML and CSS with `html5validator`.
+
 ## Writing a Post
 
 Add one Markdown file under `_posts/`, named `YYYY-MM-DD-slug.md`:

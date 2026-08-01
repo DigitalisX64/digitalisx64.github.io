@@ -14,10 +14,16 @@ jobs:
 
       - name: Check required files exist
         run: |
-          for f in index.html style.css serve.sh _config.yml; do
+          for f in index.html style.css serve.sh lint.sh _config.yml _data/apps.yml; do
             test -f "$f" || { echo "Missing: $f"; exit 1; }
           done
           echo "All required files present"
+
+      - name: Install linters
+        run: pip install yamllint pymarkdownlnt pyyaml html5validator
+
+      - name: Lint sources
+        run: ./lint.sh
 
       - name: Build site
         uses: actions/jekyll-build-pages@v1
@@ -38,13 +44,33 @@ jobs:
           done
           echo "$count post(s) rendered and linked"
 
-      - name: Validate HTML
+      - name: Check every app in the data file reached the page
         run: |
-          pip install html5validator
-          html5validator --root _site --also-check-css
+          test -f _site/apps.html || { echo "Missing: _site/apps.html"; exit 1; }
+          python3 - <<'PY'
+          import re, sys, yaml
+          data = yaml.safe_load(open('_data/apps.yml'))
+          page = open('_site/apps.html').read()
+          missing = [a['package']
+                     for apps in data.values() if apps
+                     for a in apps
+                     if f"<code>{a['package']}</code>" not in page]
+          if missing:
+              sys.exit('Not rendered on apps.html: ' + ', '.join(missing))
+          total = sum(len(a or []) for a in data.values())
+          rendered = len(re.findall(r'<tr data-status=', page))
+          if rendered != total:
+              sys.exit(f'{total} apps in data, {rendered} rows on the page')
+          print(f'{total} apps rendered')
+          PY
 
-      - name: Verify serve.sh is executable
-        run: test -x serve.sh
+      - name: Validate HTML and CSS
+        run: html5validator --root _site --also-check-css
+
+      - name: Verify scripts are executable
+        run: |
+          test -x serve.sh
+          test -x lint.sh
 
       - name: Test local preview starts
         run: |

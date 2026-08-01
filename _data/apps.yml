@@ -1,0 +1,166 @@
+# Third-party apps verified on the Digitalis emulator, rendered by apps.html.
+#
+# To add an app, append an entry to the matching list below. Nothing else needs
+# editing: the page builds its tables, counts and filters from this file, and a
+# status with no entries drops out of the page entirely.
+#
+#   name     display name — always quoted, some contain a colon
+#   package  Android application id
+#   stack    verified/partial: the engine or framework, e.g. 'Unity (IL2CPP)'
+#   reason   blocked: why it does not run in this environment
+#   notes    optional prose shown after the stack; inline HTML is allowed
+#
+# Statuses:
+#   verified  launches and runs with no crash
+#   partial   passes the launch gate, not yet verified deep in-app
+#   blocked   not fixable in the translator (anti-emulator, GMS, or an app bug)
+
+
+verified:
+  - name: 'Crossy Road'
+    package: com.yodo1.crossyroad
+    stack: 'Unity (IL2CPP)'
+  - name: 'Temple Run 2'
+    package: com.imangi.templerun2
+    stack: 'Unity (IL2CPP)'
+  - name: 'Temple Run'
+    package: com.imangi.templerun
+    stack: 'Unity'
+  - name: 'Subway Surfers'
+    package: com.kiloo.subwaysurf
+    stack: 'Unity'
+  - name: 'Hill Climb Racing'
+    package: com.fingersoft.hillclimb
+    stack: 'Native engine'
+  - name: 'Space Mafia'
+    package: com.innersloth.spacemafia
+    stack: 'Unity'
+  - name: 'Tencent App Store'
+    package: com.tencent.android.qqdownloader
+    stack: 'Native'
+  - name: 'QQ Input'
+    package: com.tencent.qqpinyin
+    stack: 'Native IME (MMKV/Tinker)'
+  - name: 'Vulkan Caps Viewer'
+    package: de.saschawillems.vulkancapsviewer
+    stack: 'Qt 6 + Vulkan'
+  - name: 'Firefox'
+    package: org.mozilla.firefox
+    stack: 'Gecko'
+  - name: 'Baidu Maps'
+    package: com.baidu.BaiduMap
+    stack: 'Native map engine + GL'
+    notes: >-
+      launches and renders cleanly (no crash across an 18-launch + 10-minute
+      soak). A <code>:SandBoxProcess</code> sub-process JNI abort (the sofire
+      anti-tamper SDK passed a null class to <code>GetStaticFieldID</code>, which
+      the emulator's CheckJNI turned into a process-fatal abort) is fixed under
+      translation — Berberis returns a null field id instead of aborting, matching
+      production behavior
+  - name: 'NetEase Cloud Music'
+    package: com.netease.cloudmusic
+    stack: 'React Native + Hermes'
+  - name: 'Brave Browser'
+    package: com.brave.browser
+    stack: 'Chromium'
+  - name: 'Helium Browser'
+    package: io.github.jqssun.helium
+    stack: 'Chromium 149'
+    notes: >-
+      renders content-rich pages on the default GPU path. Its GPU process used to
+      crash-loop calling an advertised-but-NULL ANGLE extension proc
+      (<code>glGetIntegervRobustANGLE</code>) until the browser aborted on a
+      GPU-channel timeout &mdash; fixed by the translator's
+      <code>eglGetProcAddress</code> override, which wraps the ~80 ANGLE/CHROMIUM
+      extension procs the generated marshallers couldn't so the
+      <em>advertised-implies-non-NULL</em> contract holds
+  - name: 'Amap'
+    package: com.autonavi.minimap
+    stack: 'Native map engine + GL'
+  - name: 'Facebook'
+    package: com.facebook.katana
+    stack: 'Native (Litho/Yoga, SoLoader)'
+  - name: 'CoolApk'
+    package: com.coolapk.market
+    stack: 'Native'
+    notes: >-
+      launches and loads its feed. It used to sit on &ldquo;Loading failed&rdquo;
+      with no crash and no error in the log, because the heavy JIT tier&rsquo;s
+      CPU-state cache was keyed on a register slot without regard for access
+      width: a 64-bit read of a vector register zeroes the upper half of its host
+      XMM, and forwarding that to a later 128-bit read of the same register fed
+      zeroes into the app&rsquo;s bcrypt key schedule, producing a wrong hash and
+      a rejected auth token. The cache now records each mapping&rsquo;s width and
+      register class
+  - name: 'WeChat'
+    package: com.tencent.mm
+    stack: 'Native (Tinker/XWeb)'
+  - name: 'Tencent Map'
+    package: com.tencent.map
+    stack: 'Native map engine + GL'
+  - name: 'AliExpress'
+    package: com.alibaba.aliexpresshd
+    stack: 'Native + system WebView + SecurityGuard'
+  - name: 'Douyin'
+    package: com.ss.android.ugc.aweme
+    stack: 'Native UI (ByteDance Lynx) + WebView hardware-accel draw functor'
+    notes: >-
+      launches and survives. Its Lynx native UI library called
+      <code>android::RegisterDrawFunctor</code> during WebView initialization — a
+      symbol in the WebView hardware-accel support library
+      <code>libwebviewchromium_plat_support</code> that used to abort the process
+      as an uncovered proxy trampoline (<code>Bad '&lt;sym&gt;' call</code>). It
+      is now covered in-surface and forwarded to the host WebView support library,
+      with a valid host <code>JNIEnv</code> obtained by attaching the calling
+      worker thread to the host VM
+  - name: 'Kuaishou'
+    package: com.smile.gifmaker
+    notes: >-
+      Launches and runs cleanly. Three classes of fault were fixed under
+      translation: fdsan fd-ownership aborts and a SIGALRM deadman-timer watchdog
+      from its integrity SDK, and the media player's calls into
+      <code>libgui.so</code> — a private SurfaceFlinger system library with no
+      guest copy — now satisfied by a minimal guest-only stub plus the host-call
+      redirect
+  - name: 'Honkai: Star Rail'
+    package: com.HoYoverse.hkrpgoversea
+    stack: 'Unity (IL2CPP)'
+    notes: >-
+      A namespace-isolation fix cleared the crash that used to block launch:
+      isolated app namespaces no longer load their own copies of non-public system
+      libraries, so Unity&rsquo;s global <code>operator new</code> in
+      <code>libunity.so</code> can no longer interpose over a system library and
+      route it into the app&rsquo;s not-yet-initialized allocator &mdash;
+      previously a SIGILL on libunity&rsquo;s encrypted lazy-init path. An
+      apparent residual crash after that fix turned out to be a re-signed,
+      incorrectly merged APK rather than a translation fault; the publisher-signed
+      universal APK runs.
+
+partial:
+  []
+
+blocked:
+  - name: 'Hill Climb Racing 2'
+    package: com.fingersoft.hcr2
+    reason: 'Obfuscated integrity protector (<code>yez.d "01"</code>) + Google Play dependency'
+  - name: 'Clash of Clans'
+    package: com.supercell.clashofclans
+    reason: 'Obfuscated integrity protector (<code>xlebgahq.ab "02"</code>) + Google Play dependency'
+  - name: 'Amazon Shopping'
+    package: com.amazon.mShop.android.shopping
+    notes: >-
+      Google Play Services / Firebase dependency (native hidden-API-exemption
+      abort fixed under translation; process now stays alive and reaches the GMS
+      gate)
+  - name: 'Microsoft Teams'
+    package: com.microsoft.teams
+    notes: >-
+      OneAuth + Google Play Services dependency (native hidden-API-exemption abort
+      fixed under translation; now reaches the OneAuth/GMS gate)
+  - name: 'WhatsApp'
+    package: com.whatsapp
+    notes: >-
+      Launches, loads its native libraries cleanly, and reaches its EULA screen;
+      an intermittent in-app assertion in its own dependency-injection framework
+      ("must not be called on the main thread") fires during EULA activity
+      teardown &mdash; a pure Java crash with no translator frame in the stack

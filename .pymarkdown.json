@@ -1,0 +1,12 @@
+{
+  "extensions": {
+    "front-matter": { "enabled": true }
+  },
+  "plugins": {
+    "line-length": { "enabled": false },
+    "no-inline-html": { "enabled": false },
+    "first-line-heading": { "enabled": false },
+    "no-duplicate-heading": { "enabled": false },
+    "no-bare-urls": { "enabled": false }
+  }
+}

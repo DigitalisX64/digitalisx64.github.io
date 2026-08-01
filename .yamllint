@@ -1,0 +1,14 @@
+# Data and config files are hand-edited by contributors, so this checks for the
+# things that actually break a build, not house style.
+extends: default
+
+rules:
+  line-length: disable      # prose in _data/apps.yml wraps naturally
+  comments-indentation: disable
+  document-start: disable   # no leading --- in _config.yml or _data/*.yml
+  truthy:
+    check-keys: false       # Jekyll config uses `on:`-style keys
+  braces:
+    forbid: false
+    min-spaces-inside: 0
+    max-spaces-inside: 1

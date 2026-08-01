@@ -1,3 +1,10 @@
+---
+layout: null
+title: Verified Apps
+# Keep the historical URL: the site-wide permalink style would otherwise move
+# this page to /apps/ and break every existing link to apps.html.
+permalink: /apps.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,76 +38,62 @@
     </div>
   </header>
 
-  <!-- Status legend -->
   <section>
     <div class="container">
       <div class="status-legend">
         <span><span class="badge badge-pass">Verified</span> launches and runs with no crash</span>
-        <span><span class="badge badge-partial">Partial</span> passes the launch gate with an intermittent residual crash</span>
+        <span><span class="badge badge-partial">Partial</span> passes the launch gate, not yet verified deep in-app</span>
         <span><span class="badge badge-blocked">Blocked</span> not translator-fixable (anti-emulator / GMS)</span>
       </div>
 
-      <!-- Verified -->
-      <h2 class="section-title">Verified</h2>
-      <table class="module-table">
-        <thead>
-          <tr><th>App</th><th>Package</th><th>Stack</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Crossy Road</td><td class="pkg"><code>com.yodo1.crossyroad</code></td><td>Unity (IL2CPP)</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Temple Run 2</td><td class="pkg"><code>com.imangi.templerun2</code></td><td>Unity (IL2CPP)</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Temple Run</td><td class="pkg"><code>com.imangi.templerun</code></td><td>Unity</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Subway Surfers</td><td class="pkg"><code>com.kiloo.subwaysurf</code></td><td>Unity</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Hill Climb Racing</td><td class="pkg"><code>com.fingersoft.hillclimb</code></td><td>Native engine</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Space Mafia</td><td class="pkg"><code>com.innersloth.spacemafia</code></td><td>Unity</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Tencent App Store</td><td class="pkg"><code>com.tencent.android.qqdownloader</code></td><td>Native</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>QQ Input</td><td class="pkg"><code>com.tencent.qqpinyin</code></td><td>Native IME (MMKV/Tinker)</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Vulkan Caps Viewer</td><td class="pkg"><code>de.saschawillems.vulkancapsviewer</code></td><td>Qt 6 + Vulkan</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Firefox</td><td class="pkg"><code>org.mozilla.firefox</code></td><td>Gecko</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Baidu Maps</td><td class="pkg"><code>com.baidu.BaiduMap</code></td><td>Native map engine + GL; launches and renders cleanly (no crash across an 18-launch + 10-minute soak). A <code>:SandBoxProcess</code> sub-process JNI abort (the sofire anti-tamper SDK passed a null class to <code>GetStaticFieldID</code>, which the emulator's CheckJNI turned into a process-fatal abort) is fixed under translation — Berberis returns a null field id instead of aborting, matching production behavior</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>NetEase Cloud Music</td><td class="pkg"><code>com.netease.cloudmusic</code></td><td>React Native + Hermes</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Brave Browser</td><td class="pkg"><code>com.brave.browser</code></td><td>Chromium</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Helium Browser</td><td class="pkg"><code>io.github.jqssun.helium</code></td><td>Chromium 149; renders content-rich pages on the default GPU path. Its GPU process used to crash-loop calling an advertised-but-NULL ANGLE extension proc (<code>glGetIntegervRobustANGLE</code>) until the browser aborted on a GPU-channel timeout &mdash; fixed by the translator's <code>eglGetProcAddress</code> override, which wraps the ~80 ANGLE/CHROMIUM extension procs the generated marshallers couldn't so the <em>advertised-implies-non-NULL</em> contract holds</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Amap</td><td class="pkg"><code>com.autonavi.minimap</code></td><td>Native map engine + GL</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Facebook</td><td class="pkg"><code>com.facebook.katana</code></td><td>Native (Litho/Yoga, SoLoader)</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>CoolApk</td><td class="pkg"><code>com.coolapk.market</code></td><td>Native; launches and loads its feed. It used to sit on &ldquo;Loading failed&rdquo; with no crash and no error in the log, because the heavy JIT tier&rsquo;s CPU-state cache was keyed on a register slot without regard for access width: a 64-bit read of a vector register zeroes the upper half of its host XMM, and forwarding that to a later 128-bit read of the same register fed zeroes into the app&rsquo;s bcrypt key schedule, producing a wrong hash and a rejected auth token. The cache now records each mapping&rsquo;s width and register class</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>WeChat</td><td class="pkg"><code>com.tencent.mm</code></td><td>Native (Tinker/XWeb)</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Tencent Map</td><td class="pkg"><code>com.tencent.map</code></td><td>Native map engine + GL</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>AliExpress</td><td class="pkg"><code>com.alibaba.aliexpresshd</code></td><td>Native + system WebView + SecurityGuard</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Douyin</td><td class="pkg"><code>com.ss.android.ugc.aweme</code></td><td>Native UI (ByteDance Lynx) + WebView hardware-accel draw functor; launches and survives. Its Lynx native UI library called <code>android::RegisterDrawFunctor</code> during WebView initialization — a symbol in the WebView hardware-accel support library <code>libwebviewchromium_plat_support</code> that used to abort the process as an uncovered proxy trampoline (<code>Bad '&lt;sym&gt;' call</code>). It is now covered in-surface and forwarded to the host WebView support library, with a valid host <code>JNIEnv</code> obtained by attaching the calling worker thread to the host VM</td><td><span class="badge badge-pass">Verified</span></td></tr>
-          <tr><td>Kuaishou</td><td class="pkg"><code>com.smile.gifmaker</code></td><td>Launches and runs cleanly. Three classes of fault were fixed under translation: fdsan fd-ownership aborts and a SIGALRM deadman-timer watchdog from its integrity SDK, and the media player's calls into <code>libgui.so</code> — a private SurfaceFlinger system library with no guest copy — now satisfied by a minimal guest-only stub plus the host-call redirect</td><td><span class="badge badge-pass">Verified</span></td></tr>
-        </tbody>
-      </table>
+      <!-- Filter toolbar. Hidden until the script enables it, so that with no
+           JavaScript the page is simply the full, unfiltered tables. -->
+      <div class="app-filter" id="app-filter" hidden>
+        <label class="app-search">
+          <span class="visually-hidden">Search apps</span>
+          <input type="search" id="app-search" placeholder="Filter by name, package or stack…" autocomplete="off">
+        </label>
+        <div class="app-chips" role="group" aria-label="Filter by status">
+          <button type="button" class="app-chip is-on" data-status="verified">Verified</button>
+          <button type="button" class="app-chip is-on" data-status="partial">Partial</button>
+          <button type="button" class="app-chip is-on" data-status="blocked">Blocked</button>
+        </div>
+        <p class="app-count" id="app-count" aria-live="polite"></p>
+      </div>
 
-      <!-- Partial -->
-      <h2 class="section-title" style="margin-top:48px">Partial</h2>
-      <p class="section-desc">These pass the launch-stability gate but are not yet verified deep in-app; remaining work is tracked in-surface.</p>
-      <table class="module-table">
-        <thead>
-          <tr><th>App</th><th>Package</th><th>Status detail</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Honkai: Star Rail</td><td class="pkg"><code>com.HoYoverse.hkrpgoversea</code></td><td>A namespace-isolation fix clears the crash that blocked launch. Isolated app namespaces no longer load their own copies of non-public system libraries, so Unity&rsquo;s global <code>operator new</code> in <code>libunity.so</code> can no longer interpose over a system library and route it into the app&rsquo;s not-yet-initialized allocator (previously a SIGILL on libunity&rsquo;s encrypted lazy-init path). The game now boots to its login screen under translation; further in-game verification is pending.</td><td><span class="badge badge-partial">Partial</span></td></tr>
-        </tbody>
-      </table>
+      {% assign sections = "verified,partial,blocked" | split: "," %}
+      {% for status in sections %}
+      {% assign apps = site.data.apps[status] %}
+      {% if apps and apps.size > 0 %}
+      {% case status %}
+        {% when "verified" %}{% assign heading = "Verified" %}{% assign label = "Verified" %}{% assign badge = "badge-pass" %}{% assign col3 = "Stack" %}{% assign intro = "" %}
+        {% when "partial" %}{% assign heading = "Partial" %}{% assign label = "Partial" %}{% assign badge = "badge-partial" %}{% assign col3 = "Status detail" %}{% assign intro = "These pass the launch-stability gate but are not yet verified deep in-app; remaining work is tracked in-surface." %}
+        {% when "blocked" %}{% assign heading = "Known limitations" %}{% assign label = "Blocked" %}{% assign badge = "badge-blocked" %}{% assign col3 = "Reason" %}{% assign intro = "These are blocked in the <strong>Digitalis test environment specifically</strong> — a bare, GMS-less AOSP emulator image. They ship Google Mobile Services dependencies and/or obfuscated anti-emulator integrity protectors that abort at startup <em>after</em> their native libraries load cleanly under translation (one entry instead fails on an in-app assertion of its own). That is an environment/app-policy refusal or an app-internal bug, <strong>not a translation error</strong>. The Digitalis test environment does not represent a production environment that ships GMS — on a GMS-equipped device or emulator these apps may run normally, so a &quot;Blocked&quot; status here is not a statement about Digitalis translation correctness." %}
+      {% endcase %}
+      <section class="app-section" data-status="{{ status }}"{% unless forloop.first %} style="padding-top:0;border-top:0"{% endunless %}>
+        <h2 class="section-title">{{ heading }} <span class="section-count" data-count-for="{{ status }}">{{ apps.size }}</span></h2>
+        {% if intro != "" %}<p class="section-desc">{{ intro }}</p>{% endif %}
+        <table class="module-table">
+          <thead>
+            <tr><th>App</th><th>Package</th><th>{{ col3 }}</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            {% for app in apps %}
+            <tr data-status="{{ status }}" data-search="{{ app.name | append: ' ' | append: app.package | append: ' ' | append: app.stack | append: ' ' | append: app.reason | strip_html | downcase | escape }}">
+              <td>{{ app.name }}</td>
+              <td class="pkg"><code>{{ app.package }}</code></td>
+              <td>{{ app.stack | default: app.reason }}{% if app.notes %}{% if app.stack or app.reason %}; {% endif %}{{ app.notes }}{% endif %}</td>
+              <td><span class="badge {{ badge }}">{{ label }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <p class="app-empty" hidden>No apps match this filter.</p>
+      </section>
+      {% endif %}
+      {% endfor %}
 
-      <!-- Blocked -->
-      <h2 class="section-title" style="margin-top:48px">Known limitations</h2>
-      <p class="section-desc">These are blocked in the <strong>Digitalis test environment specifically</strong> — a bare, GMS-less AOSP emulator image. They ship Google Mobile Services dependencies and/or obfuscated anti-emulator integrity protectors that abort at startup <em>after</em> their native libraries load cleanly under translation (one entry instead fails on an in-app assertion of its own). That is an environment/app-policy refusal or an app-internal bug, <strong>not a translation error</strong>. The Digitalis test environment does not represent a production environment that ships GMS — on a GMS-equipped device or emulator these apps may run normally, so a "Blocked" status here is not a statement about Digitalis translation correctness.</p>
-      <table class="module-table">
-        <thead>
-          <tr><th>App</th><th>Package</th><th>Reason</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Hill Climb Racing 2</td><td class="pkg"><code>com.fingersoft.hcr2</code></td><td>Obfuscated integrity protector (<code>yez.d "01"</code>) + Google Play dependency</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-          <tr><td>Clash of Clans</td><td class="pkg"><code>com.supercell.clashofclans</code></td><td>Obfuscated integrity protector (<code>xlebgahq.ab "02"</code>) + Google Play dependency</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-          <tr><td>Amazon Shopping</td><td class="pkg"><code>com.amazon.mShop.android.shopping</code></td><td>Google Play Services / Firebase dependency (native hidden-API-exemption abort fixed under translation; process now stays alive and reaches the GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-          <tr><td>Microsoft Teams</td><td class="pkg"><code>com.microsoft.teams</code></td><td>OneAuth + Google Play Services dependency (native hidden-API-exemption abort fixed under translation; now reaches the OneAuth/GMS gate)</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-          <tr><td>WhatsApp</td><td class="pkg"><code>com.whatsapp</code></td><td>Launches, loads its native libraries cleanly, and reaches its EULA screen; an intermittent in-app assertion in its own dependency-injection framework ("must not be called on the main thread") fires during EULA activity teardown &mdash; a pure Java crash with no translator frame in the stack</td><td><span class="badge badge-blocked">Blocked</span></td></tr>
-        </tbody>
-      </table>
-
-      <p class="section-desc" style="margin-top:32px">Status reflects manual verification on the Digitalis emulator and evolves as fixes land. App and package names are the publishers'; trademarks belong to their respective owners. Listing here indicates translation compatibility only, not affiliation or endorsement.</p>
+      <p class="section-desc" style="margin-top:32px">Status reflects manual verification on the Digitalis emulator and evolves as fixes land. App and package names are the publishers'; trademarks belong to their respective owners. Listing here indicates translation compatibility only, not affiliation or endorsement. The underlying list lives in <a href="https://github.com/DigitalisX64/digitalisx64.github.io/blob/android-latest-release/_data/apps.yml"><code>_data/apps.yml</code></a>.</p>
     </div>
   </section>
 
@@ -111,6 +104,56 @@
       <p>Built on AOSP Berberis framework</p>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var filter = document.getElementById('app-filter');
+      var search = document.getElementById('app-search');
+      var count = document.getElementById('app-count');
+      var chips = Array.prototype.slice.call(document.querySelectorAll('.app-chip'));
+      var rows = Array.prototype.slice.call(document.querySelectorAll('tr[data-status]'));
+      var sections = Array.prototype.slice.call(document.querySelectorAll('.app-section'));
+      if (!rows.length) return;
+
+      filter.hidden = false;
+
+      function apply() {
+        var term = search.value.trim().toLowerCase();
+        var on = {};
+        chips.forEach(function (c) { on[c.dataset.status] = c.classList.contains('is-on'); });
+
+        var shown = 0;
+        rows.forEach(function (row) {
+          var match = on[row.dataset.status] &&
+                      (term === '' || row.dataset.search.indexOf(term) !== -1);
+          row.hidden = !match;
+          if (match) shown++;
+        });
+
+        sections.forEach(function (section) {
+          var visible = section.querySelectorAll('tr[data-status]:not([hidden])').length;
+          var badge = section.querySelector('[data-count-for]');
+          if (badge) badge.textContent = visible;
+          section.querySelector('table').hidden = visible === 0;
+          section.querySelector('.app-empty').hidden = visible !== 0;
+        });
+
+        count.textContent = shown + (shown === 1 ? ' app' : ' apps') +
+                            (term === '' ? '' : ' matching “' + search.value.trim() + '”');
+      }
+
+      search.addEventListener('input', apply);
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chip.classList.toggle('is-on');
+          chip.setAttribute('aria-pressed', chip.classList.contains('is-on'));
+          apply();
+        });
+        chip.setAttribute('aria-pressed', 'true');
+      });
+      apply();
+    })();
+  </script>
 
 </body>
 </html>
