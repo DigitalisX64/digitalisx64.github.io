@@ -2,6 +2,12 @@ title: Digitalis
 description: ARM64-to-x86_64 binary translation for Android
 url: https://digitalisx64.github.io
 
+# No theme. Every page here carries its own stylesheet, so GitHub Pages' default
+# (jekyll-theme-primer) would only add an unreferenced assets/css/style.css to
+# the deployed site — one that does not pass CSS validation. The github-pages
+# gem honours an explicit null here; leaving the key out silently opts in.
+theme: null
+
 # Default byline for posts. A post overrides it by setting the same two keys
 # under `author:` in its own front matter.
 author:
