@@ -38,6 +38,18 @@ body {
   padding: 120px 0 80px;
 }
 
+/* The project mark: a foxglove — digitalis purpurea — with a translation arrow
+   between two chips. The artwork carries its own light ground, so it sits on
+   the dark page as a tile rather than being knocked out of it. */
+.hero-logo {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 24px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+}
+
 .hero-title {
   font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
   font-size: 4rem;
@@ -1263,6 +1275,13 @@ code {
 /* --- Responsive --- */
 
 @media (max-width: 768px) {
+  .hero-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+
   .hero-title {
     font-size: 2.5rem;
   }
