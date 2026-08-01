@@ -20,8 +20,9 @@ permalink: /blog.html
       {% else %}
       <ul class="post-list">
         {% for post in site.posts %}
+        {% assign author = post.author | default: site.author %}
         <li class="post-card">
-          <p class="post-card-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></p>
+          <p class="post-card-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>{% if author.name %} &middot; {{ author.name }}{% endif %}</p>
           <h2 class="post-card-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
           <p class="post-card-excerpt">{{ post.summary | default: post.excerpt | strip_html | strip_newlines | truncate: 240 }}</p>
         </li>

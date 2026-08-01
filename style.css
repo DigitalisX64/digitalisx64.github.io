@@ -986,6 +986,15 @@ code {
   color: var(--text-secondary);
 }
 
+.post-meta a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.post-meta a:hover {
+  text-decoration: underline;
+}
+
 .post-body {
   max-width: 760px;
   color: var(--text);

@@ -2,6 +2,12 @@ title: Digitalis
 description: ARM64-to-x86_64 binary translation for Android
 url: https://digitalisx64.github.io
 
+# Default byline for posts. A post overrides it by setting the same two keys
+# under `author:` in its own front matter.
+author:
+  name: utzcoz
+  url: https://github.com/utzcoz
+
 # Posts are written as Markdown in _posts/ and rendered by _layouts/post.html.
 # A new post needs nothing but a file named _posts/YYYY-MM-DD-slug.md with a
 # `title:` in its front matter; the layout, the date and the URL follow from that.

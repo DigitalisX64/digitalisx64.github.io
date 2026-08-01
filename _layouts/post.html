@@ -6,7 +6,8 @@ layout: base
     <div class="container">
       <div class="breadcrumb"><a href="{{ '/index.html' | relative_url }}">Home</a> / <a href="{{ '/blog.html' | relative_url }}">Blog</a> / {{ page.title }}</div>
       <h1 class="subhero-title">{{ page.title }}</h1>
-      <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>{% if page.summary %} &middot; {{ page.summary }}{% endif %}</p>
+      {% assign author = page.author | default: site.author %}
+      <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>{% if author.name %} &middot; by {% if author.url %}<a href="{{ author.url }}" target="_blank" rel="noopener author">{{ author.name }}</a>{% else %}{{ author.name }}{% endif %}{% endif %}{% if page.summary %} &middot; {{ page.summary }}{% endif %}</p>
     </div>
   </header>
 

@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page.title }} &mdash; Digitalis</title>
   <meta name="description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
+  {%- assign page_author = page.author | default: site.author %}
+  {%- if page.date and page_author.name %}
+  <meta name="author" content="{{ page_author.name }}">
+  {%- endif %}
   <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>

@@ -32,6 +32,15 @@ the file name and front matter; `summary` is optional and falls back to the
 first paragraph. Layouts live in `_layouts/`, post styles in `style.css`
 under `Blog: post list` and `Blog: single post`.
 
+The byline comes from `author:` in `_config.yml`. A post credited to someone
+else overrides it in its own front matter:
+
+```yaml
+author:
+  name: someone
+  url: https://github.com/someone
+```
+
 ## Deploy
 
 Push to `android-latest-release` branch. GitHub Pages auto-deploys.
