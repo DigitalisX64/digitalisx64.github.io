@@ -53,6 +53,16 @@ the file name and front matter; `summary` is optional and falls back to the
 first paragraph. Layouts live in `_layouts/`, post styles in `style.css`
 under `Blog: post list` and `Blog: single post`.
 
+Nothing else needs editing. The post's date comes from the file name (override
+it with a `date:` key in the front matter if you need a time of day), and both
+the blog index and the "Latest post" strip on the home page read `site.posts`
+directly — so the newest post appears in both places by itself.
+
+One caveat that follows from that: **Jekyll hides posts dated in the future**
+until that date arrives, and builds on GitHub's runners use UTC. A post dated
+later today can therefore build locally and still be missing from the deployed
+site. If a new post does not appear, check its date first.
+
 The byline comes from `author:` in `_config.yml`. A post credited to someone
 else overrides it in its own front matter:
 

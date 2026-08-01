@@ -123,7 +123,13 @@ layout: null
         </div>
         <div class="feature-card">
           <h3>140 Sample Apps</h3>
-          <p>Ported NDK samples, Digitalis proxy-lib smoke tests, ARM-extension probes, full-engine samples, and third-party native-library integration samples prove end-to-end translation: Vulkan, OpenGL ES 1.x/2/3 (incl. an ES 3.2 EGL repro and a multisample/MSAA 1x/2x/4x/8x sample), OpenSLES + AAudio + Oboe, camera, MIDI, sensors, NDK binder, NNAPI, the Qt 6, React Native + Hermes, and Lynx + PrimJS UI engines; media, codecs and RTC (ijkplayer, libVLC, FFmpegKit, WebRTC); imaging, maps and vector graphics (Fresco, GPUImage, libpag, gif-drawable, PDFium, RenderScript Toolkit, libavif, Rive, MapLibre); vision/ML/speech (OpenCV, TensorFlow Lite, LiteRT-LM, PyTorch Mobile, ncnn, ZXing, Tesseract OCR, ONNX Runtime, MediaPipe, Vosk); crypto (SQLCipher, Conscrypt, libsignal, MMKV, libsodium, Argon2, Themis); databases/storage (Realm, ObjectBox, Couchbase Lite, Tencent WCDB, zstd); JS engines and JNI bridges (QuickJS, Duktape, J2V8, Javet, JavaCPP, JNA, fbjni); networking (Cronet, WireGuard, libtorrent4j); AndroidX-native (sqlite-bundled, graphics-path, camera-core, tracing-perfetto, AppSearch/Icing, Ink); plus NEON, FP16, BFloat16, FCMA, dot-product, I8MM integer matrix-multiply, JSCVT, PAC, LSE/LRCPC atomics, LDXP/STXP, CRC32/CRC32C, and SHA/AES crypto. The newest additions bring a numeric/scientific tier (OpenBLAS, FFTW, GSL), 2D physics (Box2D), image processing and OCR pre-processing (libyuv, Leptonica), fast compression (Snappy), Bitcoin-curve ECDSA (secp256k1), and Google&rsquo;s Filament physically-based renderer with glTF loading (gltfio) &mdash; including <code>hello-filament-render</code>, which draws a lit glTF cube on screen through Filament&rsquo;s Vulkan backend, unblocked by a new guest <code>libgui.so</code> stub so Filament&rsquo;s on-screen present path no longer faults. A further round broadens the catalog into new subsystems: a native Lua 5.4 VM (luajava) and the MuPDF PDF render engine (an alternate to PDFium); the Sentry NDK crash backend, whose signal-handler stack-unwinder install is exercised under translation; Bullet 3D rigid-body physics (libGDX) alongside the existing Box2D; the WebP and Opus codecs; libarchive multi-format archive reading and the LevelDB LSM-tree key-value store; the libxml2 XML parser; and PCRE2 &mdash; whose <code>pcre2_jit_compile</code> (sljit) emits ARM64 at runtime and signals self-modified code via <code>IC IVAU</code>, directly exercising the translator&rsquo;s self-modifying-code cache-invalidation path. The machine-learning samples now run real fixed-weight inference end-to-end under translation &mdash; a TensorFlow Lite Conv2D&rarr;ReLU&rarr;Dense graph, an ONNX Runtime <code>Gemm&rarr;ReLU&rarr;Gemm</code> graph, and a PyTorch Mobile <code>Module.forward</code> &mdash; each checked <strong>bit-exact</strong> against a golden (the integer-weight design makes the float32 result identical on host and device, so a miscompile in the conv/GEMM/ReLU NEON kernels trips the check). The same golden-assertion hardening now covers the NNAPI graph-execution path, fbjni hybrid dispatch, the AAudio/Oboe/OpenSLES audio DSP path, and binder-NDK typed-parcel round-trips. The latest additions validate the newest translator work in the same abort-on-mismatch style: <code>hello-fcma</code> and <code>hello-lseatomics</code> run the ARMv8.3 complex-arithmetic (FCADD/FCMLA) and ARMv8.1 LSE atomic-RMW/CASP instructions in hot loops past the gear-up threshold so the heavy JIT tier's lowerings are golden-checked on device, and <code>hello-eglext</code> probes the <code>eglGetProcAddress</code> extension-proc contract &mdash; every advertised extension must resolve a working, guest-callable entry point, with the wrapped robust getters cross-checked bit-exact against the core GL API. Five more golden probes cover the second-gear coverage sweeps: <code>hello-fcsel</code> (conditional select in the region shapes that once miscompiled), <code>hello-fp16arith</code> (the scalar FP16 surface against hardcoded bit patterns plus a vector .8h family), <code>hello-i8mm-bf16</code> (SMMLA/UMMLA/USMMLA, BFDOT/BFMMLA and indexed FCMLA with hand-computed goldens), <code>hello-lsepair</code> (byte/halfword atomics, CASP-64 and LDXP/STXP pairs), and <code>hello-neonmisc</code> (vector FP-misc, architected estimates, saturation corners, and the full byte shift set). The two newest are password-hashing regressions: <code>hello-bcrypt</code> vendors the <em>real</em> library shipping apps link — Openwall crypt_blowfish plus the libbcrypt wrapper — and checks <code>bcrypt_hashpw</code> against 28 known-answer vectors, 7 rejected invalid settings, and a cost-12 <code>gensalt</code>/<code>hashpw</code>/<code>checkpw</code> round trip, while <code>hello-blowfish</code> implements the cipher from its specification as an independent check on the round function and key schedule. Only the first of the two reproduces the width-blind context-cache miscompile, which is the point: writing a faithful algorithm is not the same as reproducing a real compiler's output, so a translator regression sample should vendor the actual library wherever it can.</p>
+          <p>Every sample is an <strong>ARM64-only</strong> APK that runs end to end on the x86_64 emulator: ported NDK samples, third-party native libraries, whole UI engines, and one probe per ARM64 instruction extension.</p>
+          <ul class="feature-list">
+            <li><strong>Real libraries, linked the way an app links them.</strong> OpenCV, TensorFlow Lite, PyTorch, ONNX Runtime, FFmpeg, WebRTC, Qt 6, React Native, Realm, SQLCipher and dozens more &mdash; not reimplementations written to be easy to translate.</li>
+            <li><strong>A wrong answer fails, loudly.</strong> The ML, audio, crypto and binder samples check their output <em>bit-exact</em> against a hardcoded golden, so a miscompiled NEON kernel aborts instead of quietly rendering something slightly wrong.</li>
+            <li><strong>One sample per extension.</strong> NEON, FP16, BF16, dot-product, I8MM, complex arithmetic, JSCVT, PAC, BTI, the LSE and LRCPC atomics, CRC32 and the crypto instructions each get a probe that runs hot enough to reach the optimising JIT tier.</li>
+          </ul>
+          <p style="margin-top:14px">The full catalogue is grouped by subsystem <a href="#samples">further down the page</a>.</p>
         </div>
       </div>
     </div>
@@ -172,143 +178,221 @@ layout: null
         <div><span class="success">&#10003; Vulkan triangle rendered via NativeBridge translation</span></div>
       </div>
 
-      <div class="samples-grid">
-        <div class="sample-item">hello-vulkan</div>
-        <div class="sample-item">hello-gl2</div>
-        <div class="sample-item">gles3jni</div>
-        <div class="sample-item">teapots-classic</div>
-        <div class="sample-item">teapots-more</div>
-        <div class="sample-item">teapots-textured</div>
-        <div class="sample-item">native-activity</div>
-        <div class="sample-item">native-audio</div>
-        <div class="sample-item">native-codec</div>
-        <div class="sample-item">native-midi</div>
-        <div class="sample-item">hello-jni</div>
-        <div class="sample-item">hello-jniCallback</div>
-        <div class="sample-item">endless-tunnel</div>
-        <div class="sample-item">bitmap-plasma</div>
-        <div class="sample-item">camera-basic</div>
-        <div class="sample-item">camera-texture-view</div>
-        <div class="sample-item">sensor-graph</div>
-        <div class="sample-item">sanitizers</div>
-        <div class="sample-item">vectorization</div>
-        <div class="sample-item">orderfile</div>
-        <div class="sample-item">exceptions</div>
-        <div class="sample-item">unit-test</div>
-        <div class="sample-item">hello-gles1</div>
-        <div class="sample-item">hello-aaudio</div>
-        <div class="sample-item">hello-binder-ndk</div>
-        <div class="sample-item">hello-nnapi</div>
-        <div class="sample-item">hello-neon</div>
-        <div class="sample-item">hello-fp16</div>
-        <div class="sample-item">hello-bf16</div>
-        <div class="sample-item">hello-fp-vector</div>
-        <div class="sample-item">hello-complex</div>
-        <div class="sample-item">hello-dotprod</div>
-        <div class="sample-item">hello-widemul</div>
-        <div class="sample-item">hello-jscvt</div>
-        <div class="sample-item">hello-pac-ret</div>
-        <div class="sample-item">hello-lse</div>
-        <div class="sample-item">hello-lrcpc</div>
-        <div class="sample-item">hello-barriers</div>
-        <div class="sample-item">hello-sha-crypto</div>
-        <div class="sample-item">hello-ld-interleave</div>
-        <div class="sample-item">hello-libc-libm</div>
-        <div class="sample-item">hello-bti</div>
-        <div class="sample-item">hello-superpack-regress</div>
-        <div class="sample-item">hello-gles3</div>
-        <div class="sample-item">hello-msaa</div>
-        <div class="sample-item">hello-reactnative</div>
-        <div class="sample-item">hello-lynx</div>
-        <div class="sample-item">hello-mmkv</div>
-        <div class="sample-item">hello-qt</div>
-        <div class="sample-item">hello-ijkplayer</div>
-        <div class="sample-item">hello-opencv</div>
-        <div class="sample-item">hello-sqlcipher</div>
-        <div class="sample-item">hello-conscrypt</div>
-        <div class="sample-item">hello-graphics-path</div>
-        <div class="sample-item">hello-gif</div>
-        <div class="sample-item">hello-zxing</div>
-        <div class="sample-item">hello-quickjs</div>
-        <div class="sample-item">hello-sqlite-bundled</div>
-        <div class="sample-item">hello-tflite</div>
-        <div class="sample-item">hello-litert-llm</div>
-        <div class="sample-item">hello-libpag</div>
-        <div class="sample-item">hello-zstd</div>
-        <div class="sample-item">hello-libvlc</div>
-        <div class="sample-item">hello-ink</div>
-        <div class="sample-item">hello-appsearch</div>
-        <div class="sample-item">hello-libsignal</div>
-        <div class="sample-item">hello-fresco</div>
-        <div class="sample-item">hello-objectbox</div>
-        <div class="sample-item">hello-pdfium</div>
-        <div class="sample-item">hello-tracing-perfetto</div>
-        <div class="sample-item">hello-renderscript-toolkit</div>
-        <div class="sample-item">hello-pytorch</div>
-        <div class="sample-item">hello-gpuimage</div>
-        <div class="sample-item">hello-camera-core</div>
-        <div class="sample-item">hello-tesseract</div>
-        <div class="sample-item">hello-oboe</div>
-        <div class="sample-item">hello-ffmpeg-kit</div>
-        <div class="sample-item">hello-ncnn</div>
-        <div class="sample-item">hello-realm</div>
-        <div class="sample-item">hello-aes</div>
-        <div class="sample-item">hello-cronet</div>
-        <div class="sample-item">hello-webview-functor</div>
-        <div class="sample-item">hello-ldxp</div>
-        <div class="sample-item">hello-cntvct</div>
-        <div class="sample-item">hello-sigaction</div>
-        <div class="sample-item">hello-maplibre</div>
-        <div class="sample-item">hello-couchbase</div>
-        <div class="sample-item">hello-wcdb</div>
-        <div class="sample-item">hello-vosk</div>
-        <div class="sample-item">hello-onnxruntime</div>
-        <div class="sample-item">hello-mediapipe</div>
-        <div class="sample-item">hello-rive</div>
-        <div class="sample-item">hello-avif</div>
-        <div class="sample-item">hello-webrtc</div>
-        <div class="sample-item">hello-wireguard</div>
-        <div class="sample-item">hello-libtorrent4j</div>
-        <div class="sample-item">hello-duktape</div>
-        <div class="sample-item">hello-j2v8</div>
-        <div class="sample-item">hello-javet</div>
-        <div class="sample-item">hello-javacpp</div>
-        <div class="sample-item">hello-jna</div>
-        <div class="sample-item">hello-fbjni</div>
-        <div class="sample-item">hello-libsodium</div>
-        <div class="sample-item">hello-argon2</div>
-        <div class="sample-item">hello-themis</div>
-        <div class="sample-item">hello-snappy</div>
-        <div class="sample-item">hello-libyuv</div>
-        <div class="sample-item">hello-secp256k1</div>
-        <div class="sample-item">hello-openblas</div>
-        <div class="sample-item">hello-fftw</div>
-        <div class="sample-item">hello-gsl</div>
-        <div class="sample-item">hello-leptonica</div>
-        <div class="sample-item">hello-box2d</div>
-        <div class="sample-item">hello-filament</div>
-        <div class="sample-item">hello-gltfio</div>
-        <div class="sample-item">hello-filament-render</div>
-        <div class="sample-item">hello-lua</div>
-        <div class="sample-item">hello-mupdf</div>
-        <div class="sample-item">hello-sentry-ndk</div>
-        <div class="sample-item">hello-bullet</div>
-        <div class="sample-item">hello-libwebp</div>
-        <div class="sample-item">hello-libarchive</div>
-        <div class="sample-item">hello-opus</div>
-        <div class="sample-item">hello-leveldb</div>
-        <div class="sample-item">hello-pcre2</div>
-        <div class="sample-item">hello-libxml2</div>
-        <div class="sample-item">hello-fcma</div>
-        <div class="sample-item">hello-lseatomics</div>
-        <div class="sample-item">hello-eglext</div>
-        <div class="sample-item">hello-fcsel</div>
-        <div class="sample-item">hello-fp16arith</div>
-        <div class="sample-item">hello-i8mm-bf16</div>
-        <div class="sample-item">hello-lsepair</div>
-        <div class="sample-item">hello-neonmisc</div>
-        <div class="sample-item">hello-bcrypt</div>
-        <div class="sample-item">hello-blowfish</div>
+      <div class="sample-groups">
+        <div class="sample-group">
+          <h3 class="sample-group-title">Graphics &amp; GPU <span class="sample-group-count">20</span></h3>
+          <p class="sample-group-desc">Vulkan, OpenGL ES 1.x/2/3, EGL, and renderers</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-vulkan</div>
+          <div class="sample-item">hello-gl2</div>
+          <div class="sample-item">gles3jni</div>
+          <div class="sample-item">hello-gles1</div>
+          <div class="sample-item">hello-gles3</div>
+          <div class="sample-item">hello-msaa</div>
+          <div class="sample-item">hello-eglext</div>
+          <div class="sample-item">teapots-classic</div>
+          <div class="sample-item">teapots-more</div>
+          <div class="sample-item">teapots-textured</div>
+          <div class="sample-item">bitmap-plasma</div>
+          <div class="sample-item">endless-tunnel</div>
+          <div class="sample-item">hello-filament</div>
+          <div class="sample-item">hello-gltfio</div>
+          <div class="sample-item">hello-filament-render</div>
+          <div class="sample-item">hello-rive</div>
+          <div class="sample-item">hello-libpag</div>
+          <div class="sample-item">hello-graphics-path</div>
+          <div class="sample-item">hello-ink</div>
+          <div class="sample-item">hello-webview-functor</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">NDK platform surface <span class="sample-group-count">19</span></h3>
+          <p class="sample-group-desc">The Android APIs a native app actually calls</p>
+          <div class="samples-grid">
+          <div class="sample-item">native-activity</div>
+          <div class="sample-item">hello-jni</div>
+          <div class="sample-item">hello-jniCallback</div>
+          <div class="sample-item">native-midi</div>
+          <div class="sample-item">sensor-graph</div>
+          <div class="sample-item">camera-basic</div>
+          <div class="sample-item">camera-texture-view</div>
+          <div class="sample-item">hello-camera-core</div>
+          <div class="sample-item">hello-binder-ndk</div>
+          <div class="sample-item">hello-nnapi</div>
+          <div class="sample-item">hello-libc-libm</div>
+          <div class="sample-item">hello-tracing-perfetto</div>
+          <div class="sample-item">hello-sigaction</div>
+          <div class="sample-item">hello-superpack-regress</div>
+          <div class="sample-item">sanitizers</div>
+          <div class="sample-item">vectorization</div>
+          <div class="sample-item">orderfile</div>
+          <div class="sample-item">exceptions</div>
+          <div class="sample-item">unit-test</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Audio <span class="sample-group-count">4</span></h3>
+          <p class="sample-group-desc">Playback, capture, and the low-latency paths</p>
+          <div class="samples-grid">
+          <div class="sample-item">native-audio</div>
+          <div class="sample-item">hello-aaudio</div>
+          <div class="sample-item">hello-oboe</div>
+          <div class="sample-item">hello-opus</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Media &amp; codecs <span class="sample-group-count">8</span></h3>
+          <p class="sample-group-desc">Players, transcoding, and real-time streams</p>
+          <div class="samples-grid">
+          <div class="sample-item">native-codec</div>
+          <div class="sample-item">hello-ijkplayer</div>
+          <div class="sample-item">hello-libvlc</div>
+          <div class="sample-item">hello-ffmpeg-kit</div>
+          <div class="sample-item">hello-webrtc</div>
+          <div class="sample-item">hello-libwebp</div>
+          <div class="sample-item">hello-avif</div>
+          <div class="sample-item">hello-gif</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Imaging, PDF &amp; maps <span class="sample-group-count">9</span></h3>
+          <p class="sample-group-desc">Pixel pipelines and vector rendering</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-fresco</div>
+          <div class="sample-item">hello-gpuimage</div>
+          <div class="sample-item">hello-libyuv</div>
+          <div class="sample-item">hello-renderscript-toolkit</div>
+          <div class="sample-item">hello-leptonica</div>
+          <div class="sample-item">hello-pdfium</div>
+          <div class="sample-item">hello-mupdf</div>
+          <div class="sample-item">hello-maplibre</div>
+          <div class="sample-item">hello-zxing</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Vision, ML &amp; speech <span class="sample-group-count">9</span></h3>
+          <p class="sample-group-desc">Real inference, checked bit-exact against goldens</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-opencv</div>
+          <div class="sample-item">hello-tflite</div>
+          <div class="sample-item">hello-litert-llm</div>
+          <div class="sample-item">hello-pytorch</div>
+          <div class="sample-item">hello-onnxruntime</div>
+          <div class="sample-item">hello-ncnn</div>
+          <div class="sample-item">hello-mediapipe</div>
+          <div class="sample-item">hello-vosk</div>
+          <div class="sample-item">hello-tesseract</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Crypto &amp; secure storage <span class="sample-group-count">9</span></h3>
+          <p class="sample-group-desc">Libraries where a wrong bit is silent, not loud</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-sqlcipher</div>
+          <div class="sample-item">hello-conscrypt</div>
+          <div class="sample-item">hello-libsignal</div>
+          <div class="sample-item">hello-libsodium</div>
+          <div class="sample-item">hello-argon2</div>
+          <div class="sample-item">hello-themis</div>
+          <div class="sample-item">hello-secp256k1</div>
+          <div class="sample-item">hello-bcrypt</div>
+          <div class="sample-item">hello-blowfish</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Databases &amp; compression <span class="sample-group-count">11</span></h3>
+          <p class="sample-group-desc">Storage engines and the codecs around them</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-realm</div>
+          <div class="sample-item">hello-objectbox</div>
+          <div class="sample-item">hello-couchbase</div>
+          <div class="sample-item">hello-wcdb</div>
+          <div class="sample-item">hello-sqlite-bundled</div>
+          <div class="sample-item">hello-leveldb</div>
+          <div class="sample-item">hello-appsearch</div>
+          <div class="sample-item">hello-mmkv</div>
+          <div class="sample-item">hello-zstd</div>
+          <div class="sample-item">hello-snappy</div>
+          <div class="sample-item">hello-libarchive</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">UI engines <span class="sample-group-count">3</span></h3>
+          <p class="sample-group-desc">Whole frameworks, not just their leaf libraries</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-qt</div>
+          <div class="sample-item">hello-reactnative</div>
+          <div class="sample-item">hello-lynx</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">JS engines &amp; JNI bridges <span class="sample-group-count">8</span></h3>
+          <p class="sample-group-desc">Runtimes that generate or dispatch code themselves</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-quickjs</div>
+          <div class="sample-item">hello-duktape</div>
+          <div class="sample-item">hello-j2v8</div>
+          <div class="sample-item">hello-javet</div>
+          <div class="sample-item">hello-lua</div>
+          <div class="sample-item">hello-javacpp</div>
+          <div class="sample-item">hello-jna</div>
+          <div class="sample-item">hello-fbjni</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Networking <span class="sample-group-count">3</span></h3>
+          <p class="sample-group-desc">Stacks that fork, thread, and hold sockets open</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-cronet</div>
+          <div class="sample-item">hello-wireguard</div>
+          <div class="sample-item">hello-libtorrent4j</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">Numeric, physics &amp; parsing <span class="sample-group-count">8</span></h3>
+          <p class="sample-group-desc">Hot loops, and the text formats around them</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-openblas</div>
+          <div class="sample-item">hello-fftw</div>
+          <div class="sample-item">hello-gsl</div>
+          <div class="sample-item">hello-box2d</div>
+          <div class="sample-item">hello-bullet</div>
+          <div class="sample-item">hello-pcre2</div>
+          <div class="sample-item">hello-libxml2</div>
+          <div class="sample-item">hello-sentry-ndk</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">ARM64 instruction probes <span class="sample-group-count">25</span></h3>
+          <p class="sample-group-desc">One extension each, asserted against hand-computed goldens</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-neon</div>
+          <div class="sample-item">hello-neonmisc</div>
+          <div class="sample-item">hello-fp16</div>
+          <div class="sample-item">hello-fp16arith</div>
+          <div class="sample-item">hello-bf16</div>
+          <div class="sample-item">hello-fp-vector</div>
+          <div class="sample-item">hello-complex</div>
+          <div class="sample-item">hello-fcma</div>
+          <div class="sample-item">hello-fcsel</div>
+          <div class="sample-item">hello-dotprod</div>
+          <div class="sample-item">hello-i8mm-bf16</div>
+          <div class="sample-item">hello-widemul</div>
+          <div class="sample-item">hello-jscvt</div>
+          <div class="sample-item">hello-pac-ret</div>
+          <div class="sample-item">hello-bti</div>
+          <div class="sample-item">hello-lse</div>
+          <div class="sample-item">hello-lseatomics</div>
+          <div class="sample-item">hello-lsepair</div>
+          <div class="sample-item">hello-lrcpc</div>
+          <div class="sample-item">hello-ldxp</div>
+          <div class="sample-item">hello-barriers</div>
+          <div class="sample-item">hello-ld-interleave</div>
+          <div class="sample-item">hello-sha-crypto</div>
+          <div class="sample-item">hello-aes</div>
+          <div class="sample-item">hello-cntvct</div>
+          </div>
+        </div>
       </div>
 
       <p class="section-desc" style="margin-top:24px">Beyond the in-tree samples, real unmodified third-party ARM64 APKs are tracked on the <a href="apps.html">Verified Apps</a> page.</p>

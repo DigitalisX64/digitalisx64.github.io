@@ -218,6 +218,44 @@ section {
   font-size: 0.9rem;
 }
 
+.feature-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.feature-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.feature-list strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.feature-card a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.feature-card a:hover {
+  text-decoration: underline;
+}
+
 /* --- Terminal block --- */
 
 .terminal {
@@ -254,11 +292,45 @@ section {
 
 /* --- Samples grid --- */
 
+.sample-groups {
+  display: grid;
+  gap: 36px;
+  margin-top: 32px;
+}
+
+.sample-group-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sample-group-count {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 1px 9px;
+}
+
+.sample-group-desc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
 .samples-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 24px;
+}
+
+.sample-group .samples-grid {
+  margin-top: 14px;
 }
 
 .sample-item {
