@@ -13,6 +13,26 @@ Uses Jekyll when it is installed. Without it, the last build in `_site` is
 served instead — the sources cannot be served raw any more, since `index.html`
 carries front matter for its latest-post highlight.
 
+If you see `INotifyMaxWatchesExceeded`, the machine has run out of inotify
+watches; `serve.sh` detects this and watches by polling instead, so the preview
+still works. The limit is per user and shared with everything else running, so
+an editor indexing a large checkout can consume all of it:
+
+```bash
+# who is holding them, and what the ceiling is
+cat /proc/[0-9]*/fdinfo/* 2>/dev/null | grep -c '^inotify'
+cat /proc/sys/fs/inotify/max_user_watches
+
+# raise the ceiling for this boot
+sudo sysctl fs.inotify.max_user_watches=524288
+
+# ... and persistently
+echo 'fs.inotify.max_user_watches=524288' | sudo tee /etc/sysctl.d/60-inotify.conf
+```
+
+The other half of the fix is to stop watching what does not need watching — in
+VS Code, add the AOSP checkout to `files.watcherExclude`.
+
 ## Writing a Post
 
 Add one Markdown file under `_posts/`, named `YYYY-MM-DD-slug.md`:
