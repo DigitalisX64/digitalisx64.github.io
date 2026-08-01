@@ -335,6 +335,13 @@ code {
   text-decoration: underline;
 }
 
+/* A section opening directly under a sub-hero starts just below that header's
+   divider line, where the default 80px section padding reads as a gap rather
+   than as breathing room. */
+.subhero + section {
+  padding-top: 32px;
+}
+
 .subhero-title {
   font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
   font-size: 2rem;
