@@ -1,0 +1,29 @@
+title: Digitalis
+description: ARM64-to-x86_64 binary translation for Android
+url: https://digitalisx64.github.io
+
+# Posts are written as Markdown in _posts/ and rendered by _layouts/post.html.
+# A new post needs nothing but a file named _posts/YYYY-MM-DD-slug.md with a
+# `title:` in its front matter; the layout, the date and the URL follow from that.
+permalink: /posts/:title/
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - README.md
+  - LICENSE
+  - serve.sh
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle

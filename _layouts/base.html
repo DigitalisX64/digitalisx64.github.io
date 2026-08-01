@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} &mdash; Digitalis</title>
+  <meta name="description" content="{{ page.description | default: page.summary | default: site.description | strip_newlines }}">
+  <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LCH8R0W6KL');
+  </script>
+</head>
+<body>
+
+{{ content }}
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p><a href="{{ '/index.html' | relative_url }}">Home</a> &middot; <a href="{{ '/blog.html' | relative_url }}">Blog</a> &middot; Apache 2.0 License &middot; <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></p>
+      <p>Built on AOSP Berberis framework</p>
+    </div>
+  </footer>
+
+</body>
+</html>

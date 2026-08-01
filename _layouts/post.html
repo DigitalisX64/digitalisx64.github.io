@@ -1,0 +1,20 @@
+---
+layout: base
+---
+  <!-- Sub-hero -->
+  <header class="subhero">
+    <div class="container">
+      <div class="breadcrumb"><a href="{{ '/index.html' | relative_url }}">Home</a> / <a href="{{ '/blog.html' | relative_url }}">Blog</a> / {{ page.title }}</div>
+      <h1 class="subhero-title">{{ page.title }}</h1>
+      <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>{% if page.summary %} &middot; {{ page.summary }}{% endif %}</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <article class="post-body">
+{{ content }}
+      </article>
+      <p class="post-back"><a href="{{ '/blog.html' | relative_url }}">&larr; All posts</a></p>
+    </div>
+  </section>

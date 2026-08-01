@@ -1,0 +1,32 @@
+---
+layout: base
+title: Blog
+description: News and notes from the Digitalis project — ARM64-to-x86_64 binary translation for Android.
+permalink: /blog.html
+---
+  <!-- Sub-hero -->
+  <header class="subhero">
+    <div class="container">
+      <div class="breadcrumb"><a href="{{ '/index.html' | relative_url }}">Home</a> / Blog</div>
+      <h1 class="subhero-title">Blog</h1>
+      <p class="subhero-tagline">Release notes, translator post-mortems, and where Digitalis is turning up in the wild.</p>
+    </div>
+  </header>
+
+  <section style="padding-top:48px">
+    <div class="container">
+      {% if site.posts.size == 0 %}
+      <p class="section-desc">No posts yet.</p>
+      {% else %}
+      <ul class="post-list">
+        {% for post in site.posts %}
+        <li class="post-card">
+          <p class="post-card-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time></p>
+          <h2 class="post-card-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          <p class="post-card-excerpt">{{ post.summary | default: post.excerpt | strip_html | strip_newlines | truncate: 240 }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </section>
