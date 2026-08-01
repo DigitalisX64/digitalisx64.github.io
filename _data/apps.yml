@@ -137,7 +137,13 @@ verified:
       universal APK runs.
 
 partial:
-  []
+  - name: 'WhatsApp'
+    package: com.whatsapp
+    notes: >-
+      Launches, loads its native libraries cleanly, and reaches its EULA screen;
+      an intermittent in-app assertion in its own dependency-injection framework
+      ("must not be called on the main thread") fires during EULA activity
+      teardown &mdash; a pure Java crash with no translator frame in the stack
 
 blocked:
   - name: 'Hill Climb Racing 2'
@@ -157,10 +163,3 @@ blocked:
     notes: >-
       OneAuth + Google Play Services dependency (native hidden-API-exemption abort
       fixed under translation; now reaches the OneAuth/GMS gate)
-  - name: 'WhatsApp'
-    package: com.whatsapp
-    notes: >-
-      Launches, loads its native libraries cleanly, and reaches its EULA screen;
-      an intermittent in-app assertion in its own dependency-injection framework
-      ("must not be called on the main thread") fires during EULA activity
-      teardown &mdash; a pure Java crash with no translator frame in the stack
