@@ -1,0 +1,41 @@
+---
+layout: base
+title: Docs
+description: Guided tour, architecture walkthrough, benchmark results and instruction coverage for Digitalis — ARM64-to-x86_64 binary translation for Android.
+permalink: /docs.html
+---
+  <!-- Sub-hero -->
+  <header class="subhero">
+    <div class="container">
+      <div class="breadcrumb"><a href="{{ '/index.html' | relative_url }}">Home</a> / Docs</div>
+      <h1 class="subhero-title">Docs</h1>
+      <p class="subhero-tagline">The same system at three depths: a guided tour you follow start to finish, a reference walkthrough you search, and the measurements behind both.</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <ul class="post-list">
+        <li class="post-card">
+          <p class="post-card-meta">Guided tour &middot; 102 slides</p>
+          <h2 class="post-card-title"><a href="{{ '/deck/' | relative_url }}">How Digitalis Works</a></h2>
+          <p class="post-card-excerpt">Ten parts, starting from what a CPU actually does and ending at a translated Vulkan frame. Assumes no background: registers, instruction sets, condition flags, why phones are ARM and laptops are not, and the three ways to run code built for another chip. Read it in order.</p>
+        </li>
+        <li class="post-card">
+          <p class="post-card-meta">Reference &middot; 19 sections</p>
+          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/how-it-works.md" target="_blank" rel="noopener">how-it-works.md</a></h2>
+          <p class="post-card-excerpt">The complete walkthrough, written to be searched rather than read through: register mapping, the translation lifecycle, NZCV flag emulation, the syscall path, proxy-library forwarding, and the ARM64 &rarr; x86_64 instruction-mapping reference.</p>
+        </li>
+        <li class="post-card">
+          <p class="post-card-meta">Measurements</p>
+          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/benchmark-results.md" target="_blank" rel="noopener">Benchmark results</a></h2>
+          <p class="post-card-excerpt">Every workload across all three execution tiers, regenerated from a real sweep rather than written by hand. Cells that exceeded a 10% relative interquartile range are marked and must not be quoted; <a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/benchmarking.md" target="_blank" rel="noopener">benchmarking.md</a> covers the methodology and how to read a noisy row.</p>
+        </li>
+        <li class="post-card">
+          <p class="post-card-meta">Coverage</p>
+          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/unsupported-opcodes.md" target="_blank" rel="noopener">Instruction coverage</a></h2>
+          <p class="post-card-excerpt">What the translator does not implement yet, and what that costs at runtime — a missing JIT case falls back to the interpreter rather than failing, so the list is a performance map as much as a correctness one.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
