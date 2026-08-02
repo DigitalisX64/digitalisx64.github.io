@@ -118,7 +118,7 @@ layout: null
           <ul class="feature-list">
             <li><strong>First gear &mdash; the Lite Translator.</strong> A single pass over a cold region, covering ~98% of the instruction set with no optimisation. Its job is to get working native code as quickly as possible.</li>
             <li><strong>Second gear &mdash; the Heavy Optimizer.</strong> Re-compiles a region once it has proved hot, with global register allocation and loop optimisation across the whole region. Neutral-or-faster than first gear in general, up to ~2x on register-pressure-heavy loops.</li>
-            <li><strong>Checked against itself.</strong> 3,500+ host translation tests, plus differential fuzzers that run the same code through the JIT and the interpreter and compare the entire CPU state afterwards.</li>
+            <li><strong>Checked against itself.</strong> 3,600+ host translation tests, plus differential fuzzers that run the same code through the JIT and the interpreter and compare the entire CPU state afterwards.</li>
           </ul>
         </div>
         <div class="feature-card">
@@ -132,11 +132,12 @@ layout: null
             <li><strong>Graphics reach the real GPU.</strong> Vulkan goes through GFXStream's VkDecoder; OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU.</li>
             <li><strong>Awkward symbols are covered by hand.</strong> Anything the auto-generated marshallers can't handle gets a custom trampoline written in-surface, including <code>JNIEnv</code> translation and host&rarr;guest callbacks.</li>
             <li><strong>Advertised means callable.</strong> <code>eglGetProcAddress</code> wraps ~80 ANGLE/CHROMIUM extension procs guest-callable, so a browser engine that gates on the extension string gets a working entry point instead of a NULL &mdash; the fix that took the Chromium GPU process from a crash loop to stable rendering.</li>
+            <li><strong>A contract broken by one field.</strong> <code>ANativeWindow_lock</code> reports a zero stride for planar-YUV windows, so a video player addressed every row of the frame at row 0 and posted an untouched buffer &mdash; and an all-zero YUV buffer is exactly RGB(0,135,0), which is why a shipping short-video app rendered solid green over a working UI. The proxy now supplies the stride the pixel format mandates.</li>
             <li><strong>The allocator wrappers read defensively.</strong> They inspect the bytes before a pointer to recognise Qt's static non-heap object, and that read is now page-boundary guarded in both <code>free</code> and <code>realloc</code> &mdash; GWP-ASan places sampled allocations flush against a <code>PROT_NONE</code> page, which was the source of an intermittent crash misread for weeks as host exhaustion.</li>
           </ul>
         </div>
         <div class="feature-card">
-          <h3>140 Sample Apps</h3>
+          <h3>141 Sample Apps</h3>
           <p>Every sample is an <strong>ARM64-only</strong> APK that runs end to end on the x86_64 emulator: ported NDK samples, third-party native libraries, whole UI engines, and one probe per ARM64 instruction extension.</p>
           <ul class="feature-list">
             <li><strong>Real libraries, linked the way an app links them.</strong> OpenCV, TensorFlow Lite, PyTorch, ONNX Runtime, FFmpeg, WebRTC, Qt 6, React Native, Realm, SQLCipher and dozens more &mdash; not reimplementations written to be easy to translate.</li>
