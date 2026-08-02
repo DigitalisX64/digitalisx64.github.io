@@ -9,7 +9,7 @@ permalink: /docs.html
     <div class="container">
       <div class="breadcrumb"><a href="{{ '/index.html' | relative_url }}">Home</a> / Docs</div>
       <h1 class="subhero-title">Docs</h1>
-      <p class="subhero-tagline">The same system at three depths: a guided tour you follow start to finish, a reference walkthrough you search, and the measurements behind both.</p>
+      <p class="subhero-tagline">The same system at several depths: a guided tour you follow start to finish, a reference walkthrough you search, what changed in each release, and the measurements behind all of it.</p>
     </div>
   </header>
 
@@ -25,6 +25,11 @@ permalink: /docs.html
           <p class="post-card-meta">Reference &middot; 19 sections</p>
           <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/how-it-works.md" target="_blank" rel="noopener">how-it-works.md</a></h2>
           <p class="post-card-excerpt">The complete walkthrough, written to be searched rather than read through: register mapping, the translation lifecycle, NZCV flag emulation, the syscall path, proxy-library forwarding, and the ARM64 &rarr; x86_64 instruction-mapping reference.</p>
+        </li>
+        <li class="post-card">
+          <p class="post-card-meta">Changelog</p>
+          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes</a></h2>
+          <p class="post-card-excerpt">Every release in one file, newest first: what was fixed, what it broke before it was fixed, and the verification behind each entry &mdash; host tests, both translator builds, the sample suite, the prebuilt-app gate and the benchmark sweep. Written as post-mortems rather than bullet lists, so an entry usually explains the failure as well as the change.</p>
         </li>
         <li class="post-card">
           <p class="post-card-meta">Measurements</p>
