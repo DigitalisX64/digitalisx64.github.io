@@ -7,6 +7,17 @@
   <meta name="description" content="A guided tour of ARM64-to-x86_64 binary translation, in ten parts: from what a CPU does to a translated Vulkan frame.">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/favicon-180.png">
+  <script>
+    // Applies a theme pinned on any page of the site before first paint, so a
+    // reader who chose one never sees a flash of the other. Unset means the
+    // prefers-color-scheme query in theme.css decides.
+    (function () {
+      try {
+        var t = localStorage.getItem('digitalis-theme');
+        if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="stylesheet" href="/assets/theme.css">
   <link rel="stylesheet" href="/assets/deck.css">
 </head>
@@ -2217,10 +2228,14 @@ void android_main(struct android_app* app) {
     });
 
     var root = document.documentElement;
-    var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    function currentTheme() {
+      return root.getAttribute('data-theme') ||
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
     document.getElementById('theme').addEventListener('click', function () {
-      dark = !dark;
-      root.setAttribute('data-theme', dark ? 'dark' : 'light');
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('digitalis-theme', next); } catch (e) {}
     });
 
     var h = parseInt((location.hash || '').replace('#', ''), 10);
