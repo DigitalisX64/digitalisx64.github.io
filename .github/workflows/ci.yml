@@ -64,17 +64,13 @@ jobs:
           print(f'{total} apps rendered')
           PY
 
-      # The validator's CSS engine predates most of the CSS this site and the
-      # slide deck use -- it rejects inset, subgrid, scrollbar-width, text-wrap,
-      # SVG geometry properties and any variable-font weight that is not a
-      # multiple of 100, all of which are valid and shipping. Its HTML checking
-      # is still worth having (it caught a <style> element left in <body>), so
-      # keep that and drop only the CSS messages. Inline <style> blocks are
-      # checked as part of HTML validation, so --also-check-css is not what
-      # gates this -- the ignore is.
+      # HTML only. The bundled CSS checker predates inset, subgrid,
+      # scrollbar-width, text-wrap, SVG geometry properties and variable-font
+      # weights that are not multiples of 100 -- all valid, all used here -- so
+      # --also-check-css would fail on correct stylesheets. HTML validation
+      # earns its place: it is what caught a <style> element left in <body>.
       - name: Validate HTML
-        run: |
-          html5validator --root _site --ignore-re 'CSS: '
+        run: html5validator --root _site
 
       - name: Verify scripts are executable
         run: |
