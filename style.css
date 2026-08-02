@@ -1,11 +1,63 @@
+/* Design tokens, shared with the slide deck at /deck/ so the two halves of the
+   site agree. Light is the default and dark follows the OS; the theme toggle
+   pins an explicit choice via :root[data-theme], which must win over the media
+   query in both directions. The legacy aliases at the bottom keep the rules
+   below this block unchanged -- they were written against the original
+   seven-token dark-only palette. */
 :root {
-  --bg: #0d1117;
-  --bg-secondary: #161b22;
-  --text: #c9d1d9;
-  --text-secondary: #8b949e;
-  --accent: #58a6ff;
-  --green: #3fb950;
-  --border: #21262d;
+  --bg: #e7eaef; --bg2: #dfe3ea; --surface: #ffffff;
+  --ink: #191e27; --muted: #57616f; --faint: #7b8593;
+  --amber: #b3621a; --amber-soft: rgba(179, 98, 26, 0.10);
+  --steel: #2c6a97; --steel-soft: rgba(44, 106, 151, 0.10);
+  --ok: #2e7d51; --warn: #9a6b12; --warn-bright: #b3801c;
+  --on-accent: #ffffff;
+  --line: rgba(25, 30, 39, 0.14); --line-soft: rgba(25, 30, 39, 0.07);
+  --shadow: 0 1px 2px rgba(20,25,35,.06), 0 8px 30px rgba(20,25,35,.08);
+  --mono: ui-monospace, "JetBrains Mono", "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Aliases for the pre-existing rules. */
+  --bg-secondary: var(--surface);
+  --text: var(--ink);
+  --text-secondary: var(--muted);
+  --accent: var(--amber);
+  --green: var(--ok);
+  --border: var(--line);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #10141b; --bg2: #0c0f15; --surface: #191f29;
+    --ink: #e8ecf2; --muted: #9aa5b3; --faint: #6f7a89;
+    --amber: #e39a52; --amber-soft: rgba(227, 154, 82, 0.13);
+    --steel: #74b2d9; --steel-soft: rgba(116, 178, 217, 0.13);
+    --ok: #6cc08b; --warn: #d29922; --warn-bright: #f0b53d;
+    --on-accent: #10141b;
+    --line: rgba(220, 230, 245, 0.13); --line-soft: rgba(220, 230, 245, 0.06);
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #10141b; --bg2: #0c0f15; --surface: #191f29;
+  --ink: #e8ecf2; --muted: #9aa5b3; --faint: #6f7a89;
+  --amber: #e39a52; --amber-soft: rgba(227, 154, 82, 0.13);
+  --steel: #74b2d9; --steel-soft: rgba(116, 178, 217, 0.13);
+  --ok: #6cc08b; --warn: #d29922; --warn-bright: #f0b53d;
+  --on-accent: #10141b;
+  --line: rgba(220, 230, 245, 0.13); --line-soft: rgba(220, 230, 245, 0.06);
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.35);
+}
+
+:root[data-theme="light"] {
+  --bg: #e7eaef; --bg2: #dfe3ea; --surface: #ffffff;
+  --ink: #191e27; --muted: #57616f; --faint: #7b8593;
+  --amber: #b3621a; --amber-soft: rgba(179, 98, 26, 0.10);
+  --steel: #2c6a97; --steel-soft: rgba(44, 106, 151, 0.10);
+  --ok: #2e7d51; --warn: #9a6b12; --warn-bright: #b3801c;
+  --on-accent: #ffffff;
+  --line: rgba(25, 30, 39, 0.14); --line-soft: rgba(25, 30, 39, 0.07);
+  --shadow: 0 1px 2px rgba(20,25,35,.06), 0 8px 30px rgba(20,25,35,.08);
 }
 
 *, *::before, *::after {
@@ -21,7 +73,7 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-family: var(--sans);
   line-height: 1.6;
 }
 
@@ -51,7 +103,7 @@ body {
 }
 
 .hero-title {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 4rem;
   font-weight: 700;
   color: var(--accent);
@@ -62,7 +114,7 @@ body {
   color: var(--text-secondary);
   font-size: 1.25rem;
   margin-top: 16px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
 }
 
 .hero-buttons {
@@ -89,7 +141,7 @@ body {
 
 .btn-primary {
   background: var(--green);
-  color: #ffffff;
+  color: var(--on-accent);
 }
 
 .btn-secondary {
@@ -138,7 +190,7 @@ section {
   color: var(--text-secondary);
   margin-bottom: 12px;
   margin-top: 24px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
 }
 
 .pipeline {
@@ -155,7 +207,7 @@ section {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px 24px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.9rem;
   text-align: center;
   color: var(--text);
@@ -275,7 +327,7 @@ section {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 24px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
   line-height: 1.8;
   overflow-x: auto;
@@ -320,7 +372,7 @@ section {
 }
 
 .sample-group-count {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.72rem;
   color: var(--text-secondary);
   border: 1px solid var(--border);
@@ -368,7 +420,7 @@ pre {
 }
 
 code {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   color: var(--text);
 }
 
@@ -404,7 +456,7 @@ code {
 }
 
 .breadcrumb {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
   color: var(--text-secondary);
   margin-bottom: 16px;
@@ -427,7 +479,7 @@ code {
 }
 
 .subhero-title {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 2rem;
   color: var(--accent);
   margin-bottom: 12px;
@@ -483,7 +535,7 @@ code {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
 }
 
@@ -537,21 +589,21 @@ code {
 
 .diagram .node-label-top {
   fill: var(--text);
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 13px;
   text-anchor: middle;
 }
 
 .diagram .node-label-sub {
   fill: var(--text-secondary);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-family: var(--sans);
   font-size: 11px;
   text-anchor: middle;
 }
 
 .diagram .node-label-mono {
   fill: var(--green);
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 12px;
   text-anchor: middle;
 }
@@ -568,13 +620,13 @@ code {
 
 .diagram .edge-label {
   fill: var(--text-secondary);
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 11px;
 }
 
 .diagram .lane-label {
   fill: var(--text-secondary);
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 12px;
   text-anchor: middle;
   text-transform: uppercase;
@@ -599,7 +651,7 @@ code {
   color: var(--accent);
   font-size: 1rem;
   margin-bottom: 12px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
 }
 
 .reg-list {
@@ -615,7 +667,7 @@ code {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 10px 12px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
   text-align: center;
   cursor: help;
@@ -627,7 +679,7 @@ code {
 }
 
 .reg-pool { color: var(--green); }
-.reg-pool-warn { color: #d29922; border-color: rgba(210, 153, 34, 0.4); }
+.reg-pool-warn { color: var(--warn); border-color: var(--amber-soft); }
 .reg-reserved {
   color: var(--accent);
   grid-column: 1 / -1;
@@ -653,7 +705,7 @@ code {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px 24px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
   line-height: 1.8;
   overflow-x: auto;
@@ -694,7 +746,7 @@ code {
   background: var(--bg);
   color: var(--accent);
   font-weight: 600;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
 }
 
@@ -719,7 +771,7 @@ code {
 
 .badge {
   display: inline-block;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.78rem;
   font-weight: 600;
   padding: 2px 9px;
@@ -728,17 +780,17 @@ code {
   border: 1px solid transparent;
 }
 .badge-pass {
-  color: #3fb950;
+  color: var(--ok);
   background: rgba(63, 185, 80, 0.12);
   border-color: rgba(63, 185, 80, 0.35);
 }
 .badge-partial {
-  color: #d29922;
+  color: var(--warn);
   background: rgba(210, 153, 34, 0.12);
   border-color: rgba(210, 153, 34, 0.35);
 }
 .badge-blocked {
-  color: #8b949e;
+  color: var(--muted);
   background: rgba(139, 148, 158, 0.10);
   border-color: rgba(139, 148, 158, 0.30);
 }
@@ -819,7 +871,7 @@ code {
 }
 
 .section-count {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--text-secondary);
   border: 1px solid var(--border);
@@ -878,7 +930,7 @@ code {
   display: inline-flex;
   align-items: center;
   padding: 0 10px 0 16px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.7rem;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -894,7 +946,7 @@ code {
 
 .tab-buttons label {
   padding: 12px 20px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.9rem;
   color: var(--text-secondary);
   cursor: pointer;
@@ -1026,7 +1078,7 @@ code {
 }
 
 .tab-h {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   color: var(--accent);
   font-size: 1.05rem;
   margin-bottom: 20px;
@@ -1044,7 +1096,7 @@ code {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 8px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
 }
 
 .two-col .codeblock {
@@ -1087,7 +1139,7 @@ code {
   color: var(--accent);
   font-size: 0.95rem;
   margin-bottom: 8px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
 }
 
 .callout p {
@@ -1109,11 +1161,11 @@ code {
 
 .diagram .node-warn {
   fill: var(--bg-secondary);
-  stroke: #d29922;
+  stroke: var(--warn);
 }
 
 .diagram .node-group:hover .node-warn {
-  stroke: #f0b53d;
+  stroke: var(--warn-bright);
   filter: drop-shadow(0 0 4px rgba(210, 153, 34, 0.4));
 }
 
@@ -1143,7 +1195,7 @@ code {
 }
 
 .latest-post-flag {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1174,7 +1226,7 @@ code {
 .latest-post-meta {
   display: block;
   margin-top: 4px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.78rem;
   color: var(--text-secondary);
 }
@@ -1202,7 +1254,7 @@ code {
 }
 
 .post-card-meta {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--text-secondary);
 }
@@ -1231,7 +1283,7 @@ code {
 /* --- Blog: single post --- */
 
 .post-meta {
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.85rem;
   color: var(--text-secondary);
 }
@@ -1350,7 +1402,7 @@ code {
 
 .post-back {
   margin-top: 48px;
-  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: var(--mono);
   font-size: 0.9rem;
 }
 
@@ -1457,3 +1509,26 @@ code {
     font-size: 1.2rem;
   }
 }
+
+/* Light/dark toggle, injected by assets/theme.js on every page. */
+.theme-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: color .15s ease, border-color .15s ease, transform .15s ease;
+}
+.theme-toggle:hover { color: var(--amber); border-color: var(--amber); transform: translateY(-1px); }
+.theme-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+.footer-copyright { color: var(--faint); }

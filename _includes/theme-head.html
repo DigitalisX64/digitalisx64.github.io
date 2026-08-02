@@ -1,0 +1,13 @@
+{%- comment -%}
+Applies a pinned theme before first paint so a reader who chose one never sees a
+flash of the other. With nothing pinned the attribute stays unset and the
+prefers-color-scheme query in style.css decides, which is the default we want.
+{%- endcomment -%}
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('digitalis-theme');
+      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
