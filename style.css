@@ -5,7 +5,7 @@
   --bg-secondary: var(--surface);
   --text: var(--ink);
   --text-secondary: var(--muted);
-  --accent: var(--amber);
+  --accent: var(--primary);
   --green: var(--ok);
   --border: var(--line);
 }
@@ -629,7 +629,7 @@ code {
 }
 
 .reg-pool { color: var(--green); }
-.reg-pool-warn { color: var(--warn); border-color: var(--amber-soft); }
+.reg-pool-warn { color: var(--warn); border-color: var(--primary-soft); }
 .reg-reserved {
   color: var(--accent);
   grid-column: 1 / -1;
@@ -1478,7 +1478,7 @@ code {
   box-shadow: var(--shadow);
   transition: color .15s ease, border-color .15s ease, transform .15s ease;
 }
-.theme-toggle:hover { color: var(--amber); border-color: var(--amber); transform: translateY(-1px); }
-.theme-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.theme-toggle:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-1px); }
+.theme-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 .footer-copyright { color: var(--faint); }

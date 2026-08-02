@@ -2,54 +2,65 @@
    every page including the slide deck at /deck/, so the two halves of the site
    cannot drift apart.
 
+   The palette is taken from the project mark in assets/digitalis-icon.png -- a
+   foxglove, which is what digitalis is: violet blooms on a cream ground, with
+   the stem and leaves in green. The values below are sampled from that file
+   rather than approximated, so the site and the icon are literally the same
+   colours.
+
+   --primary and --secondary are named for their role, not their hue, because
+   the deck uses them semantically: primary marks the guest ARM64 side of a
+   diagram and secondary the host x86_64 side. A future palette can change the
+   colours without the names becoming untrue.
+
    Light is the default and dark follows the OS. The theme toggle pins an
    explicit choice via :root[data-theme], which must therefore win over the
    media query in both directions -- hence the two attribute blocks rather than
    one. style.css maps these onto the older names its own rules use. */
 :root {
-  --bg: #e7eaef; --bg2: #dfe3ea; --surface: #ffffff;
-  --ink: #191e27; --muted: #57616f; --faint: #7b8593;
-  --amber: #b3621a; --amber-soft: rgba(179, 98, 26, 0.10);
-  --steel: #2c6a97; --steel-soft: rgba(44, 106, 151, 0.10);
-  --ok: #2e7d51; --warn: #9a6b12; --warn-bright: #b3801c;
+  --bg: #f5f0e8; --bg2: #ece5da; --surface: #fffdf9;
+  --ink: #241f2e; --muted: #5d5670; --faint: #857e94;
+  --primary: #6d28d9; --primary-soft: rgba(124, 58, 237, 0.10);
+  --secondary: #2d6a4f; --secondary-soft: rgba(64, 145, 108, 0.12);
+  --ok: #2d6a4f; --warn: #8a5a12; --warn-bright: #a76c16;
   --on-accent: #ffffff;
-  --line: rgba(25, 30, 39, 0.14); --line-soft: rgba(25, 30, 39, 0.07);
-  --shadow: 0 1px 2px rgba(20,25,35,.06), 0 8px 30px rgba(20,25,35,.08);
+  --line: rgba(36, 31, 46, 0.14); --line-soft: rgba(36, 31, 46, 0.07);
+  --shadow: 0 1px 2px rgba(36, 31, 46, .06), 0 8px 30px rgba(36, 31, 46, .08);
   --mono: ui-monospace, "JetBrains Mono", "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
   --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #10141b; --bg2: #0c0f15; --surface: #191f29;
-    --ink: #e8ecf2; --muted: #9aa5b3; --faint: #6f7a89;
-    --amber: #e39a52; --amber-soft: rgba(227, 154, 82, 0.13);
-    --steel: #74b2d9; --steel-soft: rgba(116, 178, 217, 0.13);
-    --ok: #6cc08b; --warn: #d29922; --warn-bright: #f0b53d;
-    --on-accent: #10141b;
-    --line: rgba(220, 230, 245, 0.13); --line-soft: rgba(220, 230, 245, 0.06);
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.35);
+    --bg: #17131f; --bg2: #110e18; --surface: #211c2c;
+    --ink: #ece9f2; --muted: #a29bb3; --faint: #7a7389;
+    --primary: #a78bfa; --primary-soft: rgba(167, 139, 250, 0.14);
+    --secondary: #52b788; --secondary-soft: rgba(82, 183, 136, 0.14);
+    --ok: #52b788; --warn: #d29922; --warn-bright: #f0b53d;
+    --on-accent: #17131f;
+    --line: rgba(232, 228, 245, 0.13); --line-soft: rgba(232, 228, 245, 0.06);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 40px rgba(0, 0, 0, .38);
   }
 }
 
 :root[data-theme="dark"] {
-  --bg: #10141b; --bg2: #0c0f15; --surface: #191f29;
-  --ink: #e8ecf2; --muted: #9aa5b3; --faint: #6f7a89;
-  --amber: #e39a52; --amber-soft: rgba(227, 154, 82, 0.13);
-  --steel: #74b2d9; --steel-soft: rgba(116, 178, 217, 0.13);
-  --ok: #6cc08b; --warn: #d29922; --warn-bright: #f0b53d;
-  --on-accent: #10141b;
-  --line: rgba(220, 230, 245, 0.13); --line-soft: rgba(220, 230, 245, 0.06);
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 40px rgba(0,0,0,.35);
+  --bg: #17131f; --bg2: #110e18; --surface: #211c2c;
+  --ink: #ece9f2; --muted: #a29bb3; --faint: #7a7389;
+  --primary: #a78bfa; --primary-soft: rgba(167, 139, 250, 0.14);
+  --secondary: #52b788; --secondary-soft: rgba(82, 183, 136, 0.14);
+  --ok: #52b788; --warn: #d29922; --warn-bright: #f0b53d;
+  --on-accent: #17131f;
+  --line: rgba(232, 228, 245, 0.13); --line-soft: rgba(232, 228, 245, 0.06);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 40px rgba(0, 0, 0, .38);
 }
 
 :root[data-theme="light"] {
-  --bg: #e7eaef; --bg2: #dfe3ea; --surface: #ffffff;
-  --ink: #191e27; --muted: #57616f; --faint: #7b8593;
-  --amber: #b3621a; --amber-soft: rgba(179, 98, 26, 0.10);
-  --steel: #2c6a97; --steel-soft: rgba(44, 106, 151, 0.10);
-  --ok: #2e7d51; --warn: #9a6b12; --warn-bright: #b3801c;
+  --bg: #f5f0e8; --bg2: #ece5da; --surface: #fffdf9;
+  --ink: #241f2e; --muted: #5d5670; --faint: #857e94;
+  --primary: #6d28d9; --primary-soft: rgba(124, 58, 237, 0.10);
+  --secondary: #2d6a4f; --secondary-soft: rgba(64, 145, 108, 0.12);
+  --ok: #2d6a4f; --warn: #8a5a12; --warn-bright: #a76c16;
   --on-accent: #ffffff;
-  --line: rgba(25, 30, 39, 0.14); --line-soft: rgba(25, 30, 39, 0.07);
-  --shadow: 0 1px 2px rgba(20,25,35,.06), 0 8px 30px rgba(20,25,35,.08);
+  --line: rgba(36, 31, 46, 0.14); --line-soft: rgba(36, 31, 46, 0.07);
+  --shadow: 0 1px 2px rgba(36, 31, 46, .06), 0 8px 30px rgba(36, 31, 46, .08);
 }
