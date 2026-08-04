@@ -20,7 +20,7 @@ jobs:
           echo "All required files present"
 
       - name: Install linters
-        run: pip install yamllint pymarkdownlnt pyyaml html5validator
+        run: pip install -r requirements-dev.txt
 
       - name: Lint sources
         run: ./lint.sh

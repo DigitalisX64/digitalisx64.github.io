@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Source-level checks, the same ones CI runs. HTML and CSS are validated
-# against the built site instead, which needs Jekyll — CI does that after
-# building; locally, `jekyll build && html5validator --root _site
-# --also-check-css` is the equivalent.
+# Source-level checks, the same ones CI runs. HTML is validated against the
+# built site instead, which needs Jekyll — CI does that after building;
+# locally, `jekyll build && html5validator --root _site` is the equivalent.
 #
 #   ./lint.sh          check everything
-#   pip install yamllint pymarkdownlnt pyyaml
+#
+# The tools live in the virtualenv ./setup-venv.sh creates; activate it first
+# with `source .venv/bin/activate`. Each check below skips itself when its tool
+# is not on PATH.
 set -uo pipefail
 cd "$(dirname "$0")"
 

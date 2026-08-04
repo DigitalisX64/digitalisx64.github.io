@@ -1,0 +1,11 @@
+# Python tooling for checking the site. Used by setup-venv.sh locally and by
+# the Verify Site workflow, so the two cannot drift apart.
+#
+#   yamllint         _config.yml, _data/, .github/workflows/  (lint.sh)
+#   pymarkdownlnt    README.md and _posts/                    (lint.sh)
+#   pyyaml           scripts/check-apps-data.py               (lint.sh)
+#   html5validator   the built site in _site/ — needs a JRE on PATH
+yamllint
+pymarkdownlnt
+pyyaml
+html5validator

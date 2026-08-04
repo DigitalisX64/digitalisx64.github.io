@@ -54,14 +54,28 @@ status whose list is empty disappears from the page.
 ## Linting
 
 ```bash
-pip install yamllint pymarkdownlnt pyyaml
+./setup-venv.sh                 # once: creates .venv from requirements-dev.txt
+source .venv/bin/activate
 ./lint.sh
 ```
 
-Checks YAML syntax, Markdown, and the app data against its schema — required
-fields, a well-formed package id, no duplicate packages, `reason` only on
-blocked apps, and no stray HTML tags in prose. CI runs the same script, then
-builds the site and validates the generated HTML and CSS with `html5validator`.
+The virtualenv is git-ignored, and `requirements-dev.txt` is the same list the
+Verify Site workflow installs. Re-running `setup-venv.sh` is safe; it reuses an
+existing `.venv` and updates the packages in it.
+
+`lint.sh` checks YAML syntax, Markdown, and the app data against its schema —
+required fields, a well-formed package id, no duplicate packages, `reason` only
+on blocked apps, and no stray HTML tags in prose. Each check skips itself when
+its tool is missing, so the script is still useful without the virtualenv.
+
+The generated HTML is validated separately, since it needs a build (and a JRE,
+which `html5validator` drives the Nu validator through):
+
+```bash
+jekyll build && html5validator --root _site
+```
+
+CI runs both.
 
 ## Writing a Post
 
