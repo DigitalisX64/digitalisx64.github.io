@@ -1,0 +1,12 @@
+<!-- The site-wide footer. Included by index.html, apps.html and the base
+     layout that docs, blog and every post inherit, so the nav links and the
+     copyright line are edited in exactly one place. Links go through
+     relative_url rather than bare filenames because posts render one
+     directory deep, at /posts/<slug>/. -->
+<footer class="footer">
+  <div class="container">
+    <p><a href="{{ '/index.html' | relative_url }}">Home</a> &middot; <a href="{{ '/apps.html' | relative_url }}">Verified Apps</a> &middot; <a href="{{ '/docs.html' | relative_url }}">Docs</a> &middot; <a href="{{ '/blog.html' | relative_url }}">Blog</a> &middot; <a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></p>
+    <p>Built on AOSP Berberis framework</p>
+    <p class="footer-copyright">&copy; 2026 DigitalisX64 and <a href="https://github.com/utzcoz" target="_blank" rel="noopener">utzcoz</a> &middot; <a href="https://github.com/DigitalisX64/digitalisx64.github.io/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0 License</a></p>
+  </div>
+</footer>
