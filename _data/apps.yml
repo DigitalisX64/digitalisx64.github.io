@@ -73,7 +73,12 @@ verified:
       GPU-channel timeout &mdash; fixed by the translator's
       <code>eglGetProcAddress</code> override, which wraps the ~80 ANGLE/CHROMIUM
       extension procs the generated marshallers couldn't so the
-      <em>advertised-implies-non-NULL</em> contract holds
+      <em>advertised-implies-non-NULL</em> contract holds. Needs an emulator
+      carrying the gfxstream <code>VK_EXT_memory_budget</code> fix: without it the
+      emulator process itself aborts when the GPU process queries the memory
+      budget, which is a host-decoder limitation rather than a translation one
+      &mdash; the same page runs and renders under
+      <code>-gpu swiftshader_indirect</code> on an unfixed binary
   - name: 'Amap'
     package: com.autonavi.minimap
     stack: 'Native map engine + GL'
