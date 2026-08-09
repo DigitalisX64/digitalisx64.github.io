@@ -1482,3 +1482,16 @@ code {
 .theme-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 .footer-copyright { color: var(--faint); }
+
+/* Third-party attribution. Fine print: readable if sought out, never competing
+   with the nav above it. max-width keeps the line length sane on wide screens. */
+.footer-attrib {
+  max-width: 70ch;
+  margin: 18px auto 0;
+  color: var(--faint);
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: left;
+}
+.footer-attrib a { color: inherit; text-decoration: underline; }
+.footer-attrib a:hover { color: var(--primary); }
