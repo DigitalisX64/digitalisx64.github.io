@@ -85,6 +85,20 @@ verified:
   - name: 'Facebook'
     package: com.facebook.katana
     stack: 'Native (Litho/Yoga, SoLoader)'
+  - name: 'WhatsApp'
+    package: com.whatsapp
+    stack: 'Native (SoLoader, Voltron/Waffle)'
+    notes: >-
+      launches, loads its native libraries cleanly and runs through onboarding
+      past the EULA. An earlier build (2.26.19.4) reliably died during EULA
+      teardown whenever <em>another Meta app was installed alongside it</em>:
+      WhatsApp routed the EULA into its cross-app account-linking flow, and its
+      own dependency-injection graph then built a Play-Store-delivered component
+      on the main thread, tripping its own "must not be called on the main
+      thread" guard. That was an app-side fault &mdash; a pure Java stack with no
+      translator frame, and uninstalling the other Meta app made it go away with
+      an unchanged translator. 2.26.32.2 no longer hits it: the same cross-app
+      flow still runs, with Facebook installed, and the app proceeds normally
   - name: 'CoolApk'
     package: com.coolapk.market
     stack: 'Native'
@@ -145,19 +159,9 @@ verified:
       incorrectly merged APK rather than a translation fault; the publisher-signed
       universal APK runs.
 
-partial:
-  - name: 'WhatsApp'
-    package: com.whatsapp
-    notes: >-
-      Launches, loads its native libraries cleanly, and reaches a fully usable
-      EULA screen. It only crashes when <em>another Meta app is installed
-      alongside it</em>: with Facebook present, WhatsApp routes from the EULA
-      into Meta's cross-app account-linking flow, which tears the EULA activity
-      down, and during that teardown its own dependency-injection graph builds
-      the Voltron download manager on the main thread and trips its own
-      "must not be called on the main thread" guard. Uninstalling the other Meta
-      app makes the EULA reachable and stable again with an unchanged translator
-      &mdash; a pure Java crash with no translator frame in the stack
+# No apps are currently in this state; the section drops out of the page while
+# this list is empty.
+partial: []
 
 blocked:
   - name: 'Hill Climb Racing 2'

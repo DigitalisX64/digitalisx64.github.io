@@ -44,7 +44,7 @@ permalink: /apps.html
     <div class="container">
       <div class="status-legend">
         <span><span class="badge badge-pass">Verified</span> launches and runs with no crash</span>
-        <span><span class="badge badge-partial">Partial</span> passes the launch gate with an intermittent residual crash</span>
+        {% if site.data.apps.partial and site.data.apps.partial.size > 0 %}<span><span class="badge badge-partial">Partial</span> passes the launch gate but is not yet verified deep in-app</span>{% endif %}
         <span><span class="badge badge-blocked">Blocked</span> not translator-fixable (anti-emulator / GMS)</span>
       </div>
 
@@ -57,7 +57,7 @@ permalink: /apps.html
         </label>
         <div class="app-chips" role="group" aria-label="Filter by status">
           <button type="button" class="app-chip is-on" data-status="verified">Verified</button>
-          <button type="button" class="app-chip is-on" data-status="partial">Partial</button>
+          {% if site.data.apps.partial and site.data.apps.partial.size > 0 %}<button type="button" class="app-chip is-on" data-status="partial">Partial</button>{% endif %}
           <button type="button" class="app-chip is-on" data-status="blocked">Blocked</button>
         </div>
         <p class="app-count" id="app-count" aria-live="polite"></p>
