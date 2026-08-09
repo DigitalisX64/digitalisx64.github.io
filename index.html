@@ -9,7 +9,7 @@ layout: null
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digitalis — ARM64-to-x86_64 Binary Translation</title>
-  <meta name="description" content="Run ARM64 Android apps on x86_64 emulators. Digitalis translates ARM64 instructions to native x86_64 machine code at runtime using JIT compilation.">
+  <meta name="description" content="Run ARM64 Android apps on x86_64 emulators. Digitalis translates ARM64 instructions to native x86_64 machine code at runtime using JIT compilation, built on AOSP 16.">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="apple-touch-icon" href="assets/favicon-180.png">
   <link rel="stylesheet" href="/assets/theme.css">
@@ -31,7 +31,7 @@ layout: null
     <div class="container">
       <img class="hero-logo" src="assets/digitalis-icon.png" alt="" width="88" height="88">
       <h1 class="hero-title">DIGITALIS</h1>
-      <p class="hero-tagline">ARM64-to-x86_64 binary translation for Android</p>
+      <p class="hero-tagline">ARM64-to-x86_64 binary translation for Android &middot; built on AOSP 16</p>
       <div class="hero-buttons">
         <a href="#getting-started" class="btn btn-primary">Get Started</a>
         <a href="apps.html" class="btn btn-secondary">Verified Apps</a>
@@ -75,7 +75,7 @@ layout: null
         <div class="pipeline-step">x86_64 Host</div>
       </div>
 
-      <p class="section-desc">Digitalis extends Berberis with an ARM64 backend, enabling ARM64-only Android apps to run on x86_64 emulators. It reuses Berberis's translation infrastructure while adding ARM64 instruction decoding, JIT code generation, and interpreter support. Guest code runs through three tiers: an interpreter, a single-pass lite translator (first gear) for cold regions, and an optimizing heavy translator (second gear) that engages on hot regions.</p>
+      <p class="section-desc">Digitalis extends Berberis with an ARM64 backend, enabling ARM64-only Android apps to run on x86_64 emulators. It reuses Berberis's translation infrastructure while adding ARM64 instruction decoding, JIT code generation, and interpreter support. Guest code runs through three tiers: an interpreter, a single-pass lite translator (first gear) for cold regions, and an optimizing heavy translator (second gear) that engages on hot regions. The tree is an <strong>AOSP 16</strong> (API 36) checkout, and the emulator image everything here is measured on is built from it.</p>
 
       <div class="pipeline-label">Digitalis (this project)</div>
       <div class="pipeline">
