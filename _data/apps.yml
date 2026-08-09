@@ -149,10 +149,15 @@ partial:
   - name: 'WhatsApp'
     package: com.whatsapp
     notes: >-
-      Launches, loads its native libraries cleanly, and reaches its EULA screen;
-      an intermittent in-app assertion in its own dependency-injection framework
-      ("must not be called on the main thread") fires during EULA activity
-      teardown &mdash; a pure Java crash with no translator frame in the stack
+      Launches, loads its native libraries cleanly, and reaches a fully usable
+      EULA screen. It only crashes when <em>another Meta app is installed
+      alongside it</em>: with Facebook present, WhatsApp routes from the EULA
+      into Meta's cross-app account-linking flow, which tears the EULA activity
+      down, and during that teardown its own dependency-injection graph builds
+      the Voltron download manager on the main thread and trips its own
+      "must not be called on the main thread" guard. Uninstalling the other Meta
+      app makes the EULA reachable and stable again with an unchanged translator
+      &mdash; a pure Java crash with no translator frame in the stack
 
 blocked:
   - name: 'Hill Climb Racing 2'
