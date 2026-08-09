@@ -26,6 +26,8 @@ layout: null
 </head>
 <body>
 
+  {% include nav.html %}
+
   <!-- Hero -->
   <header class="hero">
     <div class="container">
@@ -63,6 +65,8 @@ layout: null
     <div class="container">
       <h2 class="section-title">Architecture</h2>
       <p class="section-desc"><a href="https://cs.android.com/android/platform/superproject/main/+/main:frameworks/libs/binary_translation/" target="_blank" rel="noopener">Berberis</a> is AOSP's binary translation framework, part of Android's NativeBridge system. It provides the core infrastructure for translating guest architecture instructions to host machine code at runtime — including a JIT compiler, an interpreter, an instruction decoder, syscall emulation, and proxy libraries. Berberis currently supports RISC-V-to-x86_64 translation in upstream AOSP.</p>
+
+      <p class="section-desc">Google's own emulator images go further than the published source. The <strong>Google APIs</strong> x86_64 system images register <code>ro.dalvik.vm.native.bridge=libndk_translation.so</code> &mdash; from Android 14 through <strong>Android 17</strong> (API 37) in the images we checked &mdash; and that binary is Berberis with an <strong>ARM64</strong> backend: its symbol table carries <code>berberis::intrinsics::Arm64ReadFpcr</code> and <code>Arm64ReadFpsr</code>, and the images ship <code>/system/etc/berberis/cpuinfo.arm64.txt</code>, <code>/system/etc/init/berberis_arm_or_arm64.rc</code> and <code>arm64_dyn</code>/<code>arm64_exe</code> binfmt_misc handlers. That ARM64 implementation is <strong>not published</strong> &mdash; upstream AOSP Berberis carries only the RISC-V backend, and the plain AOSP images ship no native bridge at all. Digitalis is an open ARM64 backend built on the public framework.</p>
 
       <div class="pipeline-label">Berberis (upstream AOSP)</div>
       <div class="pipeline">
@@ -412,6 +416,32 @@ layout: null
       </div>
 
       <p class="section-desc" style="margin-top:24px">Beyond the in-tree samples, real unmodified third-party ARM64 APKs are tracked on the <a href="apps.html">Verified Apps</a> page.</p>
+    </div>
+  </section>
+
+  <!-- Attribution. Last section of the page rather than the shared footer, so it
+       sits where a reader ends up after the content instead of on every page. -->
+  <section id="attribution">
+    <div class="container">
+      <h2 class="section-title">Attribution</h2>
+      <p class="attribution-text">
+        Digitalis is a modification of the <a href="https://source.android.com/" target="_blank" rel="noopener">Android Open Source Project</a>
+        and its <a href="https://cs.android.com/android/platform/superproject/main/+/main:frameworks/libs/binary_translation/" target="_blank" rel="noopener">Berberis</a>
+        binary-translation framework, &copy; Google LLC, used under the Apache License 2.0. Android, Berberis,
+        ANGLE and GFXStream are projects and/or trademarks of Google LLC. Digitalis is an independent project,
+        not affiliated with, endorsed by, or sponsored by Google.
+      </p>
+      <p class="attribution-text">
+        Arm, AArch64 and NEON are trademarks of Arm Limited. Vulkan and OpenGL ES are trademarks of the Khronos Group.
+        The sample apps link third-party libraries &mdash; among them Qt, React Native, Lynx, OpenCV, TensorFlow Lite,
+        PyTorch, ONNX Runtime, FFmpeg, WebRTC, Realm and SQLCipher &mdash; each the property of its respective owners
+        and used under its own license.
+      </p>
+      <p class="attribution-text">
+        Third-party application and product names, logos and packages named on this site are trademarks of their
+        respective owners and appear solely to report interoperability-testing results; no affiliation or endorsement
+        is implied, and no third-party application is redistributed here.
+      </p>
     </div>
   </section>
 

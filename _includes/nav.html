@@ -1,0 +1,29 @@
+<!-- Site-wide top navigation. Included immediately after <body> by index.html,
+     apps.html and the base layout (which docs, blog and every post inherit), so
+     every page carries the same bar. Links go through relative_url because posts
+     render one directory deep, at /posts/<slug>/.
+
+     The active item is derived from page.url rather than passed in by each page,
+     so a new page picks up the right highlight without touching this file; posts
+     live under /posts/ and count as Blog. -->
+{%- assign nav_url = page.url | default: '' -%}
+{%- if nav_url contains 'apps' -%}{%- assign nav_active = 'apps' -%}
+{%- elsif nav_url contains 'docs' -%}{%- assign nav_active = 'docs' -%}
+{%- elsif nav_url contains 'blog' or nav_url contains '/posts/' -%}{%- assign nav_active = 'blog' -%}
+{%- else -%}{%- assign nav_active = 'home' -%}
+{%- endif -%}
+<nav class="site-nav" aria-label="Main">
+  <div class="container site-nav-inner">
+    <a class="site-nav-brand" href="{{ '/index.html' | relative_url }}">
+      <img src="{{ '/assets/digitalis-icon.png' | relative_url }}" alt="" width="26" height="26">
+      <span>Digitalis</span>
+    </a>
+    <ul class="site-nav-links">
+      <li><a href="{{ '/index.html' | relative_url }}"{% if nav_active == 'home' %} class="is-active" aria-current="page"{% endif %}>Home</a></li>
+      <li><a href="{{ '/apps.html' | relative_url }}"{% if nav_active == 'apps' %} class="is-active" aria-current="page"{% endif %}>Verified Apps</a></li>
+      <li><a href="{{ '/docs.html' | relative_url }}"{% if nav_active == 'docs' %} class="is-active" aria-current="page"{% endif %}>Docs</a></li>
+      <li><a href="{{ '/blog.html' | relative_url }}"{% if nav_active == 'blog' %} class="is-active" aria-current="page"{% endif %}>Blog</a></li>
+      <li><a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </div>
+</nav>

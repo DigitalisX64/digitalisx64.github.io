@@ -33,11 +33,96 @@ body {
   padding: 0 24px;
 }
 
+/* --- Site navigation ---
+
+   Sticky top bar on every page, included right after <body>. Kept visually light
+   so it frames the hero rather than competing with it; the current page is
+   marked with .is-active from page.url in _includes/nav.html. */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 54px;
+}
+
+.site-nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.95rem;
+}
+
+.site-nav-brand img {
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.site-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.site-nav-links a {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color .15s ease, background-color .15s ease;
+}
+
+.site-nav-links a:hover {
+  color: var(--text);
+  background: var(--bg-secondary);
+}
+
+.site-nav-links a.is-active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Anchor targets must clear the sticky bar, or #getting-started lands under it. */
+:target { scroll-margin-top: 70px; }
+
+@media (max-width: 640px) {
+  .site-nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .site-nav-links { gap: 2px; }
+  .site-nav-links a { padding: 5px 8px; font-size: 0.85rem; }
+  /* Too tall to stay pinned on a phone once it wraps to two rows. */
+  .site-nav { position: static; }
+}
+
 /* --- Hero --- */
 
 .hero {
   text-align: center;
-  padding: 120px 0 80px;
+  padding: 72px 0 56px;
 }
 
 /* The project mark: a foxglove — digitalis purpurea — with a translation arrow
@@ -102,7 +187,7 @@ body {
 /* --- Sections --- */
 
 section {
-  padding: 80px 0;
+  padding: 56px 0;
   border-top: 1px solid var(--border);
 }
 
@@ -401,7 +486,7 @@ code {
 
 .subhero {
   text-align: left;
-  padding: 80px 0 40px;
+  padding: 44px 0 32px;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1388,7 +1473,7 @@ code {
   }
 
   section {
-    padding: 60px 0;
+    padding: 40px 0;
   }
 
   .features-grid,
@@ -1483,15 +1568,26 @@ code {
 
 .footer-copyright { color: var(--faint); }
 
-/* Third-party attribution. Fine print: readable if sought out, never competing
-   with the nav above it. max-width keeps the line length sane on wide screens. */
-.footer-attrib {
-  max-width: 70ch;
-  margin: 18px auto 0;
-  color: var(--faint);
-  font-size: 12px;
-  line-height: 1.7;
-  text-align: left;
+/* Third-party attribution, the closing section of the home page. Smaller and
+   quieter than body copy — findable when sought out, not competing with the
+   content above it. The default 80px section padding is far too airy here: it
+   is fine print, and the footer below contributes its own 40px, so the gap
+   would read as a gap rather than as separation. */
+#attribution {
+  padding: 40px 0 28px;
 }
-.footer-attrib a { color: inherit; text-decoration: underline; }
-.footer-attrib a:hover { color: var(--primary); }
+#attribution .section-title {
+  font-size: 1.15rem;
+  margin-bottom: 14px;
+}
+
+.attribution-text {
+  max-width: 78ch;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.attribution-text:last-child { margin-bottom: 0; }
+.attribution-text a { color: inherit; text-decoration: underline; }
+.attribution-text a:hover { color: var(--primary); }
