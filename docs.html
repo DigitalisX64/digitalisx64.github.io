@@ -27,6 +27,11 @@ permalink: /docs.html
           <p class="post-card-excerpt">The complete walkthrough, written to be searched rather than read through: register mapping, the translation lifecycle, NZCV flag emulation, the syscall path, proxy-library forwarding, and the ARM64 &rarr; x86_64 instruction-mapping reference.</p>
         </li>
         <li class="post-card">
+          <p class="post-card-meta">Integration</p>
+          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/integrating-digitalis.md" target="_blank" rel="noopener">Integrating Digitalis into an AOSP&nbsp;16 product</a></h2>
+          <p class="post-card-excerpt">Adding ARM64 translation to your own x86_64 image &mdash; emulator or real device &mdash; through the stock NativeBridge seams: a manifest overlay, four board-config lines, and one product inherit, or a prebuilt binary bundle when you cannot add source projects. Ends with a verification checklist down to the <code>memfd:exec</code> oracle that proves translation is actually executing.</p>
+        </li>
+        <li class="post-card">
           <p class="post-card-meta">Changelog</p>
           <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes</a></h2>
           <p class="post-card-excerpt">Every release in one file, newest first: what was fixed, what it broke before it was fixed, and the verification behind each entry &mdash; host tests, both translator builds, the sample suite, the prebuilt-app gate and the benchmark sweep. Written as post-mortems rather than bullet lists, so an entry usually explains the failure as well as the change.</p>
