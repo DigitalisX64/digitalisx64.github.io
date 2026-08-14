@@ -158,6 +158,28 @@ verified:
       apparent residual crash after that fix turned out to be a re-signed,
       incorrectly merged APK rather than a translation fault; the publisher-signed
       universal APK runs.
+  - name: '3DMark'
+    package: com.futuremark.dmandroid.application
+    stack: 'In-house Vulkan engine'
+    notes: >-
+      runs the Wild Life workloads to their scorecard. Wild Life maxes out its
+      frame cap; <strong>Wild Life Extreme scores 4,801 (28.75 FPS) &mdash; 88%
+      of the 5,458 the same emulator posts running the app&rsquo;s own native
+      x86_64 build</strong>, so most of the remaining gap is the GPU stack, not
+      translation. Its earlier &quot;out of memory&quot; crash was the released
+      emulator&rsquo;s gfxstream clamping every guest Vulkan heap to 2&nbsp;GB
+      (reproduced identically with no translation in the path); an emulator built
+      from current gfxstream sources removes the clamp
+  - name: 'Geekbench 6'
+    package: com.primatelabs.geekbench6
+    stack: 'Native (portable C++ workloads)'
+    notes: >-
+      completes full single- and multi-core CPU runs under translation:
+      <strong>456 single / 1,372 multi</strong> against 2,511&nbsp;/&nbsp;7,136
+      for its native x86_64 build on the same emulator. Also the yardstick that
+      caught two first-gear gaps: lowering the FP32 across-lanes reductions in
+      the lite tier moved single-core +23%, and its callee-save-heavy code shaped
+      the register-pressure spill fix
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.

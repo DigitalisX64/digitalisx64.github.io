@@ -122,7 +122,7 @@ layout: null
           <h3>Two-Gear JIT Compiler</h3>
           <p>Translation happens in two gears. Both emit native x86_64 machine code, and both cache what they produce, so a region is translated once and then simply run.</p>
           <ul class="feature-list">
-            <li><strong>First gear &mdash; the Lite Translator.</strong> A single pass over a cold region, covering ~98% of the instruction set with no optimisation. Its job is to get working native code as quickly as possible.</li>
+            <li><strong>First gear &mdash; the Lite Translator.</strong> A single pass over a cold region, covering ~98% of the instruction set with no optimisation. Its job is to get working native code as quickly as possible &mdash; and to keep regions whole: the register allocator holds a fixed six-register scratch reserve so that running out of registers spills through memory instead of splitting the region, an invariant that eliminated 70,000+ measured region splits at function prologues across a 14-app sweep.</li>
             <li><strong>Second gear &mdash; the Heavy Optimizer.</strong> Re-compiles a region once it has proved hot, with global register allocation and loop optimisation across the whole region. Neutral-or-faster than first gear in general, up to ~2x on register-pressure-heavy loops.</li>
             <li><strong>Checked against itself.</strong> 3,600+ host translation tests, plus differential fuzzers that run the same code through the JIT and the interpreter and compare the entire CPU state afterwards.</li>
           </ul>
@@ -138,15 +138,17 @@ layout: null
             <li><strong>Graphics reach the real GPU.</strong> Vulkan goes through GFXStream's VkDecoder; OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU.</li>
             <li><strong>Awkward symbols are covered by hand.</strong> Anything the auto-generated marshallers can't handle gets a custom trampoline written in-surface &mdash; <code>JNIEnv</code> translation, host&rarr;guest callbacks, and the ~80 ANGLE extension procs a browser engine gates on but <code>eglGetProcAddress</code> would otherwise return NULL for.</li>
             <li><strong>The boundary is where the subtle bugs live.</strong> A zero stride from <code>ANativeWindow_lock</code> made a video app render solid green; a guard-page read inside the allocator wrappers looked for weeks like host memory exhaustion. Both fixed here &mdash; and the stride now comes from <em>asking the host allocator</em> rather than assuming the format's rule, because row padding is gralloc's choice, not the pixel format's.</li>
+            <li><strong>Probed systematically, not just when apps break.</strong> Seven dedicated samples now stress the riskiest marshalling paths &mdash; host-invoked guest callbacks, buffer handles crossing unix sockets, fd passing, <code>JNIEnv</code> round-trips &mdash; and all of them pass; the only two failures they ever found reproduced identically on native x86_64 builds, i.e. they were Android platform behaviour, not translation.</li>
           </ul>
         </div>
         <div class="feature-card">
-          <h3>141 Sample Apps</h3>
+          <h3>148 Sample Apps</h3>
           <p>Every sample is an <strong>ARM64-only</strong> APK that runs end to end on the x86_64 emulator: ported NDK samples, third-party native libraries, whole UI engines, and one probe per ARM64 instruction extension.</p>
           <ul class="feature-list">
             <li><strong>Real libraries, linked the way an app links them.</strong> OpenCV, TensorFlow Lite, PyTorch, ONNX Runtime, FFmpeg, WebRTC, Qt 6, React Native, Realm, SQLCipher and dozens more &mdash; not reimplementations written to be easy to translate.</li>
             <li><strong>A wrong answer fails, loudly.</strong> The ML, audio, crypto and binder samples check their output <em>bit-exact</em> against a hardcoded golden, so a miscompiled NEON kernel aborts instead of quietly rendering something slightly wrong.</li>
             <li><strong>One sample per extension.</strong> NEON, FP16, BF16, dot-product, I8MM, complex arithmetic, JSCVT, PAC, BTI, the LSE and LRCPC atomics, CRC32 and the crypto instructions each get a probe that runs hot enough to reach the optimising JIT tier.</li>
+            <li><strong>One probe per proxied NDK surface.</strong> Seven samples exercise the full public API of a proxy library each &mdash; AHardwareBuffer, AImageDecoder, the media data-source/muxer pair, the ADPF hint/thermal/choreographer trio, ASharedMemory, system fonts, OpenMAX AL &mdash; with golden self-checks on every call, so a marshalling bug fails a specific assertion instead of corrupting an app somewhere downstream.</li>
           </ul>
           <p style="margin-top:14px">The full catalogue is grouped by subsystem <a href="#samples">further down the page</a>.</p>
         </div>
@@ -225,10 +227,15 @@ layout: null
           </div>
         </div>
         <div class="sample-group">
-          <h3 class="sample-group-title">NDK platform surface <span class="sample-group-count">19</span></h3>
+          <h3 class="sample-group-title">NDK platform surface <span class="sample-group-count">24</span></h3>
           <p class="sample-group-desc">The Android APIs a native app actually calls</p>
           <div class="samples-grid">
           <div class="sample-item">native-activity</div>
+          <div class="sample-item">hello-hardwarebuffer</div>
+          <div class="sample-item">hello-imagedecoder</div>
+          <div class="sample-item">hello-adpf</div>
+          <div class="sample-item">hello-sharedmem</div>
+          <div class="sample-item">hello-fonts</div>
           <div class="sample-item">hello-jni</div>
           <div class="sample-item">hello-jniCallback</div>
           <div class="sample-item">native-midi</div>
@@ -250,20 +257,22 @@ layout: null
           </div>
         </div>
         <div class="sample-group">
-          <h3 class="sample-group-title">Audio <span class="sample-group-count">4</span></h3>
+          <h3 class="sample-group-title">Audio <span class="sample-group-count">5</span></h3>
           <p class="sample-group-desc">Playback, capture, and the low-latency paths</p>
           <div class="samples-grid">
           <div class="sample-item">native-audio</div>
           <div class="sample-item">hello-aaudio</div>
           <div class="sample-item">hello-oboe</div>
           <div class="sample-item">hello-opus</div>
+          <div class="sample-item">hello-openmaxal</div>
           </div>
         </div>
         <div class="sample-group">
-          <h3 class="sample-group-title">Media &amp; codecs <span class="sample-group-count">8</span></h3>
+          <h3 class="sample-group-title">Media &amp; codecs <span class="sample-group-count">9</span></h3>
           <p class="sample-group-desc">Players, transcoding, and real-time streams</p>
           <div class="samples-grid">
           <div class="sample-item">native-codec</div>
+          <div class="sample-item">hello-mediandk-source</div>
           <div class="sample-item">hello-ijkplayer</div>
           <div class="sample-item">hello-libvlc</div>
           <div class="sample-item">hello-ffmpeg-kit</div>
