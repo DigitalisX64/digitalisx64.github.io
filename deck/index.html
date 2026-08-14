@@ -1976,7 +1976,7 @@ void android_main(struct android_app* app) {
       <p class="eyebrow"><span class="num">VIII</span> <span class="bar"></span> How we know it works</p>
       <h2>The proof is the test suite</h2>
       <div class="stats">
-        <div class="stat"><div class="n">140</div><div class="l">ARM64-only sample apps as the integration suite</div></div>
+        <div class="stat"><div class="n">149</div><div class="l">ARM64-only sample apps as the integration suite</div></div>
         <div class="stat s"><div class="n">~98%</div><div class="l">of executed instructions take the fast JIT path</div></div>
         <div class="stat"><div class="n">3</div><div class="l">execution tiers, each independently unit-tested</div></div>
       </div>
@@ -2091,7 +2091,7 @@ void android_main(struct android_app* app) {
         <li><span class="k">how</span><div><b>Translate the app's machine code at runtime.</b> <span class="sub">JIT-compile regions on first sight, cache them forever, gear up the hot ones, interpret the rare tail.</span></div></li>
         <li><span class="k">where</span><div><b>Through Android's NativeBridge socket.</b> <span class="sub">The standard seam Houdini once filled — now filled openly, by Berberis.</span></div></li>
         <li><span class="k">what</span><div><b>Digitalis = the complete ARM64 backend for Berberis.</b> <span class="sub">Decoder, two-gear JIT, interpreter, syscall layer, and 21 proxy libraries over a shared open-source engine.</span></div></li>
-        <li><span class="k">proof</span><div><b>140 sample apps, three tested tiers, real commercial apps.</b> <span class="sub">And a triangle, drawn at 60fps by a CPU that never saw the code it was given.</span></div></li>
+        <li><span class="k">proof</span><div><b>149 sample apps, three tested tiers, real commercial apps.</b> <span class="sub">And a triangle, drawn at 60fps by a CPU that never saw the code it was given.</span></div></li>
       </ul>
       <div class="title-meta" style="margin-top:26px">
         <span class="pill"><span class="dot a"></span> Guest ARM64</span>
