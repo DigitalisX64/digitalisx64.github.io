@@ -225,9 +225,9 @@ ul.clean li .sub { color: var(--muted); }
    on wide screens, one on narrow. */
 .books { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px 34px; margin-top: 18px; }
 @media (max-width: 900px) { .books { grid-template-columns: 1fr; } }
-.book { display: grid; grid-template-columns: 52px minmax(0, 5fr) minmax(0, 7fr); gap: 13px; align-items: center; }
+.book { display: grid; grid-template-columns: 72px minmax(0, 5fr) minmax(0, 7fr); gap: 14px; align-items: center; }
 .book a { color: inherit; text-decoration: none; display: block; }
-.book img { width: 52px; height: 78px; object-fit: cover; display: block; background: var(--bg2); border: 1px solid var(--line); border-radius: 5px; box-shadow: var(--shadow); }
+.book img { width: 72px; height: 108px; object-fit: cover; display: block; background: var(--bg2); border: 1px solid var(--line); border-radius: 5px; box-shadow: var(--shadow); }
 .book .bt { font-weight: 600; font-size: .82rem; line-height: 1.25; }
 .book a.bt:hover, .book a.bc:hover + .bmeta .bt { color: var(--primary); }
 .book .ba { color: var(--muted); font-size: .74rem; margin-top: 2px; }
