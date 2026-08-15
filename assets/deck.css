@@ -166,7 +166,10 @@ ul.clean li .sub { color: var(--muted); }
 .rail { position: fixed; left: 0; top: 0; height: 3px; background: var(--primary); width: 0; z-index: 40; transition: width .4s ease; }
 .hud { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; padding: 11px clamp(16px, 4vw, 40px); font-family: var(--mono); font-size: 12px; color: var(--faint); pointer-events: none; }
 .hud .left { display: flex; align-items: center; gap: 14px; letter-spacing: .05em; }
-.hud .counter { color: var(--muted); } .hud .counter b { color: var(--ink); font-weight: 600; }
+.hud .counter { color: var(--muted); pointer-events: auto; cursor: pointer; font: inherit; letter-spacing: inherit; background: none; border: 1px solid transparent; border-radius: 8px; padding: 5px 8px; transition: border-color .15s, color .15s; }
+.hud .counter b { color: var(--ink); font-weight: 600; }
+.hud .counter:hover { color: var(--ink); border-color: var(--primary); }
+.hud .counter:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
 .hud .doc { letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
 .hud .part { color: var(--primary); letter-spacing: .12em; text-transform: uppercase; }
 .controls { display: flex; align-items: center; gap: 8px; pointer-events: auto; }
@@ -174,6 +177,24 @@ ul.clean li .sub { color: var(--muted); }
 .btn:hover { color: var(--ink); border-color: var(--primary); }
 .btn:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
 .hint { position: fixed; right: clamp(16px,4vw,40px); top: 15px; z-index: 30; font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--faint); text-transform: uppercase; opacity: 0; animation: fade 1s ease .4s forwards; pointer-events: none; }
+
+/* Contents overlay: jump to any slide. Solid page background (no translucency)
+   so it reads cleanly over whatever slide is behind it, in both themes. */
+.toc { position: fixed; inset: 0; z-index: 60; display: flex; flex-direction: column; background: var(--bg); padding: clamp(16px, 3.5vh, 32px) clamp(20px, 5vw, 64px); }
+.toc[hidden] { display: none; }
+.toc-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.toc-title { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--primary); }
+.toc-hint { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; color: var(--faint); flex: 1; min-width: 180px; }
+.toc-jump { width: 76px; font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; }
+.toc-jump:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+.toc-body { margin-top: clamp(12px, 2.2vh, 20px); overflow-y: auto; scrollbar-width: thin; column-width: 250px; column-gap: 30px; }
+.toc-part { break-inside: avoid; margin: 0 0 14px; }
+.toc-part h3 { font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin: 0 0 5px; }
+.toc-part a { display: flex; gap: .6em; align-items: baseline; padding: 2.5px 7px; border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 12.5px; line-height: 1.32; }
+.toc-part a:hover { color: var(--ink); background: var(--surface); }
+.toc-part a:focus-visible { outline: 2px solid var(--secondary); outline-offset: 1px; }
+.toc-part a .n { font-family: var(--mono); color: var(--primary); font-size: .85em; min-width: 2.2em; text-align: right; flex: 0 0 auto; }
+.toc-part a.cur { color: var(--ink); background: var(--surface); box-shadow: inset 2px 0 0 var(--primary); }
 @keyframes fade { to { opacity: .7; } }
 @media (prefers-reduced-motion: reduce) { .slide { transition: opacity .01s, visibility 0s; transform: none; } .rail { transition: none; } .hint { animation: none; opacity: .6; } }
 

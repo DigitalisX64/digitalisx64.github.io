@@ -25,7 +25,7 @@
 
 
 <div class="rail" id="rail"></div>
-<div class="hint">← / → to navigate</div>
+<div class="hint">← / → to navigate · C for contents</div>
 
 <div class="deck" id="deck">
 
@@ -2230,13 +2230,24 @@ void android_main(struct android_app* app) {
 
 </div>
 
+<div class="toc" id="toc" role="dialog" aria-label="Contents" hidden>
+  <div class="toc-head">
+    <span class="toc-title">Contents</span>
+    <span class="toc-hint">click a title, or type a slide number — Esc closes</span>
+    <input id="tocjump" class="toc-jump" type="number" min="1" inputmode="numeric" placeholder="#" aria-label="Jump to slide number">
+    <button class="btn" id="tocclose" aria-label="Close contents">✕</button>
+  </div>
+  <div class="toc-body" id="tocbody"></div>
+</div>
+
 <div class="hud">
   <div class="left">
     <span class="doc">ARM64 → x86_64</span>
     <span class="part" id="part">Overview</span>
-    <span class="counter"><b id="cur">1</b> / <span id="tot">74</span></span>
+    <button class="counter" id="counter" aria-label="Open contents to jump to any slide" title="Jump to any slide"><b id="cur">1</b> / <span id="tot">74</span></button>
   </div>
   <div class="controls">
+    <button class="btn" id="contents" aria-label="Open contents">☰ Contents</button>
     <button class="btn" id="prev" aria-label="Previous slide">‹ Prev</button>
     <button class="btn" id="next" aria-label="Next slide">Next ›</button>
     <button class="btn" id="theme" aria-label="Toggle light or dark theme">◐</button>
@@ -2261,17 +2272,76 @@ void android_main(struct android_app* app) {
       rail.style.width = (i / (slides.length - 1) * 100) + '%';
       var inner = slides[i].querySelector('.inner');
       if (inner) inner.scrollTop = 0;
+      // Keep the URL pointing at this slide so any position is shareable.
+      // replaceState does not fire hashchange, so this cannot loop.
+      try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
     }
     function next() { show(i + 1); }
     function prev() { show(i - 1); }
 
+    // --- Contents overlay: jump to any slide by title or number ---
+    var toc = document.getElementById('toc');
+    var tocBody = document.getElementById('tocbody');
+    var tocJump = document.getElementById('tocjump');
+    (function buildToc() {
+      var currentPart = null, listEl = null;
+      slides.forEach(function (s, idx) {
+        var part = s.getAttribute('data-part') || 'Overview';
+        if (part !== currentPart) {
+          currentPart = part;
+          var sec = document.createElement('div');
+          sec.className = 'toc-part';
+          var h = document.createElement('h3');
+          h.textContent = part;
+          sec.appendChild(h);
+          listEl = document.createElement('div');
+          sec.appendChild(listEl);
+          tocBody.appendChild(sec);
+        }
+        var head = s.querySelector('h2') || s.querySelector('h1');
+        var title = head ? head.textContent.replace(/\s+/g, ' ').trim() : 'Slide ' + (idx + 1);
+        var a = document.createElement('a');
+        a.href = '#' + (idx + 1);
+        a.innerHTML = '<span class="n">' + (idx + 1) + '</span><span class="t"></span>';
+        a.querySelector('.t').textContent = title;
+        a.addEventListener('click', function (e) { e.preventDefault(); show(idx); closeToc(); });
+        listEl.appendChild(a);
+      });
+    })();
+    function openToc() {
+      toc.hidden = false;
+      var links = tocBody.querySelectorAll('a');
+      links.forEach(function (a, idx) { a.classList.toggle('cur', idx === i); });
+      var active = links[i];
+      if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest' });
+      tocJump.value = '';
+      tocJump.focus();
+    }
+    function closeToc() { toc.hidden = true; }
+    function toggleToc() { toc.hidden ? openToc() : closeToc(); }
+    document.getElementById('contents').addEventListener('click', toggleToc);
+    document.getElementById('counter').addEventListener('click', toggleToc);
+    document.getElementById('tocclose').addEventListener('click', closeToc);
+    tocJump.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var n = parseInt(tocJump.value, 10);
+        if (!isNaN(n)) { show(n - 1); closeToc(); }
+      }
+      e.stopPropagation();
+    });
+
     document.getElementById('next').addEventListener('click', next);
     document.getElementById('prev').addEventListener('click', prev);
     document.addEventListener('keydown', function (e) {
+      if (!toc.hidden) {
+        if (e.key === 'Escape') { e.preventDefault(); closeToc(); }
+        return;
+      }
       if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); next(); }
       else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
       else if (e.key === 'Home') { show(0); }
       else if (e.key === 'End') { show(slides.length - 1); }
+      else if (e.key === 'c' || e.key === 'g') { e.preventDefault(); openToc(); }
     });
     document.getElementById('deck').addEventListener('click', function (e) {
       if (e.target.closest('.hud') || e.target.closest('.controls')) return;
