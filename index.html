@@ -138,11 +138,12 @@ layout: null
             <li><strong>Graphics reach the real GPU.</strong> Vulkan goes through GFXStream's VkDecoder; OpenGL ES is driven by ANGLE, which implements it on top of Vulkan in-guest &mdash; giving full OpenGL ES 3.2 and hardware MSAA on the host GPU.</li>
             <li><strong>Awkward symbols are covered by hand.</strong> Anything the auto-generated marshallers can't handle gets a custom trampoline written in-surface &mdash; <code>JNIEnv</code> translation, host&rarr;guest callbacks, and the ~80 ANGLE extension procs a browser engine gates on but <code>eglGetProcAddress</code> would otherwise return NULL for.</li>
             <li><strong>The boundary is where the subtle bugs live.</strong> A zero stride from <code>ANativeWindow_lock</code> made a video app render solid green; a guard-page read inside the allocator wrappers looked for weeks like host memory exhaustion. Both fixed here &mdash; and the stride now comes from <em>asking the host allocator</em> rather than assuming the format's rule, because row padding is gralloc's choice, not the pixel format's.</li>
-            <li><strong>Probed systematically, not just when apps break.</strong> Seven dedicated samples now stress the riskiest marshalling paths &mdash; host-invoked guest callbacks, buffer handles crossing unix sockets, fd passing, <code>JNIEnv</code> round-trips &mdash; and all of them pass; the only two failures they ever found reproduced identically on native x86_64 builds, i.e. they were Android platform behaviour, not translation.</li>
+            <li><strong>Probed systematically, not just when apps break.</strong> Eight dedicated samples now stress the riskiest marshalling paths &mdash; host-invoked guest callbacks, buffer handles crossing unix sockets, fd passing, <code>JNIEnv</code> round-trips &mdash; and all of them pass; the only failures they ever found reproduced identically on native x86_64 builds, i.e. they were Android platform behaviour, not translation.</li>
+            <li><strong>No reachable call aborts, audio included.</strong> The OpenSL&nbsp;ES and OpenMAX&nbsp;AL proxies wrap host interface vtables method by method, and the methods upstream could not marshal used to kill the process on first call. A named-override seam now supplies working marshalling for every one an app can reach &mdash; the streaming-decode buffer-queue callback fires from host code back into translated guest code &mdash; closing the last known app-reachable aborts across all 21 proxies.</li>
           </ul>
         </div>
         <div class="feature-card">
-          <h3>149 Sample Apps</h3>
+          <h3>150 Sample Apps</h3>
           <p>Every sample is an <strong>ARM64-only</strong> APK that runs end to end on the x86_64 emulator: ported NDK samples, third-party native libraries, whole UI engines, and one probe per ARM64 instruction extension.</p>
           <ul class="feature-list">
             <li><strong>Real libraries, linked the way an app links them.</strong> OpenCV, TensorFlow Lite, PyTorch, ONNX Runtime, FFmpeg, WebRTC, Qt 6, React Native, Realm, SQLCipher and dozens more &mdash; not reimplementations written to be easy to translate.</li>
@@ -257,7 +258,7 @@ layout: null
           </div>
         </div>
         <div class="sample-group">
-          <h3 class="sample-group-title">Audio <span class="sample-group-count">5</span></h3>
+          <h3 class="sample-group-title">Audio <span class="sample-group-count">6</span></h3>
           <p class="sample-group-desc">Playback, capture, and the low-latency paths</p>
           <div class="samples-grid">
           <div class="sample-item">native-audio</div>
@@ -265,6 +266,7 @@ layout: null
           <div class="sample-item">hello-oboe</div>
           <div class="sample-item">hello-opus</div>
           <div class="sample-item">hello-openmaxal</div>
+          <div class="sample-item">hello-opensles</div>
           </div>
         </div>
         <div class="sample-group">
