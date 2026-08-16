@@ -228,7 +228,17 @@ blocked:
   - name: 'Clash of Clans'
     package: com.supercell.clashofclans
     reason: >-
-      Obfuscated integrity protector: 17.360.42 (original Supercell-signed
-      splits) aborts at startup with an encrypted pure-Java exception
-      (<code>pacl.az</code>) and kills its own process — an anti-emulator /
-      Play-integrity decision with no native fault and no translator frame
+      Anti-emulator integrity gate, confirmed not a translator fault. 17.360.42
+      (original Supercell-signed splits) aborts ~1&nbsp;s into startup, before
+      any UI, with an encrypted pure-Java exception (<code>pacl.az</code>, thrown
+      from an obfuscated <code>pacl.*</code> SDK on the host ART after an
+      <code>E&nbsp;Report</code> telemetry line) and SIGKILLs its own process.
+      The stack carries no native or translator frame, ~8,800 region
+      translations succeed first with no <code>Undefined arm64</code> and no
+      signal, and the abort is byte-identical under <code>berberis.mode
+      interpret-only</code> — so no JIT miscompile is involved. The environment
+      it reads is saturated with host-side emulator markers
+      (<code>ro.kernel.qemu=1</code>, <code>ro.hardware=ranchu</code>,
+      <code>ro.build.characteristics=emulator</code>) that any anti-emulator
+      check trips on regardless of translation; other anti-tamper apps (Honkai,
+      Baidu, WhatsApp) run on the same image
