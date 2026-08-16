@@ -35,6 +35,25 @@ verified:
     notes: >-
       Fingersoft&rsquo;s custom native engine; part of the standing
       seventeen-app regression gate
+  - name: 'Stack'
+    package: com.ketchapp.stack
+    stack: 'Unity'
+    notes: >-
+      Ketchapp&rsquo;s minimalist tower stacker; arm64-only install renders to
+      its &ldquo;tap to start&rdquo; screen under translation
+  - name: 'Beach Buggy Racing'
+    package: com.vectorunit.purple.googleplay
+    stack: 'Vector Engine (custom C++)'
+    notes: >-
+      Vector Unit&rsquo;s custom kart racer; the arm64-only split install
+      renders its 3D beach menu under translation &mdash; a different native
+      engine from the Unity titles
+  - name: 'Sonic the Hedgehog 2'
+    package: com.sega.sonic2.runner
+    stack: 'SEGA Retro Engine'
+    notes: >-
+      the mobile remaster on SEGA&rsquo;s Retro Engine; arm64-only split install
+      renders through its intro to the age-entry screen under translation
   - name: 'Hill Climb Racing 2'
     package: com.fingersoft.hcr2
     stack: 'Native engine'
