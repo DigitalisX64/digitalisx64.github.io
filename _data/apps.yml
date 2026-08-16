@@ -35,6 +35,13 @@ verified:
     notes: >-
       Fingersoft&rsquo;s custom native engine; part of the standing
       seventeen-app regression gate
+  - name: 'Hill Climb Racing 2'
+    package: com.fingersoft.hcr2
+    stack: 'Native engine'
+    notes: >-
+      1.52.0 (original Fingersoft-signed arm64 APK) runs clean to the title
+      screen and menus &mdash; the integrity-protector abort that blocked an
+      earlier release is gone
   - name: 'Among Us'
     package: com.innersloth.spacemafia
     stack: 'Unity (IL2CPP + Epic Online Services)'
@@ -155,6 +162,25 @@ verified:
       windows, so the player addressed every row of the frame at row 0 and posted
       an all-zero buffer (Y=U=V=0 is exactly RGB(0,135,0)). A proxy override now
       supplies the stride the pixel format mandates
+  - name: 'Amazon Shopping'
+    package: com.amazon.mShop.android.shopping
+    stack: 'Native (Rust/Kotlin hybrid UI) + WebView'
+    notes: >-
+      installed as its original Amazon-signed split set, it runs the full live
+      storefront &mdash; onboarding, skip-sign-in, home feed and product search
+      all render with zero faults. Earlier attempts used an APKEditor-merged,
+      debug-re-signed APK; results from a re-signed artifact are
+      unattributable, and the store-shaped install shows the old &ldquo;GMS
+      gate&rdquo; block no longer exists
+  - name: 'Microsoft Teams'
+    package: com.microsoft.teams
+    stack: 'Native (OneAuth/SlimCore) + React Native'
+    notes: >-
+      original Microsoft-signed split set runs onboarding to the live
+      Microsoft sign-in screen with zero faults (deeper use needs an account).
+      The &ldquo;not from a trusted source&rdquo; refusal seen earlier was the
+      app rejecting a debug-re-signed merged APK &mdash; an artifact problem,
+      not a translation one
   - name: 'Honkai: Star Rail'
     package: com.HoYoverse.hkrpgoversea
     stack: 'Unity (IL2CPP)'
@@ -199,20 +225,10 @@ verified:
 partial: []
 
 blocked:
-  - name: 'Hill Climb Racing 2'
-    package: com.fingersoft.hcr2
-    reason: 'Obfuscated integrity protector (<code>yez.d "01"</code>) + Google Play dependency'
   - name: 'Clash of Clans'
     package: com.supercell.clashofclans
-    reason: 'Obfuscated integrity protector (<code>xlebgahq.ab "02"</code>) + Google Play dependency'
-  - name: 'Amazon Shopping'
-    package: com.amazon.mShop.android.shopping
-    notes: >-
-      Google Play Services / Firebase dependency (native hidden-API-exemption
-      abort fixed under translation; process now stays alive and reaches the GMS
-      gate)
-  - name: 'Microsoft Teams'
-    package: com.microsoft.teams
-    notes: >-
-      OneAuth + Google Play Services dependency (native hidden-API-exemption abort
-      fixed under translation; now reaches the OneAuth/GMS gate)
+    reason: >-
+      Obfuscated integrity protector: 17.360.42 (original Supercell-signed
+      splits) aborts at startup with an encrypted pure-Java exception
+      (<code>pacl.az</code>) and kills its own process — an anti-emulator /
+      Play-integrity decision with no native fault and no translator frame
