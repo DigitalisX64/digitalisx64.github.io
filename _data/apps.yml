@@ -173,7 +173,7 @@ verified:
     stack: 'In-house Vulkan engine'
     notes: >-
       runs the Wild Life workloads to their scorecard. Wild Life maxes out its
-      frame cap; <strong>Wild Life Extreme scores 4,801 (28.75 FPS) &mdash; 88%
+      frame cap; <strong>Wild Life Extreme scores 4,903 (29.36 FPS) &mdash; 90%
       of the 5,458 the same emulator posts running the app&rsquo;s own native
       x86_64 build</strong>, so most of the remaining gap is the GPU stack, not
       translation. Its earlier &quot;out of memory&quot; crash was the released
@@ -185,9 +185,9 @@ verified:
     stack: 'Native (portable C++ workloads)'
     notes: >-
       completes full single- and multi-core CPU runs under translation:
-      <strong>498 single / 1,513 multi</strong> against 2,511&nbsp;/&nbsp;7,136
-      for its native x86_64 build on the same emulator (&asymp;20&nbsp;/&nbsp;21%
-      of native). Also the standing yardstick for first-gear gaps: lowering the
+      <strong>529 single / 1,592 multi</strong> against 2,511&nbsp;/&nbsp;7,136
+      for its native x86_64 build on the same emulator (&asymp;21&nbsp;/&nbsp;22%
+      of native, +16% on both axes over the previous release). Also the standing yardstick for first-gear gaps: lowering the
       FP32 across-lanes reductions moved single-core +23%, and a later
       measurement round (single-lane structure loads/stores, SSE-lowered
       <code>.2D</code> forms, an exclusive-store register-pressure fix and
