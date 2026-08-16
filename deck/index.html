@@ -874,8 +874,8 @@ java.lang.UnsatisfiedLinkError:
             <tr><td>Conditional select</td><td class="m wrap">CSEL · CSINC · CSINV · CCMP</td><td class="wrap">JIT</td></tr>
             <tr><td>Atomics</td><td class="m wrap">CAS · SWP · LDADD (LSE) · LDXR/STXR exclusives</td><td class="wrap">JIT — via x86 lock-prefixed instructions</td></tr>
             <tr><td>SIMD / FP (NEON)</td><td class="m wrap">FADD · FMUL · vector int ops · permute · across-lanes</td><td class="wrap">Common shapes JIT; exotic shapes interpreted (next slides)</td></tr>
-            <tr><td>CRC32</td><td class="m wrap">CRC32B/H/W/X + CRC32C variants</td><td class="wrap">CRC32C: JIT via the host's hardware CRC; IEEE flavor: interpreted</td></tr>
-            <tr><td>Crypto</td><td class="m wrap">AES · SHA1/256/512 · SM3/SM4</td><td class="wrap">Interpreted — host crypto units round differently</td></tr>
+            <tr><td>CRC32</td><td class="m wrap">CRC32B/H/W/X + CRC32C variants</td><td class="wrap">Both JIT: CRC32C via the host’s hardware CRC; IEEE flavor via carry-less multiply</td></tr>
+            <tr><td>Crypto</td><td class="m wrap">AES · SHA1/256/512 · SM3/SM4</td><td class="wrap">AES (AES-NI), SHA-1/SHA-256 and PMULL JIT; only SHA-512 · SM3/SM4 interpreted</td></tr>
             <tr><td>System</td><td class="m wrap">SVC · MRS/MSR · DMB/DSB/ISB · IC IVAU</td><td class="wrap">SVC inlined; barriers cost nothing; IC IVAU invalidates the cache</td></tr>
             <tr><td>Newer extensions</td><td class="m wrap">I8MM dot/matmul · FRINT32/64 · MTE tags · RNDR</td><td class="wrap">Decoded and handled — Digitalis additions beyond upstream Berberis</td></tr>
           </tbody>
@@ -964,7 +964,7 @@ java.lang.UnsatisfiedLinkError:
       </div>
       <div class="grid g2" style="margin-top:16px">
         <div class="card guest"><span class="tag">JIT-compiled SIMD</span><h3>Lane-parallel math</h3><p>Where lanes stay in place — vector add/multiply, loads/stores, zeroing, compares — one NEON op maps to one SSE op (<code>FADD .4S</code> → <code>addps</code>).</p></div>
-        <div class="card"><span class="tag">interpreted SIMD</span><h3>Lane-crossing shapes</h3><p>Where lanes move or change width — pairwise adds, across-lanes reductions ("sum all four lanes"), widening/narrowing, permutes — x86 has no clean twin, so the interpreter handles them.</p></div>
+        <div class="card"><span class="tag">sequenced SIMD</span><h3>Lane-crossing shapes</h3><p>Where lanes move or change width — pairwise adds, across-lanes reductions ("sum all four lanes"), widening/narrowing, permutes — x86 has no clean twin, so the JIT emits short shuffle-and-combine sequences; only the rarest shapes stay interpreted.</p></div>
       </div>
       <p class="foot-note">That JIT/interpreter split is the practical rule of thumb: lane-parallel = fast path, lane-crossing = fallback. This is where most of the "~2% interpreted" instructions come from.</p>
     </div>
@@ -1001,7 +1001,7 @@ java.lang.UnsatisfiedLinkError:
       </div>
       <p class="lede" style="margin-top:18px">It handles <strong>any</strong> instruction — but every guest instruction costs many host instructions of overhead. Typical slowdown: <strong>10–50×</strong>.</p>
       <div class="qa"><span class="qm">Q</span><div><div class="qt">"If it's 10–50× slower, why keep an interpreter at all?"</div>
-        <div class="ans">Coverage and correctness. Rare instructions (exotic SIMD, crypto like AES/SHA) aren't worth compiling; the interpreter runs <b>everything</b>, so the fast path never has to be complete to be safe. Digitalis also batches interpreter runs — reusing the decode machinery across up to 500 consecutive instructions makes the interpreter itself ~3× faster, since ~60% of its cost is setup, not execution.</div></div></div>
+        <div class="ans">Coverage and correctness. Rare instructions (exotic SIMD, residual crypto like SHA-512/SM3/SM4) aren't worth compiling; the interpreter runs <b>everything</b>, so the fast path never has to be complete to be safe. Digitalis also batches interpreter runs — reusing the decode machinery across up to 500 consecutive instructions makes the interpreter itself ~3× faster, since ~60% of its cost is setup, not execution.</div></div></div>
       <p class="foot-note">Like cooking from a foreign-language recipe by translating each line in your head as you go. Correct, works for any recipe — but slow.</p>
     </div>
   </section>
@@ -1120,7 +1120,7 @@ java.lang.UnsatisfiedLinkError:
       <div class="grid g3">
         <div class="card guest"><span class="tag">First gear · default</span><h3>Lite JIT</h3><p>Single-pass translation, fast to emit, local register allocation. Handles ~98% of the instructions a typical app executes.</p></div>
         <div class="card guest"><span class="tag">Second gear · hot code</span><h3>Heavy optimizer</h3><p>Re-translates hot regions with global register allocation and loop optimization. Up to ~2× faster on register-heavy code.</p></div>
-        <div class="card"><span class="tag">Fallback</span><h3>Interpreter</h3><p>Per-instruction simulation for rare, complex, or crypto instructions the JIT doesn't compile.</p></div>
+        <div class="card"><span class="tag">Fallback</span><h3>Interpreter</h3><p>Per-instruction simulation for the rare, exotic instructions the JIT doesn’t compile.</p></div>
       </div>
       <div class="qa"><span class="qm">Q</span><div><div class="qt">"Why not just always use the heavy optimizer?"</div>
         <div class="ans">Because optimizing costs time <b>up front</b>, and most code runs once or twice. Compiling everything heavily would make app startup crawl to speed up code that never runs again. Lite-first gets the app running immediately; only regions that <em>prove</em> they're hot earn the expensive recompile.</div></div></div>
@@ -2031,7 +2031,7 @@ void android_main(struct android_app* app) {
             <tr><td>Hot + register-heavy code</td><td class="m amber">heavy tier</td><td class="wrap">Up to ~2× faster than the lite tier's version of the same region</td></tr>
             <tr><td>GPU work (the frame itself)</td><td class="m steel">native</td><td class="wrap">Zero translation cost — the GPU never sees guest code</td></tr>
             <tr><td>System API calls</td><td class="m">proxy</td><td class="wrap">A small fixed marshalling cost per call</td></tr>
-            <tr><td>Rare instructions (crypto etc.)</td><td class="m">interpreter</td><td class="wrap">10–50× — but by design confined to a ~2% sliver of execution</td></tr>
+            <tr><td>Rare instructions (exotic tail)</td><td class="m">interpreter</td><td class="wrap">10–50× — but by design confined to a ~2% sliver of execution</td></tr>
             <tr><td>First visit to any region</td><td class="m">translate</td><td class="wrap">One-time JIT cost, then cached for the process lifetime</td></tr>
           </tbody>
         </table>
@@ -2059,7 +2059,7 @@ void android_main(struct android_app* app) {
         <div class="pc h"><b>The emulator itself</b> — build fingerprint and GPU strings already say "emulator"; the translator is rarely the weakest link</div>
       </div>
       <ul class="clean" style="margin-top:16px">
-        <li><span class="k">proof in the wild</span><div><b>Real apps verified running under translation:</b> <span class="sub">full browsers (Firefox, Chromium-based Helium), the Unity-engine game <em>Honkai: Star Rail</em>, WeChat, WhatsApp, Facebook, Douyin, Kuaishou, NetEase Cloud Music, three major map apps (Amap, Baidu, Tencent), Qt's Vulkan Caps Viewer, React Native and Lynx-based UIs, plus 3DMark and Geekbench as benchmark workloads — fifteen commercial APKs re-run as a regression gate on every change, several shipping aggressive integrity / anti-tamper SDKs.</span></div></li>
+        <li><span class="k">proof in the wild</span><div><b>Real apps verified running under translation:</b> <span class="sub">full browsers (Firefox, Chromium-based Helium), the Unity-engine game <em>Honkai: Star Rail</em>, WeChat, WhatsApp, Facebook, Douyin, Kuaishou, NetEase Cloud Music, three major map apps (Amap, Baidu, Tencent), Qt's Vulkan Caps Viewer, React Native and Lynx-based UIs, plus 3DMark and Geekbench as benchmark workloads — seventeen commercial APKs — the games spanning Unity (<em>Among Us</em>), a custom native engine (<em>Hill Climb Racing</em>) and miHoYo’s (<em>Honkai</em>) — re-run as a regression gate on every change, several shipping aggressive integrity / anti-tamper SDKs.</span></div></li>
       </ul>
       <p class="foot-note">When one of these breaks, the fix lands in the translator — never as a per-app hack — so each hardened app that starts working makes the next one likelier to work out of the box.</p>
     </div>

@@ -32,9 +32,19 @@ verified:
   - name: 'Hill Climb Racing'
     package: com.fingersoft.hillclimb
     stack: 'Native engine'
-  - name: 'Space Mafia'
+    notes: >-
+      Fingersoft&rsquo;s custom native engine; part of the standing
+      seventeen-app regression gate
+  - name: 'Among Us'
     package: com.innersloth.spacemafia
-    stack: 'Unity'
+    stack: 'Unity (IL2CPP + Epic Online Services)'
+    notes: >-
+      installed the way the store delivers it &mdash; base APK plus its
+      Play-Asset-Delivery <code>UnityDataAssetPack</code> split &mdash; and
+      renders the full menu, live announcements and network stack under
+      translation; part of the standing seventeen-app regression gate. (The
+      single-APK mirror variant is base-only and black-screens on any device
+      &mdash; not a translation issue)
   - name: 'Tencent App Store'
     package: com.tencent.android.qqdownloader
     stack: 'Native'
@@ -175,11 +185,14 @@ verified:
     stack: 'Native (portable C++ workloads)'
     notes: >-
       completes full single- and multi-core CPU runs under translation:
-      <strong>456 single / 1,372 multi</strong> against 2,511&nbsp;/&nbsp;7,136
-      for its native x86_64 build on the same emulator. Also the yardstick that
-      caught two first-gear gaps: lowering the FP32 across-lanes reductions in
-      the lite tier moved single-core +23%, and its callee-save-heavy code shaped
-      the register-pressure spill fix
+      <strong>498 single / 1,513 multi</strong> against 2,511&nbsp;/&nbsp;7,136
+      for its native x86_64 build on the same emulator (&asymp;20&nbsp;/&nbsp;21%
+      of native). Also the standing yardstick for first-gear gaps: lowering the
+      FP32 across-lanes reductions moved single-core +23%, and a later
+      measurement round (single-lane structure loads/stores, SSE-lowered
+      <code>.2D</code> forms, an exclusive-store register-pressure fix and
+      gating a debug IR-check out of production) added another +11/12% in a
+      same-day A/B
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
