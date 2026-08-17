@@ -238,6 +238,43 @@ verified:
       <code>.2D</code> forms, an exclusive-store register-pressure fix and
       gating a debug IR-check out of production) added another +11/12% in a
       same-day A/B
+  - name: 'VLC'
+    package: org.videolan.vlc
+    stack: 'libVLC (native media engine)'
+  - name: 'TikTok'
+    package: com.zhiliaoapp.musically
+    stack: 'Native (ByteDance)'
+  - name: 'X (Twitter)'
+    package: com.twitter.android
+    stack: 'Native'
+  - name: 'LinkedIn'
+    package: com.linkedin.android
+    stack: 'Native'
+  - name: 'Reddit'
+    package: com.reddit.frontpage
+    stack: 'Jetpack Compose + native'
+    notes: >-
+      installed from its full Play App Bundle
+      (base&nbsp;+&nbsp;arm64&nbsp;+&nbsp;density splits) &mdash; the single-APK
+      config split alone is missing resources and cannot start
+  - name: 'Slack'
+    package: com.Slack
+    stack: 'Native'
+    notes: >-
+      installed from its full Play App Bundle
+      (base&nbsp;+&nbsp;arm64&nbsp;+&nbsp;density splits)
+  - name: 'Duolingo'
+    package: com.duolingo
+    stack: 'Native'
+  - name: 'Microsoft Outlook'
+    package: com.microsoft.office.outlook
+    stack: 'Native (Hx sync engine)'
+  - name: 'Microsoft OneDrive'
+    package: com.microsoft.skydrive
+    stack: 'Native'
+  - name: 'WPS Office'
+    package: cn.wps.moffice_eng
+    stack: 'Native office engine'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
