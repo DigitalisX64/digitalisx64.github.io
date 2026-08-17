@@ -142,6 +142,33 @@ verified:
   - name: 'WPS Office'
     package: cn.wps.moffice_eng
     stack: 'Native office engine'
+  - name: 'Helix Jump'
+    package: com.h8games.helixjump
+    stack: 'Unity'
+  - name: 'Paper.io 2'
+    package: io.voodoo.paper2
+    stack: 'Unity'
+  - name: 'Aqua Park.io'
+    package: com.cassette.aquapark
+    stack: 'Unity'
+  - name: 'Fire Balls 3D'
+    package: com.NikSanTech.FireDots3D
+    stack: 'Unity'
+  - name: 'Ballz'
+    package: com.ketchapp.ballz
+    stack: 'Unity'
+  - name: 'The Floor is Lava'
+    package: com.ketchapp.thefloorislava
+    stack: 'Unity'
+  - name: 'Rush'
+    package: com.ketchapp.rush
+    stack: 'Unity'
+  - name: 'My Talking Tom 2'
+    package: com.outfit7.mytalkingtom2
+    stack: 'Unity'
+  - name: 'Cut the Rope 2'
+    package: com.zeptolab.ctr2.f2p.google
+    stack: 'Native (custom engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
