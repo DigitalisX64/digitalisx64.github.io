@@ -15,7 +15,6 @@
 #   partial   passes the launch gate, not yet verified deep in-app
 #   blocked   not fixable in the translator (anti-emulator, GMS, or an app bug)
 
-
 verified:
   - name: 'Crossy Road'
     package: com.yodo1.crossyroad
@@ -32,45 +31,21 @@ verified:
   - name: 'Hill Climb Racing'
     package: com.fingersoft.hillclimb
     stack: 'Native engine'
-    notes: >-
-      Fingersoft&rsquo;s custom native engine; part of the standing
-      seventeen-app regression gate
   - name: 'Stack'
     package: com.ketchapp.stack
     stack: 'Unity'
-    notes: >-
-      Ketchapp&rsquo;s minimalist tower stacker; arm64-only install renders to
-      its &ldquo;tap to start&rdquo; screen under translation
   - name: 'Beach Buggy Racing'
     package: com.vectorunit.purple.googleplay
     stack: 'Vector Engine (custom C++)'
-    notes: >-
-      Vector Unit&rsquo;s custom kart racer; the arm64-only split install
-      renders its 3D beach menu under translation &mdash; a different native
-      engine from the Unity titles
   - name: 'Sonic the Hedgehog 2'
     package: com.sega.sonic2.runner
     stack: 'SEGA Retro Engine'
-    notes: >-
-      the mobile remaster on SEGA&rsquo;s Retro Engine; arm64-only split install
-      renders through its intro to the age-entry screen under translation
   - name: 'Hill Climb Racing 2'
     package: com.fingersoft.hcr2
     stack: 'Native engine'
-    notes: >-
-      1.52.0 (original Fingersoft-signed arm64 APK) runs clean to the title
-      screen and menus &mdash; the integrity-protector abort that blocked an
-      earlier release is gone
   - name: 'Among Us'
     package: com.innersloth.spacemafia
     stack: 'Unity (IL2CPP + Epic Online Services)'
-    notes: >-
-      installed the way the store delivers it &mdash; base APK plus its
-      Play-Asset-Delivery <code>UnityDataAssetPack</code> split &mdash; and
-      renders the full menu, live announcements and network stack under
-      translation; part of the standing seventeen-app regression gate. (The
-      single-APK mirror variant is base-only and black-screens on any device
-      &mdash; not a translation issue)
   - name: 'Tencent App Store'
     package: com.tencent.android.qqdownloader
     stack: 'Native'
@@ -86,13 +61,6 @@ verified:
   - name: 'Baidu Maps'
     package: com.baidu.BaiduMap
     stack: 'Native map engine + GL'
-    notes: >-
-      launches and renders cleanly (no crash across an 18-launch + 10-minute
-      soak). A <code>:SandBoxProcess</code> sub-process JNI abort (the sofire
-      anti-tamper SDK passed a null class to <code>GetStaticFieldID</code>, which
-      the emulator's CheckJNI turned into a process-fatal abort) is fixed under
-      translation — Berberis returns a null field id instead of aborting, matching
-      production behavior
   - name: 'NetEase Cloud Music'
     package: com.netease.cloudmusic
     stack: 'React Native + Hermes'
@@ -102,19 +70,6 @@ verified:
   - name: 'Helium Browser'
     package: io.github.jqssun.helium
     stack: 'Chromium 149'
-    notes: >-
-      renders content-rich pages on the default GPU path. Its GPU process used to
-      crash-loop calling an advertised-but-NULL ANGLE extension proc
-      (<code>glGetIntegervRobustANGLE</code>) until the browser aborted on a
-      GPU-channel timeout &mdash; fixed by the translator's
-      <code>eglGetProcAddress</code> override, which wraps the ~80 ANGLE/CHROMIUM
-      extension procs the generated marshallers couldn't so the
-      <em>advertised-implies-non-NULL</em> contract holds. Needs an emulator
-      carrying the gfxstream <code>VK_EXT_memory_budget</code> fix: without it the
-      emulator process itself aborts when the GPU process queries the memory
-      budget, which is a host-decoder limitation rather than a translation one
-      &mdash; the same page runs and renders under
-      <code>-gpu swiftshader_indirect</code> on an unfixed binary
   - name: 'Amap'
     package: com.autonavi.minimap
     stack: 'Native map engine + GL'
@@ -124,29 +79,9 @@ verified:
   - name: 'WhatsApp'
     package: com.whatsapp
     stack: 'Native (SoLoader, Voltron/Waffle)'
-    notes: >-
-      launches, loads its native libraries cleanly and runs through onboarding
-      past the EULA. An earlier build (2.26.19.4) reliably died during EULA
-      teardown whenever <em>another Meta app was installed alongside it</em>:
-      WhatsApp routed the EULA into its cross-app account-linking flow, and its
-      own dependency-injection graph then built a Play-Store-delivered component
-      on the main thread, tripping its own "must not be called on the main
-      thread" guard. That was an app-side fault &mdash; a pure Java stack with no
-      translator frame, and uninstalling the other Meta app made it go away with
-      an unchanged translator. 2.26.32.2 no longer hits it: the same cross-app
-      flow still runs, with Facebook installed, and the app proceeds normally
   - name: 'CoolApk'
     package: com.coolapk.market
     stack: 'Native'
-    notes: >-
-      launches and loads its feed. It used to sit on &ldquo;Loading failed&rdquo;
-      with no crash and no error in the log, because the heavy JIT tier&rsquo;s
-      CPU-state cache was keyed on a register slot without regard for access
-      width: a 64-bit read of a vector register zeroes the upper half of its host
-      XMM, and forwarding that to a later 128-bit read of the same register fed
-      zeroes into the app&rsquo;s bcrypt key schedule, producing a wrong hash and
-      a rejected auth token. The cache now records each mapping&rsquo;s width and
-      register class
   - name: 'WeChat'
     package: com.tencent.mm
     stack: 'Native (Tinker/XWeb)'
@@ -159,85 +94,24 @@ verified:
   - name: 'Douyin'
     package: com.ss.android.ugc.aweme
     stack: 'Native UI (ByteDance Lynx) + WebView hardware-accel draw functor'
-    notes: >-
-      launches and survives. Its Lynx native UI library called
-      <code>android::RegisterDrawFunctor</code> during WebView initialization — a
-      symbol in the WebView hardware-accel support library
-      <code>libwebviewchromium_plat_support</code> that used to abort the process
-      as an uncovered proxy trampoline (<code>Bad '&lt;sym&gt;' call</code>). It
-      is now covered in-surface and forwarded to the host WebView support library,
-      with a valid host <code>JNIEnv</code> obtained by attaching the calling
-      worker thread to the host VM
   - name: 'Kuaishou'
     package: com.smile.gifmaker
-    notes: >-
-      Launches and plays video. Four classes of fault were fixed under
-      translation: fdsan fd-ownership aborts and a SIGALRM deadman-timer watchdog
-      from its integrity SDK; the media player's calls into
-      <code>libgui.so</code> — a private SurfaceFlinger system library with no
-      guest copy — now satisfied by a minimal guest-only stub plus the host-call
-      redirect; and a feed that rendered <em>solid green</em> because
-      <code>ANativeWindow_lock</code> reports a zero stride for planar-YUV
-      windows, so the player addressed every row of the frame at row 0 and posted
-      an all-zero buffer (Y=U=V=0 is exactly RGB(0,135,0)). A proxy override now
-      supplies the stride the pixel format mandates
+    stack: 'Native'
   - name: 'Amazon Shopping'
     package: com.amazon.mShop.android.shopping
     stack: 'Native (Rust/Kotlin hybrid UI) + WebView'
-    notes: >-
-      installed as its original Amazon-signed split set, it runs the full live
-      storefront &mdash; onboarding, skip-sign-in, home feed and product search
-      all render with zero faults. Earlier attempts used an APKEditor-merged,
-      debug-re-signed APK; results from a re-signed artifact are
-      unattributable, and the store-shaped install shows the old &ldquo;GMS
-      gate&rdquo; block no longer exists
   - name: 'Microsoft Teams'
     package: com.microsoft.teams
     stack: 'Native (OneAuth/SlimCore) + React Native'
-    notes: >-
-      original Microsoft-signed split set runs onboarding to the live
-      Microsoft sign-in screen with zero faults (deeper use needs an account).
-      The &ldquo;not from a trusted source&rdquo; refusal seen earlier was the
-      app rejecting a debug-re-signed merged APK &mdash; an artifact problem,
-      not a translation one
   - name: 'Honkai: Star Rail'
     package: com.HoYoverse.hkrpgoversea
     stack: 'Unity (IL2CPP)'
-    notes: >-
-      A namespace-isolation fix cleared the crash that used to block launch:
-      isolated app namespaces no longer load their own copies of non-public system
-      libraries, so Unity&rsquo;s global <code>operator new</code> in
-      <code>libunity.so</code> can no longer interpose over a system library and
-      route it into the app&rsquo;s not-yet-initialized allocator &mdash;
-      previously a SIGILL on libunity&rsquo;s encrypted lazy-init path. An
-      apparent residual crash after that fix turned out to be a re-signed,
-      incorrectly merged APK rather than a translation fault; the publisher-signed
-      universal APK runs.
   - name: '3DMark'
     package: com.futuremark.dmandroid.application
     stack: 'In-house Vulkan engine'
-    notes: >-
-      runs the Wild Life workloads to their scorecard. Wild Life maxes out its
-      frame cap; <strong>Wild Life Extreme scores 4,903 (29.36 FPS) &mdash; 90%
-      of the 5,458 the same emulator posts running the app&rsquo;s own native
-      x86_64 build</strong>, so most of the remaining gap is the GPU stack, not
-      translation. Its earlier &quot;out of memory&quot; crash was the released
-      emulator&rsquo;s gfxstream clamping every guest Vulkan heap to 2&nbsp;GB
-      (reproduced identically with no translation in the path); an emulator built
-      from current gfxstream sources removes the clamp
   - name: 'Geekbench 6'
     package: com.primatelabs.geekbench6
     stack: 'Native (portable C++ workloads)'
-    notes: >-
-      completes full single- and multi-core CPU runs under translation:
-      <strong>529 single / 1,592 multi</strong> against 2,511&nbsp;/&nbsp;7,136
-      for its native x86_64 build on the same emulator (&asymp;21&nbsp;/&nbsp;22%
-      of native, +16% on both axes over the previous release). Also the standing yardstick for first-gear gaps: lowering the
-      FP32 across-lanes reductions moved single-core +23%, and a later
-      measurement round (single-lane structure loads/stores, SSE-lowered
-      <code>.2D</code> forms, an exclusive-store register-pressure fix and
-      gating a debug IR-check out of production) added another +11/12% in a
-      same-day A/B
   - name: 'VLC'
     package: org.videolan.vlc
     stack: 'libVLC (native media engine)'
@@ -253,16 +127,9 @@ verified:
   - name: 'Reddit'
     package: com.reddit.frontpage
     stack: 'Jetpack Compose + native'
-    notes: >-
-      installed from its full Play App Bundle
-      (base&nbsp;+&nbsp;arm64&nbsp;+&nbsp;density splits) &mdash; the single-APK
-      config split alone is missing resources and cannot start
   - name: 'Slack'
     package: com.Slack
     stack: 'Native'
-    notes: >-
-      installed from its full Play App Bundle
-      (base&nbsp;+&nbsp;arm64&nbsp;+&nbsp;density splits)
   - name: 'Duolingo'
     package: com.duolingo
     stack: 'Native'
