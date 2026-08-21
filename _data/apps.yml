@@ -166,6 +166,15 @@ verified:
   - name: 'Bigo Live'
     package: sg.bigo.live
     stack: 'Native (live streaming)'
+  - name: 'Lumii'
+    package: photo.editor.photoeditor.filtersforpictures
+    stack: 'Native (photo editor)'
+  - name: 'Video Maker'
+    package: videoeditor.videomaker.videoeditorforyoutube
+    stack: 'Native (video editor)'
+  - name: 'Facetune'
+    package: com.lightricks.facetune.free
+    stack: 'Native (photo editor)'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
