@@ -301,6 +301,24 @@ verified:
   - name: 'Mosquito.io'
     package: io.supercent.mosquito
     stack: 'Unity'
+  - name: 'Prison Life'
+    package: io.supercent.prison
+    stack: 'Unity'
+  - name: 'Super Slime'
+    package: io.supercent.bigslimemanyslime
+    stack: 'Unity'
+  - name: 'Parking Jam 3D'
+    package: com.lszenlamzr.parkingjam
+    stack: 'Unity'
+  - name: 'Tap Away'
+    package: com.jctswbglsm.SwipeAway
+    stack: 'Unity'
+  - name: 'Souls'
+    package: com.habby.souls
+    stack: 'Unity'
+  - name: 'Capybara Go!'
+    package: com.habby.capybara
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
