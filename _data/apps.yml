@@ -175,6 +175,12 @@ verified:
   - name: 'Facetune'
     package: com.lightricks.facetune.free
     stack: 'Native (photo editor)'
+  - name: 'Pixaloop'
+    package: com.lightricks.pixaloop
+    stack: 'Native (photo animator)'
+  - name: 'Quickshot'
+    package: com.lightricks.quickshot
+    stack: 'Native (photo editor)'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
