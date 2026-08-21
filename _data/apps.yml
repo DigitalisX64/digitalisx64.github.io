@@ -220,6 +220,18 @@ verified:
   - name: 'Bullet Echo'
     package: com.zeptolab.bulletecho.google
     stack: 'Native (custom engine)'
+  - name: 'Repair Master 3D'
+    package: com.quok.repairMaster3d
+    stack: 'Unity'
+  - name: 'Office Fever'
+    package: com.dtg.officefever
+    stack: 'Unity'
+  - name: 'High Heels!'
+    package: com.uncosoft.highheels
+    stack: 'Unity'
+  - name: 'Tangle Master 3D'
+    package: com.rollic.tanglemaster3D
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
