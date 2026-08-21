@@ -202,6 +202,18 @@ verified:
   - name: 'Om Nom: Parkour'
     package: com.zeptolab.omnomparkour.google
     stack: 'Native (custom engine)'
+  - name: 'Bowmasters'
+    package: com.playgendary.bowmasters
+    stack: 'Native engine'
+  - name: 'My Talking Tom Friends'
+    package: com.outfit7.mytalkingtomfriends
+    stack: 'Unity'
+  - name: 'Ninja Hands 2'
+    package: com.YsoCorp.NinjaHands2
+    stack: 'Unity'
+  - name: 'Ninja Escape'
+    package: com.YsoCorp.NinjaEscape
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
