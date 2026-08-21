@@ -172,6 +172,12 @@ verified:
   - name: 'Hole.io'
     package: io.voodoo.holeio
     stack: 'Unity'
+  - name: 'Paper.io'
+    package: io.voodoo.paperio
+    stack: 'Unity'
+  - name: 'Crazy Kick!'
+    package: com.orbitalknight.ridiculousfreekick
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
