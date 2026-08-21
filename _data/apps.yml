@@ -169,6 +169,9 @@ verified:
   - name: 'Cut the Rope 2'
     package: com.zeptolab.ctr2.f2p.google
     stack: 'Native (custom engine)'
+  - name: 'Hole.io'
+    package: io.voodoo.holeio
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
