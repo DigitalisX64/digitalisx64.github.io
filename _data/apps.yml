@@ -256,6 +256,9 @@ verified:
   - name: 'Teacher Simulator'
     package: com.syubestgames.teachersimulator
     stack: 'Unity'
+  - name: 'Watcher of Realms'
+    package: com.td.watcherofrealms
+    stack: 'Native (3D RPG engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
