@@ -199,6 +199,21 @@ verified:
   - name: 'Boosted'
     package: com.lightricks.videoboost
     stack: 'Native (video editor)'
+  - name: 'ToonApp'
+    package: com.lyrebirdstudio.cartoon
+    stack: 'Native (photo editor)'
+  - name: 'ToonArt'
+    package: com.lyrebirdstudio.toonart
+    stack: 'Native (photo editor)'
+  - name: 'Art Filter'
+    package: com.lyrebirdstudio.art_filter
+    stack: 'Native (photo editor)'
+  - name: 'Photos Collage Maker'
+    package: com.lyrebirdstudio.photocollageeditor
+    stack: 'Native (photo editor)'
+  - name: 'YouCam Enhance'
+    package: com.perfectcorp.yce
+    stack: 'Native (photo enhancer)'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
