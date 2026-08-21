@@ -193,6 +193,9 @@ verified:
   - name: 'King of Thieves'
     package: com.zeptolab.thieves.google
     stack: 'Native (custom engine)'
+  - name: 'Mob Control'
+    package: com.vincentb.MobControl
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
