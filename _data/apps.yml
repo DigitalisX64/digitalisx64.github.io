@@ -145,6 +145,18 @@ verified:
   - name: 'CapCut'
     package: com.lemon.lvoverseas
     stack: 'Native (video editor)'
+  - name: 'Ulike'
+    package: com.gorgeous.liteinternational
+    stack: 'Native (camera/AI beauty)'
+  - name: 'Hypic'
+    package: com.xt.retouchoversea
+    stack: 'Native (photo editor)'
+  - name: 'Pixsoul'
+    package: com.ss.android.ai.camera
+    stack: 'Native (AI camera)'
+  - name: 'Fuelio'
+    package: com.kajda.fuelio
+    stack: 'Native + maps'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
