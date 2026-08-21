@@ -178,6 +178,12 @@ verified:
   - name: 'Crazy Kick!'
     package: com.orbitalknight.ridiculousfreekick
     stack: 'Unity'
+  - name: 'Bucket Crusher'
+    package: com.AndreyGushchin.BucketCrusher
+    stack: 'Unity'
+  - name: 'Stacky Dash 2'
+    package: com.Born2Play.StackyDash
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
