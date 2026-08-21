@@ -223,6 +223,12 @@ verified:
   - name: 'ActionDirector'
     package: com.cyberlink.actiondirector
     stack: 'Native (video editor)'
+  - name: 'ACR Phone'
+    package: com.nll.cb
+    stack: 'Native (dialer/recorder)'
+  - name: 'Icon Pack Studio'
+    package: ginlemon.iconpackstudio
+    stack: 'Native'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
