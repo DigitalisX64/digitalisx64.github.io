@@ -214,6 +214,15 @@ verified:
   - name: 'YouCam Enhance'
     package: com.perfectcorp.yce
     stack: 'Native (photo enhancer)'
+  - name: 'Video Editor (Lyrebird)'
+    package: com.lyrebirdstudio.videoeditor
+    stack: 'Native (video editor)'
+  - name: 'Photo Editor Pro'
+    package: com.lyrebirdstudio.montagenscolagem
+    stack: 'Native (photo editor)'
+  - name: 'ActionDirector'
+    package: com.cyberlink.actiondirector
+    stack: 'Native (video editor)'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
