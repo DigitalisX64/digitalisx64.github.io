@@ -196,6 +196,9 @@ verified:
   - name: 'Mob Control'
     package: com.vincentb.MobControl
     stack: 'Unity'
+  - name: 'Downhill Smash'
+    package: com.zeptolab.downhillsmash
+    stack: 'Native (custom engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
