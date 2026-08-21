@@ -187,6 +187,9 @@ verified:
   - name: 'Bouncy Hoops'
     package: com.noodlecake.bouncyhoops
     stack: 'Native engine'
+  - name: 'Om Nom: Merge'
+    package: com.zeptolab.omnommerge.google
+    stack: 'Native (custom engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
