@@ -232,6 +232,15 @@ verified:
   - name: 'Tangle Master 3D'
     package: com.rollic.tanglemaster3D
     stack: 'Unity'
+  - name: 'Cut the Rope: Time Travel'
+    package: com.zeptolab.timetravel.free.google
+    stack: 'Native (custom engine)'
+  - name: 'Evo Pop'
+    package: com.zeptolab.evopop
+    stack: 'Native (custom engine)'
+  - name: 'Teacher Simulator'
+    package: com.syubestgames.teachersimulator
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
