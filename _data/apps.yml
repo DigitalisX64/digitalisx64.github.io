@@ -193,6 +193,12 @@ verified:
   - name: 'ASR Voice Recorder'
     package: com.nll.asr
     stack: 'Native'
+  - name: 'CapCut for Pad'
+    package: com.lemon.ccpadpro
+    stack: 'Native (video editor)'
+  - name: 'Boosted'
+    package: com.lightricks.videoboost
+    stack: 'Native (video editor)'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
