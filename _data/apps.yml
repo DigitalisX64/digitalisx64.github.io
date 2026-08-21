@@ -229,6 +229,9 @@ verified:
   - name: 'Icon Pack Studio'
     package: ginlemon.iconpackstudio
     stack: 'Native'
+  - name: 'AliSupplier'
+    package: com.alibaba.icbu.app.seller
+    stack: 'Native + WebView'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
