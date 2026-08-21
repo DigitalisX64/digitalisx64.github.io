@@ -199,6 +199,9 @@ verified:
   - name: 'Downhill Smash'
     package: com.zeptolab.downhillsmash
     stack: 'Native (custom engine)'
+  - name: 'Om Nom: Parkour'
+    package: com.zeptolab.omnomparkour.google
+    stack: 'Native (custom engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
