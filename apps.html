@@ -84,7 +84,7 @@ permalink: /apps.html
           <tbody>
             {% for app in apps %}
             <tr data-status="{{ status }}" data-search="{{ app.name | append: ' ' | append: app.package | append: ' ' | append: app.stack | append: ' ' | append: app.reason | strip_html | downcase | escape }}">
-              <td>{{ app.name }}</td>
+              <td><span class="app-cell"><img class="app-icon" src="/assets/icons/{{ app.package }}.png" alt="" width="28" height="28" loading="lazy" decoding="async"><span class="app-name">{{ app.name }}</span></span></td>
               <td class="pkg"><code>{{ app.package }}</code></td>
               <td>{{ app.stack | default: app.reason }}{% if app.notes %}{% if app.stack or app.reason %}; {% endif %}{{ app.notes }}{% endif %}</td>
               <td><span class="badge {{ badge }}">{{ label }}</span></td>

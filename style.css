@@ -790,6 +790,25 @@ code {
   color: var(--green);
 }
 
+.app-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--bg);
+}
+
+.app-name {
+  font-weight: 600;
+}
+
 .module-table td code {
   color: var(--green);
   background: none;
