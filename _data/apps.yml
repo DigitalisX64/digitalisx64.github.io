@@ -181,6 +181,18 @@ verified:
   - name: 'Quickshot'
     package: com.lightricks.quickshot
     stack: 'Native (photo editor)'
+  - name: 'PowerDirector'
+    package: com.cyberlink.powerdirector.DRA140225_01
+    stack: 'Native (video editor)'
+  - name: 'Peachy'
+    package: peachy.bodyeditor.faceapp
+    stack: 'Native (photo editor)'
+  - name: 'Smart Launcher'
+    package: ginlemon.flowerfree
+    stack: 'Native (launcher)'
+  - name: 'ASR Voice Recorder'
+    package: com.nll.asr
+    stack: 'Native'
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
