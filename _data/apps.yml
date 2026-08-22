@@ -394,6 +394,9 @@ verified:
   - name: 'Cut the Rope: Origins'
     package: com.zeptolab.ctrorigins
     stack: 'Native (custom engine)'
+  - name: 'Scream Go Hero'
+    package: com.ketchapp.screamhero
+    stack: 'Unity'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
