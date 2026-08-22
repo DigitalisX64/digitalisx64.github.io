@@ -382,6 +382,15 @@ verified:
   - name: 'Overcrowded'
     package: com.zeptolab.overcrowded
     stack: 'Native (custom engine)'
+  - name: 'Wordling'
+    package: io.digitalsnacks.wordchallenge
+    stack: 'Unity'
+  - name: 'Art Blitz'
+    package: com.ketchapp.artblitz
+    stack: 'Unity'
+  - name: 'Happy Jump'
+    package: com.noodlecake.happyjump
+    stack: 'Native engine'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
