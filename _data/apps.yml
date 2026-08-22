@@ -391,6 +391,9 @@ verified:
   - name: 'Happy Jump'
     package: com.noodlecake.happyjump
     stack: 'Native engine'
+  - name: 'Cut the Rope: Origins'
+    package: com.zeptolab.ctrorigins
+    stack: 'Native (custom engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
