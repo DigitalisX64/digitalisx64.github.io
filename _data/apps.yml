@@ -370,6 +370,18 @@ verified:
   - name: 'Capybara Go!'
     package: com.habby.capybara
     stack: 'Unity'
+  - name: 'Om Nom: Run'
+    package: com.zeptolab.omnomrun.google
+    stack: 'Native (custom engine)'
+  - name: 'Ace Fishing: Wild Catch'
+    package: com.com2us.acefishing.normal.freefull.google.global.android.common
+    stack: 'Unity'
+  - name: 'Solo Leveling: Hit & Run'
+    package: io.supercent.hitrun
+    stack: 'Unity'
+  - name: 'Overcrowded'
+    package: com.zeptolab.overcrowded
+    stack: 'Native (custom engine)'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
