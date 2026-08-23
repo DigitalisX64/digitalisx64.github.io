@@ -143,13 +143,14 @@ layout: null
           </ul>
         </div>
         <div class="feature-card">
-          <h3>150 Sample Apps</h3>
+          <h3>157 Sample Apps</h3>
           <p>Every sample is an <strong>ARM64-only</strong> APK that runs end to end on the x86_64 emulator: ported NDK samples, third-party native libraries, whole UI engines, and one probe per ARM64 instruction extension.</p>
           <ul class="feature-list">
             <li><strong>Real libraries, linked the way an app links them.</strong> OpenCV, TensorFlow Lite, PyTorch, ONNX Runtime, FFmpeg, WebRTC, Qt 6, React Native, Realm, SQLCipher and dozens more &mdash; not reimplementations written to be easy to translate.</li>
             <li><strong>A wrong answer fails, loudly.</strong> The ML, audio, crypto and binder samples check their output <em>bit-exact</em> against a hardcoded golden, so a miscompiled NEON kernel aborts instead of quietly rendering something slightly wrong.</li>
             <li><strong>One sample per extension.</strong> NEON, FP16, BF16, dot-product, I8MM, complex arithmetic, JSCVT, PAC, BTI, the LSE and LRCPC atomics, CRC32 and the crypto instructions each get a probe that runs hot enough to reach the optimising JIT tier.</li>
             <li><strong>One probe per proxied NDK surface.</strong> Eight samples exercise the full public API of a proxy library each &mdash; AHardwareBuffer, AImageDecoder, the media data-source/muxer pair, the ADPF hint/thermal/choreographer trio, ASharedMemory, system fonts, OpenMAX AL, OpenSL ES &mdash; with golden self-checks on every call, so a marshalling bug fails a specific assertion instead of corrupting an app somewhere downstream.</li>
+            <li><strong>The SDKs real apps ship, not only NDK libraries.</strong> ByteDance ShadowHook native inline hooking, Tencent Tinker hot-patch primitives, LSPosed HiddenApiBypass, the MSA OAID device-id security library, iQIYI xCrash and the Firebase Crashlytics NDK each get a sample &mdash; the native code paths that decide whether a real app reaches its first frame at all.</li>
           </ul>
           <p style="margin-top:14px">The full catalogue is grouped by subsystem <a href="#samples">further down the page</a>.</p>
         </div>
@@ -421,6 +422,19 @@ layout: null
           <div class="sample-item">hello-sha-crypto</div>
           <div class="sample-item">hello-aes</div>
           <div class="sample-item">hello-cntvct</div>
+          </div>
+        </div>
+        <div class="sample-group">
+          <h3 class="sample-group-title">App-framework &amp; instrumentation SDKs <span class="sample-group-count">7</span></h3>
+          <p class="sample-group-desc">Native inline hooking, hot-patch, crash capture, device-id security and flexbox layout — the SDKs real apps bundle</p>
+          <div class="samples-grid">
+          <div class="sample-item">hello-shadowhook</div>
+          <div class="sample-item">hello-tinker</div>
+          <div class="sample-item">hello-hiddenapibypass</div>
+          <div class="sample-item">hello-msaoaid</div>
+          <div class="sample-item">hello-xcrash</div>
+          <div class="sample-item">hello-firebase-crashlytics</div>
+          <div class="sample-item">hello-yoga</div>
           </div>
         </div>
       </div>
