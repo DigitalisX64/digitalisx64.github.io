@@ -151,6 +151,9 @@ verified:
   - name: 'Hypic'
     package: com.xt.retouchoversea
     stack: 'Native (photo editor)'
+  - name: 'Xingtu'
+    package: com.xt.retouch
+    stack: 'Native (photo editor)'
   - name: 'Pixsoul'
     package: com.ss.android.ai.camera
     stack: 'Native (AI camera)'
