@@ -416,14 +416,9 @@ verified:
     package: tv.twitch.android.app
     stack: 'Native player core + Cronet'
 
-partial:
-  - name: 'eBay'
-    package: com.ebay.mobile
-    stack: 'WebRTC + Rive + ML Kit + Akamai/ThreatMetrix bot protection'
-    notes: >-
-      Runs and renders its own home and sign-in screens; its backend answers
-      <em>Server Unavailable</em> from the emulator network, so no in-app content
-      was verified.
+# No apps are currently in this state; the section drops out of the page while
+# this list is empty.
+partial: []
 
 blocked:
   - name: 'Clash of Clans'
@@ -451,3 +446,12 @@ blocked:
       <code>AssetPackException: -11</code> (<code>PLAY_STORE_NOT_FOUND</code>): the
       game's content downloads through the Play Store, which the GMS-less emulator
       image does not ship.
+  - name: 'eBay'
+    package: com.ebay.mobile
+    reason: >-
+      eBay's backend rejects the device. 6.272.0.2 runs and renders its own home
+      and sign-in screens, but device registration fails with <em>Invalid
+      Request</em> (<code>errorId=485320</code>) while the Play Integrity API
+      reports no Play Store, so no content loads. The vendor-signed x86_64 build
+      running natively on the same emulator, with no translation at all, fails
+      identically.
