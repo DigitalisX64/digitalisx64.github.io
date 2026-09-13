@@ -1285,6 +1285,9 @@ code {
   font-family: var(--mono);
   font-size: 0.78rem;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .latest-post-arrow {
@@ -1596,6 +1599,10 @@ code {
 
   .latest-post-arrow {
     display: none;
+  }
+
+  .latest-post-meta {
+    white-space: normal;
   }
 
   .post-card {

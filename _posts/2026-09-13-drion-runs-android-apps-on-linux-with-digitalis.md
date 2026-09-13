@@ -1,6 +1,6 @@
 ---
 title: "Drion brings Android apps to Linux, with Digitalis translating arm64"
-summary: "Actinis' Wine-like Android layer for Steam Deck and Linux desktops, now heading into a Flatpak alpha"
+summary: "Android apps on Linux, heading into a Flatpak alpha"
 ---
 
 [Drion](https://actinis.io/drion), from the Estonian AOSP company
