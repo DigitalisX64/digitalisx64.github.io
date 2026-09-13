@@ -1293,6 +1293,47 @@ code {
   line-height: 1;
 }
 
+/* Up to three recent posts. The newest keeps the green accent; earlier ones are
+   quieter, and the flag has a fixed width so every title starts in one column. */
+.latest-post-list {
+  display: grid;
+  gap: 12px;
+}
+
+.latest-post-flag {
+  min-width: 5.6rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.latest-post--earlier {
+  border-left-color: var(--border);
+}
+
+.latest-post--earlier:hover {
+  border-left-color: var(--accent);
+}
+
+.latest-post--earlier .latest-post-flag {
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+
+.latest-post-all {
+  margin: 14px 0 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+}
+
+.latest-post-all a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.latest-post-all a:hover {
+  text-decoration: underline;
+}
+
 /* --- Blog: post list --- */
 
 .post-list {

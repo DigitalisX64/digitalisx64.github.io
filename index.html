@@ -43,18 +43,23 @@ layout: null
     </div>
   </header>
 
-  <!-- Latest post -->
-  {% assign latest = site.posts.first %}{% if latest %}
+  <!-- Latest posts: the three newest, newest first -->
+  {% if site.posts.size > 0 %}
   <section class="latest-post-section">
     <div class="container">
-      <a class="latest-post" href="{{ latest.url | relative_url }}">
-        <span class="latest-post-flag">Latest post</span>
-        <span class="latest-post-body">
-          <span class="latest-post-title">{{ latest.title }}</span>
-          <span class="latest-post-meta"><time datetime="{{ latest.date | date_to_xmlschema }}">{{ latest.date | date: "%B %-d, %Y" }}</time>{% if latest.summary %} &middot; {{ latest.summary }}{% endif %}</span>
-        </span>
-        <span class="latest-post-arrow" aria-hidden="true">&rarr;</span>
-      </a>
+      <div class="latest-post-list">
+        {% for post in site.posts limit:3 %}
+        <a class="latest-post{% unless forloop.first %} latest-post--earlier{% endunless %}" href="{{ post.url | relative_url }}">
+          <span class="latest-post-flag">{% if forloop.first %}Latest{% else %}Earlier{% endif %}</span>
+          <span class="latest-post-body">
+            <span class="latest-post-title">{{ post.title }}</span>
+            <span class="latest-post-meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>{% if post.summary %} &middot; {{ post.summary }}{% endif %}</span>
+          </span>
+          <span class="latest-post-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        {% endfor %}
+      </div>
+      <p class="latest-post-all"><a href="{{ '/blog.html' | relative_url }}">All posts &rarr;</a></p>
     </div>
   </section>
   {% endif %}
