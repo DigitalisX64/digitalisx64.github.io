@@ -400,10 +400,30 @@ verified:
   - name: 'Scream Go Hero'
     package: com.ketchapp.screamhero
     stack: 'Unity'
+  - name: 'SneakerArt'
+    package: com.majorfrank.sneakerart
+    stack: 'Unity (IL2CPP)'
+  - name: 'Shazam'
+    package: com.shazam.android
+    stack: 'Native signature engine (libsigx) + FairPlay DI + Crashlytics NDK'
+  - name: 'Signal'
+    package: org.thoughtcrime.securesms
+    stack: 'Rust (libsignal, RingRTC/WebRTC) + SQLCipher'
+  - name: 'Microsoft Authenticator'
+    package: com.azure.authenticator
+    stack: 'Native crypto (wolfSSL) + ONNX Runtime + Azure AI Vision'
+  - name: 'Twitch'
+    package: tv.twitch.android.app
+    stack: 'Native player core + Cronet'
 
-# No apps are currently in this state; the section drops out of the page while
-# this list is empty.
-partial: []
+partial:
+  - name: 'eBay'
+    package: com.ebay.mobile
+    stack: 'WebRTC + Rive + ML Kit + Akamai/ThreatMetrix bot protection'
+    notes: >-
+      Runs and renders its own home and sign-in screens; its backend answers
+      <em>Server Unavailable</em> from the emulator network, so no in-app content
+      was verified.
 
 blocked:
   - name: 'Clash of Clans'
@@ -423,3 +443,11 @@ blocked:
       <code>ro.build.characteristics=emulator</code>) that any anti-emulator
       check trips on regardless of translation; other anti-tamper apps (Honkai,
       Baidu, WhatsApp) run on the same image
+  - name: 'Into the Dead 2'
+    package: com.pikpok.dr2.play
+    reason: >-
+      Needs Play Asset Delivery. 1.85.0 (the full arm64 bundle) installs and holds
+      its title screen with no crash, while its asset-pack sync fails with
+      <code>AssetPackException: -11</code> (<code>PLAY_STORE_NOT_FOUND</code>): the
+      game's content downloads through the Play Store, which the GMS-less emulator
+      image does not ship.
