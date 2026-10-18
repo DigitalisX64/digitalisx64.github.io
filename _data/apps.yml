@@ -97,6 +97,10 @@ verified:
   - name: 'Kuaishou'
     package: com.smile.gifmaker
     stack: 'Native'
+    notes: >-
+      Its anti-tamper SDK hooks an entry in the JNI dispatch table; the guest
+      now gets its own copy of that table, so the hook no longer redirects host
+      callers into guest code.
   - name: 'Amazon Shopping'
     package: com.amazon.mShop.android.shopping
     stack: 'Native (Rust/Kotlin hybrid UI) + WebView'
@@ -437,7 +441,12 @@ blocked:
       (<code>ro.kernel.qemu=1</code>, <code>ro.hardware=ranchu</code>,
       <code>ro.build.characteristics=emulator</code>) that any anti-emulator
       check trips on regardless of translation; other anti-tamper apps (Honkai,
-      Baidu, WhatsApp) run on the same image
+      Baidu, WhatsApp) run on the same image. 18.400.22 (Supercell-signed
+      universal APK) behaves identically — the same encrypted pure-Java
+      exception under a renamed obfuscated package (<code>vxvyhom.a</code> from
+      <code>vxvyhom.W.run</code>), again after an <code>E&nbsp;Report</code>
+      line, again with no native frame, and again byte-identical against a
+      translator build from before the current optimizer work
   - name: 'Into the Dead 2'
     package: com.pikpok.dr2.play
     reason: >-
