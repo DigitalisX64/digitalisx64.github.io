@@ -1,6 +1,6 @@
 ---
 title: "Eight projects building on Digitalis"
-summary: "Quest and Horizon OS on a PC, Android in Wayland, a Windows Android emulator, a tracked sync of our release branch, and a LoongArch64 backend"
+summary: "Windows VR shells, Android in Wayland, and a LoongArch64 backend"
 ---
 
 Digitalis is Apache-2.0. Anyone can take it, ship it and build on it without asking us, and
@@ -27,6 +27,7 @@ the Universal Menu and launches apps.
 Essentially all of that is translated code. From its architecture notes:
 
 > Meta apps (VrShell, SystemUX, ...) — Horizon APKs, arm64 code translated to x86_64
+>
 > Meta native daemons — Horizon arm64 binaries, translated
 
 including "Meta's OpenXR runtime and compositor".
