@@ -131,7 +131,7 @@ on Linux that does not go through Waydroid.
 for Windows, built on AOSP Android 16 and the Android Emulator / QEMU with WHPX acceleration.
 Its build instructions give the relationship away in one line:
 
-```
+```sh
 lunch sdk_phone64_x86_64_digitalis-trunk_staging-userdebug
 ```
 
