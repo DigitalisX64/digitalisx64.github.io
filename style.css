@@ -1297,10 +1297,18 @@ code {
 }
 
 /* Up to three recent posts. The newest keeps the green accent; earlier ones are
-   quieter, and the flag has a fixed width so every title starts in one column. */
+   quieter, and the flag has a fixed width so every title starts in one column.
+   The track and the cards are both pinned to minmax(0, ...): a grid item's
+   default min-width:auto would let a long nowrap summary widen the whole row
+   past the container instead of being clipped to its ellipsis. */
 .latest-post-list {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
+}
+
+.latest-post {
+  min-width: 0;
 }
 
 .latest-post-flag {
