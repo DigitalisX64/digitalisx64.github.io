@@ -28,14 +28,7 @@
           {%- endfor %}
         </ul>
       </li>
-      <li class="site-nav-has-sub">
-        <a href="{{ '/docs.html' | relative_url }}"{% if nav_active == 'docs' %} class="is-active" aria-current="page"{% endif %}>Docs</a>
-        <ul class="site-nav-sub">
-          {%- for r in site.data.releases %}
-          <li><a href="{{ '/docs/android' | append: r.version | append: '/' | relative_url }}">{{ r.name }}</a></li>
-          {%- endfor %}
-        </ul>
-      </li>
+      <li><a href="{{ '/docs.html' | relative_url }}"{% if nav_active == 'docs' %} class="is-active" aria-current="page"{% endif %}>Docs</a></li>
       <li><a href="{{ '/blog.html' | relative_url }}"{% if nav_active == 'blog' %} class="is-active" aria-current="page"{% endif %}>Blog</a></li>
       <li><a href="https://github.com/DigitalisX64" target="_blank" rel="noopener">GitHub</a></li>
     </ul>

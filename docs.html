@@ -1,16 +1,15 @@
 ---
 layout: base
 title: Docs
-description: Guided tour, architecture walkthrough, benchmark results and instruction coverage for Digitalis — ARM64-to-x86_64 binary translation for Android.
+description: Guided tour and per-release integration guides for Digitalis — ARM64-to-x86_64 binary translation for Android.
 permalink: /docs.html
 ---
-{%- assign current = site.data.releases | last -%}
   <!-- Sub-hero -->
   <header class="subhero">
     <div class="container">
       <div class="breadcrumb"><a href="{{ '/index.html' | relative_url }}">Home</a> / Docs</div>
       <h1 class="subhero-title">Docs</h1>
-      <p class="subhero-tagline">The same system at several depths: a guided tour you follow start to finish, a reference walkthrough you search, what changed in each release, and the measurements behind all of it.</p>
+      <p class="subhero-tagline">Start with the guided tour, then integrate against the AOSP release you actually build. The rest of the reference — architecture walkthrough, release notes, benchmarks and instruction coverage — lives in the <code>digitalis</code> repository on each release branch.</p>
     </div>
   </header>
 
@@ -22,12 +21,14 @@ permalink: /docs.html
           <h2 class="post-card-title"><a href="{{ '/deck/' | relative_url }}">How Digitalis Works</a></h2>
           <p class="post-card-excerpt">Ten parts, starting from what a CPU actually does and ending at a translated Vulkan frame. Assumes no background: registers, instruction sets, condition flags, why phones are ARM and laptops are not, and the three ways to run code built for another chip. Read it in order. Written against the translator itself, so it applies to every release.</p>
         </li>
+        {%- assign releases = site.data.releases | reverse %}
+        {%- for r in releases %}
+        <li class="post-card">
+          <p class="post-card-meta">Integration &middot; API {{ r.api }}</p>
+          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/{{ r.branch }}/docs/integrating-digitalis.md" target="_blank" rel="noopener">Integrating Digitalis into an AOSP&nbsp;{{ r.version }} product</a></h2>
+          <p class="post-card-excerpt">Adding ARM64 translation to your own x86_64 image &mdash; emulator or real device &mdash; through the stock NativeBridge seams: a manifest overlay, four board-config lines, and one product inherit, or a prebuilt binary bundle when you cannot add source projects. Ends with a verification checklist down to the <code>memfd:exec</code> oracle that proves translation is actually executing. Read from the <code>{{ r.branch }}</code> branch, so it matches what you build.</p>
+        </li>
+        {%- endfor %}
       </ul>
-
-      <h2 class="section-title" style="margin-top:32px">Reference, per release</h2>
-      <p class="section-desc">Each document lives in the <code>digitalis</code> repository on its release branch. The links below point at <strong>{{ current.name }}</strong>, the current release; pick another to read that branch instead.</p>
-      {% include release-switch.html section="docs" current="" %}
-
-      {% include doc-list.html release=current %}
     </div>
   </section>
