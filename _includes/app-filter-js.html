@@ -1,0 +1,49 @@
+<script>
+  (function () {
+    var filter = document.getElementById('app-filter');
+    var search = document.getElementById('app-search');
+    var count = document.getElementById('app-count');
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.app-chip[data-status]'));
+    var rows = Array.prototype.slice.call(document.querySelectorAll('tr[data-status]'));
+    var sections = Array.prototype.slice.call(document.querySelectorAll('.app-section'));
+    if (!rows.length) return;
+
+    filter.hidden = false;
+
+    function apply() {
+      var term = search.value.trim().toLowerCase();
+      var on = {};
+      chips.forEach(function (c) { on[c.dataset.status] = c.classList.contains('is-on'); });
+
+      var shown = 0;
+      rows.forEach(function (row) {
+        var match = on[row.dataset.status] &&
+                    (term === '' || row.dataset.search.indexOf(term) !== -1);
+        row.hidden = !match;
+        if (match) shown++;
+      });
+
+      sections.forEach(function (section) {
+        var visible = section.querySelectorAll('tr[data-status]:not([hidden])').length;
+        var badge = section.querySelector('[data-count-for]');
+        if (badge) badge.textContent = visible;
+        section.querySelector('table').hidden = visible === 0;
+        section.querySelector('.app-empty').hidden = visible !== 0;
+      });
+
+      count.textContent = shown + (shown === 1 ? ' app' : ' apps') +
+                          (term === '' ? '' : ' matching “' + search.value.trim() + '”');
+    }
+
+    search.addEventListener('input', apply);
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chip.classList.toggle('is-on');
+        chip.setAttribute('aria-pressed', chip.classList.contains('is-on'));
+        apply();
+      });
+      chip.setAttribute('aria-pressed', 'true');
+    });
+    apply();
+  })();
+</script>

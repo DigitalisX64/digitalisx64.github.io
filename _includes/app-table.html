@@ -1,0 +1,85 @@
+{%- comment -%}
+  The app tables, shared by apps.html (every version) and the per-version pages
+  under /apps/androidNN/.
+
+  include.version  "" or unset for all versions, otherwise "16", "17", …
+
+  A version page filters here, in Liquid, rather than in the browser: the
+  counts, the page title and the rows then agree with each other even with
+  JavaScript off. The status chips stay client-side, as they were.
+{%- endcomment -%}
+{%- assign ver = include.version | default: "" -%}
+{%- if ver != "" -%}{%- assign vnum = ver | plus: 0 -%}{%- endif -%}
+
+{%- comment -%}
+  Resolve each status against this page's version once, so the legend, the
+  chips and the tables all agree. A release with no blocked entries must not
+  advertise a Blocked chip that filters nothing.
+{%- endcomment -%}
+{%- assign n_verified = site.data.apps.verified | default: empty_list -%}
+{%- assign n_partial = site.data.apps.partial | default: empty_list -%}
+{%- assign n_blocked = site.data.apps.blocked | default: empty_list -%}
+{%- if ver != "" -%}
+  {%- assign n_verified = n_verified | where_exp: "a", "a.verified_on contains vnum" -%}
+  {%- assign n_partial = n_partial | where_exp: "a", "a.verified_on contains vnum" -%}
+  {%- assign n_blocked = n_blocked | where_exp: "a", "a.tested_on contains vnum" -%}
+{%- endif -%}
+
+<div class="status-legend">
+  {% if n_verified.size > 0 %}<span><span class="badge badge-pass">Verified</span> launches and runs with no crash</span>{% endif %}
+  {% if n_partial.size > 0 %}<span><span class="badge badge-partial">Partial</span> passes the launch gate but is not yet verified deep in-app</span>{% endif %}
+  {% if n_blocked.size > 0 %}<span><span class="badge badge-blocked">Blocked</span> not translator-fixable (anti-emulator / GMS)</span>{% endif %}
+</div>
+
+<!-- Filter toolbar. Hidden until the script enables it, so that with no
+     JavaScript the page is simply the full, unfiltered tables. -->
+<div class="app-filter" id="app-filter" hidden>
+  <label class="app-search">
+    <span class="visually-hidden">Search apps</span>
+    <input type="search" id="app-search" placeholder="Filter by name, package or stack…" autocomplete="off">
+  </label>
+  <div class="app-chips" role="group" aria-label="Filter by status">
+    {% if n_verified.size > 0 %}<button type="button" class="app-chip is-on" data-status="verified">Verified</button>{% endif %}
+    {% if n_partial.size > 0 %}<button type="button" class="app-chip is-on" data-status="partial">Partial</button>{% endif %}
+    {% if n_blocked.size > 0 %}<button type="button" class="app-chip is-on" data-status="blocked">Blocked</button>{% endif %}
+  </div>
+  <p class="app-count" id="app-count" aria-live="polite"></p>
+</div>
+
+{% assign sections = "verified,partial,blocked" | split: "," %}
+{% for status in sections %}
+{% case status %}
+  {% when "verified" %}{% assign apps = n_verified %}
+  {% when "partial" %}{% assign apps = n_partial %}
+  {% when "blocked" %}{% assign apps = n_blocked %}
+{% endcase %}
+{% if apps and apps.size > 0 %}
+{% case status %}
+  {% when "verified" %}{% assign heading = "Verified" %}{% assign label = "Verified" %}{% assign badge = "badge-pass" %}{% assign col3 = "Stack" %}{% assign intro = "" %}
+  {% when "partial" %}{% assign heading = "Partial" %}{% assign label = "Partial" %}{% assign badge = "badge-partial" %}{% assign col3 = "Status detail" %}{% assign intro = "These pass the launch-stability gate but are not yet verified deep in-app; remaining work is tracked in-surface." %}
+  {% when "blocked" %}{% assign heading = "Known limitations" %}{% assign label = "Blocked" %}{% assign badge = "badge-blocked" %}{% assign col3 = "Reason" %}{% assign intro = "These are blocked in the <strong>Digitalis test environment specifically</strong> — a bare, GMS-less AOSP emulator image. They ship Google Mobile Services dependencies and/or obfuscated anti-emulator integrity protectors that abort at startup <em>after</em> their native libraries load cleanly under translation. That is an environment or app-policy refusal, <strong>not a translation error</strong>. The Digitalis test environment does not represent a production environment that ships GMS — on a GMS-equipped device or emulator these apps may run normally, so a &quot;Blocked&quot; status here is not a statement about Digitalis translation correctness." %}
+{% endcase %}
+<section class="app-section" data-status="{{ status }}"{% unless forloop.first %} style="padding-top:0;border-top:0"{% endunless %}>
+  <h2 class="section-title">{{ heading }} <span class="section-count" data-count-for="{{ status }}">{{ apps.size }}</span></h2>
+  {% if intro != "" %}<p class="section-desc">{{ intro }}</p>{% endif %}
+  <table class="module-table">
+    <thead>
+      <tr><th>App</th><th>Package</th><th>{{ col3 }}</th><th>Android</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for app in apps %}
+      {% assign vlist = app.verified_on | default: app.tested_on %}
+      <tr data-status="{{ status }}" data-versions="{{ vlist | join: ' ' }}" data-search="{{ app.name | append: ' ' | append: app.package | append: ' ' | append: app.stack | append: ' ' | append: app.reason | strip_html | downcase | escape }}">
+        <td><span class="app-cell"><img class="app-icon" src="/assets/icons/{{ app.package }}.png" alt="" width="28" height="28" loading="lazy" decoding="async"><span class="app-name">{{ app.name }}</span></span></td>
+        <td class="pkg"><code>{{ app.package }}</code></td>
+        <td>{{ app.stack | default: app.reason }}{% if app.notes %}{% if app.stack or app.reason %}; {% endif %}{{ app.notes }}{% endif %}</td>
+        <td class="app-versions">{% for v in vlist %}<span class="badge badge-ver">{{ v }}</span>{% endfor %}</td>
+        <td><span class="badge {{ badge }}">{{ label }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="app-empty" hidden>No apps match this filter.</p>
+</section>
+{% endif %}
+{% endfor %}

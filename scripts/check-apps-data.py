@@ -19,7 +19,13 @@ except ImportError:
 PATH = "_data/apps.yml"
 STATUSES = ("verified", "partial", "blocked")
 PACKAGE_RE = re.compile(r"^[a-zA-Z][\w]*(\.[a-zA-Z][\w]*)+$")
-ALLOWED = {"name", "package", "stack", "reason", "notes"}
+ALLOWED = {"name", "package", "stack", "reason", "notes", "verified_on", "tested_on"}
+
+# Android releases the site has pages for. A version outside this set is either
+# a typo or a page nobody has written yet, and silently rendering it would put
+# apps on a list no one can reach.
+KNOWN_VERSIONS = (16, 17)
+VERSION_FIELD = {"verified": "verified_on", "partial": "verified_on", "blocked": "tested_on"}
 
 # Inline HTML is allowed in prose, but only these tags — anything else is
 # either a typo or markup the page's styles do not cover.
@@ -72,6 +78,30 @@ def main() -> int:
             else:
                 seen_packages[package] = status
 
+            field = VERSION_FIELD[status]
+            other = "tested_on" if field == "verified_on" else "verified_on"
+            versions = app.get(field)
+            if versions is None:
+                errors.append(f"{where}: missing '{field}'")
+            elif not isinstance(versions, list) or not versions:
+                errors.append(f"{where}: '{field}' must be a non-empty list")
+            else:
+                if not all(isinstance(v, int) for v in versions):
+                    errors.append(f"{where}: '{field}' takes integers, e.g. [16, 17]")
+                else:
+                    bad = [v for v in versions if v not in KNOWN_VERSIONS]
+                    if bad:
+                        allowed = ", ".join(str(v) for v in KNOWN_VERSIONS)
+                        errors.append(
+                            f"{where}: unknown version(s) {bad} in '{field}' (expected {allowed})"
+                        )
+                    if len(set(versions)) != len(versions):
+                        errors.append(f"{where}: duplicate entries in '{field}'")
+                    elif versions != sorted(versions):
+                        errors.append(f"{where}: '{field}' must be sorted oldest first")
+            if other in app:
+                errors.append(f"{where}: '{other}' is not used for '{status}' entries")
+
             unknown = set(app) - ALLOWED
             if unknown:
                 errors.append(f"{where}: unknown field(s) {', '.join(sorted(unknown))}")
@@ -98,7 +128,16 @@ def main() -> int:
         return fail(errors)
 
     counts = ", ".join(f"{len(data.get(s) or [])} {s}" for s in STATUSES)
-    print(f"{PATH}: {total} apps ({counts})")
+    per_version = []
+    for version in KNOWN_VERSIONS:
+        n = sum(
+            1
+            for status in STATUSES
+            for app in (data.get(status) or [])
+            if version in (app.get(VERSION_FIELD[status]) or [])
+        )
+        per_version.append(f"{n} on {version}")
+    print(f"{PATH}: {total} apps ({counts}; {', '.join(per_version)})")
     return 0
 
 

@@ -10,6 +10,16 @@
 #   reason   blocked: why it does not run in this environment
 #   notes    optional prose shown after the stack; inline HTML is allowed
 #
+#   verified_on  verified/partial: Android releases the app was checked on,
+#                oldest first, e.g. [16, 17]. Drives the per-release pages
+#                under /apps/androidNN/, so a release listed here must have a
+#                page and an entry in KNOWN_VERSIONS in
+#                scripts/check-apps-data.py.
+#   tested_on    blocked: the releases this blocked status was determined on.
+#                A launch-gate pass on a newer release is not enough to extend
+#                it -- these entries are blocked on behaviour the launch gate
+#                never exercises, so re-check the blocking behaviour itself.
+#
 # Statuses:
 #   verified  launches and runs with no crash
 #   partial   passes the launch gate, not yet verified deep in-app
@@ -19,81 +29,107 @@ verified:
   - name: 'Crossy Road'
     package: com.yodo1.crossyroad
     stack: 'Unity (IL2CPP)'
+    verified_on: [16, 17]
   - name: 'Temple Run 2'
     package: com.imangi.templerun2
     stack: 'Unity (IL2CPP)'
+    verified_on: [16, 17]
   - name: 'Temple Run'
     package: com.imangi.templerun
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Subway Surfers'
     package: com.kiloo.subwaysurf
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Hill Climb Racing'
     package: com.fingersoft.hillclimb
     stack: 'Native engine'
+    verified_on: [16, 17]
   - name: 'Stack'
     package: com.ketchapp.stack
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Beach Buggy Racing'
     package: com.vectorunit.purple.googleplay
     stack: 'Vector Engine (custom C++)'
+    verified_on: [16, 17]
   - name: 'Sonic the Hedgehog 2'
     package: com.sega.sonic2.runner
     stack: 'SEGA Retro Engine'
+    verified_on: [16, 17]
   - name: 'Hill Climb Racing 2'
     package: com.fingersoft.hcr2
     stack: 'Native engine'
+    verified_on: [16, 17]
   - name: 'Among Us'
     package: com.innersloth.spacemafia
     stack: 'Unity (IL2CPP + Epic Online Services)'
+    verified_on: [16, 17]
   - name: 'Tencent App Store'
     package: com.tencent.android.qqdownloader
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'QQ Input'
     package: com.tencent.qqpinyin
     stack: 'Native IME (MMKV/Tinker)'
+    verified_on: [16, 17]
   - name: 'Vulkan Caps Viewer'
     package: de.saschawillems.vulkancapsviewer
     stack: 'Qt 6 + Vulkan'
+    verified_on: [16, 17]
   - name: 'Firefox'
     package: org.mozilla.firefox
     stack: 'Gecko'
+    verified_on: [16, 17]
   - name: 'Baidu Maps'
     package: com.baidu.BaiduMap
     stack: 'Native map engine + GL'
+    verified_on: [16, 17]
   - name: 'NetEase Cloud Music'
     package: com.netease.cloudmusic
     stack: 'React Native + Hermes'
+    verified_on: [16, 17]
   - name: 'Brave Browser'
     package: com.brave.browser
     stack: 'Chromium'
+    verified_on: [16, 17]
   - name: 'Helium Browser'
     package: io.github.jqssun.helium
     stack: 'Chromium 149'
+    verified_on: [16, 17]
   - name: 'Amap'
     package: com.autonavi.minimap
     stack: 'Native map engine + GL'
+    verified_on: [16, 17]
   - name: 'Facebook'
     package: com.facebook.katana
     stack: 'Native (Litho/Yoga, SoLoader)'
+    verified_on: [16, 17]
   - name: 'WhatsApp'
     package: com.whatsapp
     stack: 'Native (SoLoader, Voltron/Waffle)'
+    verified_on: [16, 17]
   - name: 'CoolApk'
     package: com.coolapk.market
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'WeChat'
     package: com.tencent.mm
     stack: 'Native (Tinker/XWeb)'
+    verified_on: [16, 17]
   - name: 'Tencent Map'
     package: com.tencent.map
     stack: 'Native map engine + GL'
+    verified_on: [16, 17]
   - name: 'AliExpress'
     package: com.alibaba.aliexpresshd
     stack: 'Native + system WebView + SecurityGuard'
+    verified_on: [16, 17]
   - name: 'Douyin'
     package: com.ss.android.ugc.aweme
     stack: 'Native UI (ByteDance Lynx) + WebView hardware-accel draw functor'
+    verified_on: [16, 17]
   - name: 'Kuaishou'
     package: com.smile.gifmaker
     stack: 'Native'
@@ -101,327 +137,434 @@ verified:
       Its anti-tamper SDK hooks an entry in the JNI dispatch table; the guest
       now gets its own copy of that table, so the hook no longer redirects host
       callers into guest code.
+    verified_on: [16, 17]
   - name: 'Amazon Shopping'
     package: com.amazon.mShop.android.shopping
     stack: 'Native (Rust/Kotlin hybrid UI) + WebView'
+    verified_on: [16, 17]
   - name: 'Microsoft Teams'
     package: com.microsoft.teams
     stack: 'Native (OneAuth/SlimCore) + React Native'
+    verified_on: [16, 17]
   - name: 'Honkai: Star Rail'
     package: com.HoYoverse.hkrpgoversea
     stack: 'Unity (IL2CPP)'
+    verified_on: [16, 17]
   - name: '3DMark'
     package: com.futuremark.dmandroid.application
     stack: 'In-house Vulkan engine'
+    verified_on: [16, 17]
   - name: 'Geekbench 6'
     package: com.primatelabs.geekbench6
     stack: 'Native (portable C++ workloads)'
+    verified_on: [16, 17]
   - name: 'VLC'
     package: org.videolan.vlc
     stack: 'libVLC (native media engine)'
+    verified_on: [16, 17]
   - name: 'TikTok'
     package: com.zhiliaoapp.musically
     stack: 'Native (ByteDance)'
+    verified_on: [16, 17]
   - name: 'X (Twitter)'
     package: com.twitter.android
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'LinkedIn'
     package: com.linkedin.android
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'Reddit'
     package: com.reddit.frontpage
     stack: 'Jetpack Compose + native'
+    verified_on: [16, 17]
   - name: 'Slack'
     package: com.Slack
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'Duolingo'
     package: com.duolingo
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'Microsoft Outlook'
     package: com.microsoft.office.outlook
     stack: 'Native (Hx sync engine)'
+    verified_on: [16, 17]
   - name: 'Microsoft OneDrive'
     package: com.microsoft.skydrive
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'WPS Office'
     package: cn.wps.moffice_eng
     stack: 'Native office engine'
+    verified_on: [16, 17]
   - name: 'CapCut'
     package: com.lemon.lvoverseas
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'Ulike'
     package: com.gorgeous.liteinternational
     stack: 'Native (camera/AI beauty)'
+    verified_on: [16, 17]
   - name: 'Hypic'
     package: com.xt.retouchoversea
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Xingtu'
     package: com.xt.retouch
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Pixsoul'
     package: com.ss.android.ai.camera
     stack: 'Native (AI camera)'
+    verified_on: [16, 17]
   - name: 'Fuelio'
     package: com.kajda.fuelio
     stack: 'Native + maps'
+    verified_on: [16, 17]
   - name: 'Likee'
     package: video.like.samsung
     stack: 'Native (short video)'
+    verified_on: [16, 17]
   - name: 'Alibaba.com'
     package: com.alibaba.intl.android.apps.poseidon
     stack: 'Native + WebView'
+    verified_on: [16, 17]
   - name: 'Bigo Live'
     package: sg.bigo.live
     stack: 'Native (live streaming)'
+    verified_on: [16, 17]
   - name: 'Lumii'
     package: photo.editor.photoeditor.filtersforpictures
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Video Maker'
     package: videoeditor.videomaker.videoeditorforyoutube
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'Facetune'
     package: com.lightricks.facetune.free
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Pixaloop'
     package: com.lightricks.pixaloop
     stack: 'Native (photo animator)'
+    verified_on: [16, 17]
   - name: 'Quickshot'
     package: com.lightricks.quickshot
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'PowerDirector'
     package: com.cyberlink.powerdirector.DRA140225_01
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'Peachy'
     package: peachy.bodyeditor.faceapp
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Smart Launcher'
     package: ginlemon.flowerfree
     stack: 'Native (launcher)'
+    verified_on: [16, 17]
   - name: 'ASR Voice Recorder'
     package: com.nll.asr
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'CapCut for Pad'
     package: com.lemon.ccpadpro
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'Boosted'
     package: com.lightricks.videoboost
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'ToonApp'
     package: com.lyrebirdstudio.cartoon
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'ToonArt'
     package: com.lyrebirdstudio.toonart
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Art Filter'
     package: com.lyrebirdstudio.art_filter
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'Photos Collage Maker'
     package: com.lyrebirdstudio.photocollageeditor
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'YouCam Enhance'
     package: com.perfectcorp.yce
     stack: 'Native (photo enhancer)'
+    verified_on: [16, 17]
   - name: 'Video Editor (Lyrebird)'
     package: com.lyrebirdstudio.videoeditor
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'Photo Editor Pro'
     package: com.lyrebirdstudio.montagenscolagem
     stack: 'Native (photo editor)'
+    verified_on: [16, 17]
   - name: 'ActionDirector'
     package: com.cyberlink.actiondirector
     stack: 'Native (video editor)'
+    verified_on: [16, 17]
   - name: 'ACR Phone'
     package: com.nll.cb
     stack: 'Native (dialer/recorder)'
+    verified_on: [16, 17]
   - name: 'Icon Pack Studio'
     package: ginlemon.iconpackstudio
     stack: 'Native'
+    verified_on: [16, 17]
   - name: 'AliSupplier'
     package: com.alibaba.icbu.app.seller
     stack: 'Native + WebView'
+    verified_on: [16, 17]
   - name: 'Helix Jump'
     package: com.h8games.helixjump
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Paper.io 2'
     package: io.voodoo.paper2
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Aqua Park.io'
     package: com.cassette.aquapark
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Fire Balls 3D'
     package: com.NikSanTech.FireDots3D
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Ballz'
     package: com.ketchapp.ballz
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'The Floor is Lava'
     package: com.ketchapp.thefloorislava
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Rush'
     package: com.ketchapp.rush
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'My Talking Tom 2'
     package: com.outfit7.mytalkingtom2
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Cut the Rope 2'
     package: com.zeptolab.ctr2.f2p.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Hole.io'
     package: io.voodoo.holeio
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Paper.io'
     package: io.voodoo.paperio
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Crazy Kick!'
     package: com.orbitalknight.ridiculousfreekick
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Bucket Crusher'
     package: com.AndreyGushchin.BucketCrusher
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Stacky Dash 2'
     package: com.Born2Play.StackyDash
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Bouncy Hoops'
     package: com.noodlecake.bouncyhoops
     stack: 'Native engine'
+    verified_on: [16, 17]
   - name: 'Om Nom: Merge'
     package: com.zeptolab.omnommerge.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'King of Thieves'
     package: com.zeptolab.thieves.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Mob Control'
     package: com.vincentb.MobControl
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Downhill Smash'
     package: com.zeptolab.downhillsmash
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Om Nom: Parkour'
     package: com.zeptolab.omnomparkour.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Bowmasters'
     package: com.playgendary.bowmasters
     stack: 'Native engine'
+    verified_on: [16, 17]
   - name: 'My Talking Tom Friends'
     package: com.outfit7.mytalkingtomfriends
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Ninja Hands 2'
     package: com.YsoCorp.NinjaHands2
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Ninja Escape'
     package: com.YsoCorp.NinjaEscape
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Merge Master'
     package: com.fusee.MergeMaster
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Bullet Echo'
     package: com.zeptolab.bulletecho.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Repair Master 3D'
     package: com.quok.repairMaster3d
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Office Fever'
     package: com.dtg.officefever
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'High Heels!'
     package: com.uncosoft.highheels
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Tangle Master 3D'
     package: com.rollic.tanglemaster3D
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Cut the Rope: Time Travel'
     package: com.zeptolab.timetravel.free.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Evo Pop'
     package: com.zeptolab.evopop
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Teacher Simulator'
     package: com.syubestgames.teachersimulator
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Watcher of Realms'
     package: com.td.watcherofrealms
     stack: 'Native (3D RPG engine)'
+    verified_on: [16, 17]
   - name: 'Penguin Isle'
     package: com.fantome.penguinisle
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Kinja Run'
     package: com.habby.kinjarun
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Slidey: Block Puzzle'
     package: com.mavis.slidey
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Pizza Ready!'
     package: io.supercent.pizzaidle
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Burger Please!'
     package: io.supercent.burgeridle
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Mosquito.io'
     package: io.supercent.mosquito
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Prison Life'
     package: io.supercent.prison
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Super Slime'
     package: io.supercent.bigslimemanyslime
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Parking Jam 3D'
     package: com.lszenlamzr.parkingjam
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Tap Away'
     package: com.jctswbglsm.SwipeAway
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Souls'
     package: com.habby.souls
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Capybara Go!'
     package: com.habby.capybara
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Om Nom: Run'
     package: com.zeptolab.omnomrun.google
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Ace Fishing: Wild Catch'
     package: com.com2us.acefishing.normal.freefull.google.global.android.common
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Solo Leveling: Hit & Run'
     package: io.supercent.hitrun
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Overcrowded'
     package: com.zeptolab.overcrowded
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Wordling'
     package: io.digitalsnacks.wordchallenge
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Art Blitz'
     package: com.ketchapp.artblitz
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'Happy Jump'
     package: com.noodlecake.happyjump
     stack: 'Native engine'
+    verified_on: [16, 17]
   - name: 'Cut the Rope: Origins'
     package: com.zeptolab.ctrorigins
     stack: 'Native (custom engine)'
+    verified_on: [16, 17]
   - name: 'Scream Go Hero'
     package: com.ketchapp.screamhero
     stack: 'Unity'
+    verified_on: [16, 17]
   - name: 'SneakerArt'
     package: com.majorfrank.sneakerart
     stack: 'Unity (IL2CPP)'
+    verified_on: [16, 17]
   - name: 'Shazam'
     package: com.shazam.android
     stack: 'Native signature engine (libsigx) + FairPlay DI + Crashlytics NDK'
+    verified_on: [16, 17]
   - name: 'Signal'
     package: org.thoughtcrime.securesms
     stack: 'Rust (libsignal, RingRTC/WebRTC) + SQLCipher'
+    verified_on: [16, 17]
   - name: 'Microsoft Authenticator'
     package: com.azure.authenticator
     stack: 'Native crypto (wolfSSL) + ONNX Runtime + Azure AI Vision'
+    verified_on: [16, 17]
   - name: 'Twitch'
     package: tv.twitch.android.app
     stack: 'Native player core + Cronet'
 
 # No apps are currently in this state; the section drops out of the page while
 # this list is empty.
+    verified_on: [16, 17]
 partial: []
 
 blocked:
@@ -447,6 +590,7 @@ blocked:
       <code>vxvyhom.W.run</code>), again after an <code>E&nbsp;Report</code>
       line, again with no native frame, and again byte-identical against a
       translator build from before the current optimizer work
+    tested_on: [16]
   - name: 'Into the Dead 2'
     package: com.pikpok.dr2.play
     reason: >-
@@ -455,6 +599,7 @@ blocked:
       <code>AssetPackException: -11</code> (<code>PLAY_STORE_NOT_FOUND</code>): the
       game's content downloads through the Play Store, which the GMS-less emulator
       image does not ship.
+    tested_on: [16]
   - name: 'eBay'
     package: com.ebay.mobile
     reason: >-
@@ -464,3 +609,4 @@ blocked:
       reports no Play Store, so no content loads. The vendor-signed x86_64 build
       running natively on the same emulator, with no translation at all, fails
       identically.
+    tested_on: [16]

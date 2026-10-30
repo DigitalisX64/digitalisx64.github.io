@@ -1,0 +1,10 @@
+# Android releases that have an app page. Adding one here puts it in the
+# cross-links and the nav; the page itself still needs its own file under
+# apps/, and the version needs adding to KNOWN_VERSIONS in
+# scripts/check-apps-data.py so the data check accepts it.
+- version: 16
+  name: Android 16
+  api: 36
+- version: 17
+  name: Android 17
+  api: 37

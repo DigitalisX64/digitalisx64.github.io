@@ -1668,3 +1668,44 @@ code {
 .attribution-text:last-child { margin-bottom: 0; }
 .attribution-text a { color: inherit; text-decoration: underline; }
 .attribution-text a:hover { color: var(--primary); }
+
+/* Android-release badge in the app tables, and the per-release nav submenu. */
+.badge-ver {
+  color: var(--text);
+  background: rgba(139, 148, 158, 0.10);
+  border-color: rgba(139, 148, 158, 0.30);
+  font-size: 0.72rem;
+  padding: 2px 7px;
+}
+.badge-ver + .badge-ver { margin-left: 4px; }
+.module-table td.app-versions { white-space: nowrap; }
+
+.site-nav-has-sub { position: relative; }
+.site-nav-sub {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  min-width: 11rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s ease;
+  z-index: 40;
+}
+.site-nav-has-sub:hover .site-nav-sub,
+.site-nav-has-sub:focus-within .site-nav-sub {
+  opacity: 1;
+  visibility: visible;
+}
+.site-nav-sub li { margin: 0; }
+.site-nav-sub a {
+  display: block;
+  padding: 7px 14px;
+  white-space: nowrap;
+}

@@ -1,159 +1,23 @@
 ---
-layout: null
+layout: apps
 title: Verified Apps
+crumb: Verified Apps
+version: ""
 # Keep the historical URL: the site-wide permalink style would otherwise move
 # this page to /apps/ and break every existing link to apps.html.
 permalink: /apps.html
+description: >-
+  Third-party ARM64-only Android apps verified running on an x86_64 emulator via
+  Digitalis binary translation — app names, package names, and verification status.
+tagline: >-
+  Third-party <strong>ARM64-only</strong> Android apps run on an x86_64 emulator via Digitalis
+  NativeBridge translation — no recompilation. This is the verification status of real,
+  unmodified APKs (distinct from the in-tree <a href="/index.html#samples">sample apps</a>).
+banner: >-
+  Each app below is an unmodified arm64-v8a APK launched on the Digitalis x86_64 emulator. A
+  crash is treated as a translator bug and fixed in-surface; entries marked <em>blocked</em>
+  are gated by GMS/auth or an obfuscated anti-emulator integrity check that aborts the app
+  independent of translation correctness. Vulkan apps render through GFXStream's VkDecoder,
+  and OpenGL ES apps through ANGLE (OpenGL ES on Vulkan), both on the host GPU. The
+  <strong>Android</strong> column records which releases each app was checked on.
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verified Apps — Digitalis</title>
-  <meta name="description" content="Third-party ARM64-only Android apps verified running on an x86_64 emulator via Digitalis binary translation — app names, package names, and verification status.">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
-  <link rel="apple-touch-icon" href="assets/favicon-180.png">
-  <link rel="stylesheet" href="/assets/theme.css">
-  <link rel="stylesheet" href="style.css">
-  {%- include theme-head.html %}
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-LCH8R0W6KL');
-  </script>
-</head>
-<body>
-
-  {% include nav.html %}
-
-  <!-- Sub-hero -->
-  <header class="subhero">
-    <div class="container">
-      <div class="breadcrumb"><a href="index.html">Home</a> / Verified Apps</div>
-      <h1 class="subhero-title">Verified Apps</h1>
-      <p class="subhero-tagline">Third-party <strong>ARM64-only</strong> Android apps run on an x86_64 emulator via Digitalis NativeBridge translation — no recompilation. This is the verification status of real, unmodified APKs (distinct from the in-tree <a href="index.html#samples">sample apps</a>).</p>
-      <div class="source-banner">
-        Each app below is an unmodified arm64-v8a APK launched on the Digitalis x86_64 emulator. A crash is treated as a translator bug and fixed in-surface; entries marked <em>blocked</em> are gated by GMS/auth or an obfuscated anti-emulator integrity check that aborts the app independent of translation correctness. Vulkan apps render through GFXStream's VkDecoder, and OpenGL ES apps through ANGLE (OpenGL ES on Vulkan), both on the host GPU.
-      </div>
-    </div>
-  </header>
-
-  <section>
-    <div class="container">
-      <div class="status-legend">
-        <span><span class="badge badge-pass">Verified</span> launches and runs with no crash</span>
-        {% if site.data.apps.partial and site.data.apps.partial.size > 0 %}<span><span class="badge badge-partial">Partial</span> passes the launch gate but is not yet verified deep in-app</span>{% endif %}
-        <span><span class="badge badge-blocked">Blocked</span> not translator-fixable (anti-emulator / GMS)</span>
-      </div>
-
-      <!-- Filter toolbar. Hidden until the script enables it, so that with no
-           JavaScript the page is simply the full, unfiltered tables. -->
-      <div class="app-filter" id="app-filter" hidden>
-        <label class="app-search">
-          <span class="visually-hidden">Search apps</span>
-          <input type="search" id="app-search" placeholder="Filter by name, package or stack…" autocomplete="off">
-        </label>
-        <div class="app-chips" role="group" aria-label="Filter by status">
-          <button type="button" class="app-chip is-on" data-status="verified">Verified</button>
-          {% if site.data.apps.partial and site.data.apps.partial.size > 0 %}<button type="button" class="app-chip is-on" data-status="partial">Partial</button>{% endif %}
-          <button type="button" class="app-chip is-on" data-status="blocked">Blocked</button>
-        </div>
-        <p class="app-count" id="app-count" aria-live="polite"></p>
-      </div>
-
-      {% assign sections = "verified,partial,blocked" | split: "," %}
-      {% for status in sections %}
-      {% assign apps = site.data.apps[status] %}
-      {% if apps and apps.size > 0 %}
-      {% case status %}
-        {% when "verified" %}{% assign heading = "Verified" %}{% assign label = "Verified" %}{% assign badge = "badge-pass" %}{% assign col3 = "Stack" %}{% assign intro = "" %}
-        {% when "partial" %}{% assign heading = "Partial" %}{% assign label = "Partial" %}{% assign badge = "badge-partial" %}{% assign col3 = "Status detail" %}{% assign intro = "These pass the launch-stability gate but are not yet verified deep in-app; remaining work is tracked in-surface." %}
-        {% when "blocked" %}{% assign heading = "Known limitations" %}{% assign label = "Blocked" %}{% assign badge = "badge-blocked" %}{% assign col3 = "Reason" %}{% assign intro = "These are blocked in the <strong>Digitalis test environment specifically</strong> — a bare, GMS-less AOSP 16 emulator image. They ship Google Mobile Services dependencies and/or obfuscated anti-emulator integrity protectors that abort at startup <em>after</em> their native libraries load cleanly under translation. That is an environment or app-policy refusal, <strong>not a translation error</strong>. The Digitalis test environment does not represent a production environment that ships GMS — on a GMS-equipped device or emulator these apps may run normally, so a &quot;Blocked&quot; status here is not a statement about Digitalis translation correctness." %}
-      {% endcase %}
-      <section class="app-section" data-status="{{ status }}"{% unless forloop.first %} style="padding-top:0;border-top:0"{% endunless %}>
-        <h2 class="section-title">{{ heading }} <span class="section-count" data-count-for="{{ status }}">{{ apps.size }}</span></h2>
-        {% if intro != "" %}<p class="section-desc">{{ intro }}</p>{% endif %}
-        <table class="module-table">
-          <thead>
-            <tr><th>App</th><th>Package</th><th>{{ col3 }}</th><th>Status</th></tr>
-          </thead>
-          <tbody>
-            {% for app in apps %}
-            <tr data-status="{{ status }}" data-search="{{ app.name | append: ' ' | append: app.package | append: ' ' | append: app.stack | append: ' ' | append: app.reason | strip_html | downcase | escape }}">
-              <td><span class="app-cell"><img class="app-icon" src="/assets/icons/{{ app.package }}.png" alt="" width="28" height="28" loading="lazy" decoding="async"><span class="app-name">{{ app.name }}</span></span></td>
-              <td class="pkg"><code>{{ app.package }}</code></td>
-              <td>{{ app.stack | default: app.reason }}{% if app.notes %}{% if app.stack or app.reason %}; {% endif %}{{ app.notes }}{% endif %}</td>
-              <td><span class="badge {{ badge }}">{{ label }}</span></td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <p class="app-empty" hidden>No apps match this filter.</p>
-      </section>
-      {% endif %}
-      {% endfor %}
-
-      <p class="section-desc" style="margin-top:32px">Status reflects manual verification on the Digitalis emulator and evolves as fixes land. App and package names are the publishers'; trademarks belong to their respective owners. Listing here indicates translation compatibility only, not affiliation or endorsement. The underlying list lives in <a href="https://github.com/DigitalisX64/digitalisx64.github.io/blob/android-latest-release/_data/apps.yml"><code>_data/apps.yml</code></a>.</p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  {% include footer.html %}
-
-  <script>
-    (function () {
-      var filter = document.getElementById('app-filter');
-      var search = document.getElementById('app-search');
-      var count = document.getElementById('app-count');
-      var chips = Array.prototype.slice.call(document.querySelectorAll('.app-chip'));
-      var rows = Array.prototype.slice.call(document.querySelectorAll('tr[data-status]'));
-      var sections = Array.prototype.slice.call(document.querySelectorAll('.app-section'));
-      if (!rows.length) return;
-
-      filter.hidden = false;
-
-      function apply() {
-        var term = search.value.trim().toLowerCase();
-        var on = {};
-        chips.forEach(function (c) { on[c.dataset.status] = c.classList.contains('is-on'); });
-
-        var shown = 0;
-        rows.forEach(function (row) {
-          var match = on[row.dataset.status] &&
-                      (term === '' || row.dataset.search.indexOf(term) !== -1);
-          row.hidden = !match;
-          if (match) shown++;
-        });
-
-        sections.forEach(function (section) {
-          var visible = section.querySelectorAll('tr[data-status]:not([hidden])').length;
-          var badge = section.querySelector('[data-count-for]');
-          if (badge) badge.textContent = visible;
-          section.querySelector('table').hidden = visible === 0;
-          section.querySelector('.app-empty').hidden = visible !== 0;
-        });
-
-        count.textContent = shown + (shown === 1 ? ' app' : ' apps') +
-                            (term === '' ? '' : ' matching “' + search.value.trim() + '”');
-      }
-
-      search.addEventListener('input', apply);
-      chips.forEach(function (chip) {
-        chip.addEventListener('click', function () {
-          chip.classList.toggle('is-on');
-          chip.setAttribute('aria-pressed', chip.classList.contains('is-on'));
-          apply();
-        });
-        chip.setAttribute('aria-pressed', 'true');
-      });
-      apply();
-    })();
-  </script>
-
-  <script src="/assets/theme.js" defer></script>
-</body>
-</html>

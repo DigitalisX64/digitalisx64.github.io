@@ -1,0 +1,76 @@
+---
+layout: null
+---
+{%- comment -%}
+  Shared skeleton for the app list and its per-version pages.
+
+  Front matter each page sets:
+    title        browser/tab title and <h1>
+    description  meta description
+    tagline      sub-hero paragraph (HTML allowed)
+    banner       source-banner paragraph (HTML allowed)
+    version      "" for every version, otherwise "16", "17", …
+    crumb        breadcrumb leaf text
+
+  Adding an Android release is a new page with its own front matter plus an
+  entry in KNOWN_VERSIONS in scripts/check-apps-data.py. Nothing here changes.
+{%- endcomment -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} — Digitalis</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/favicon-180.png">
+  <link rel="stylesheet" href="/assets/theme.css">
+  <link rel="stylesheet" href="/style.css">
+  {%- include theme-head.html %}
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LCH8R0W6KL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LCH8R0W6KL');
+  </script>
+</head>
+<body>
+
+  {% include nav.html %}
+
+  <!-- Sub-hero -->
+  <header class="subhero">
+    <div class="container">
+      <div class="breadcrumb"><a href="/index.html">Home</a> / {% if page.version != "" %}<a href="/apps.html">Verified Apps</a> / {% endif %}{{ page.crumb | default: page.title }}</div>
+      <h1 class="subhero-title">{{ page.title }}</h1>
+      <p class="subhero-tagline">{{ page.tagline }}</p>
+      <div class="source-banner">
+        {{ page.banner }}
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      {% if page.version == "" %}
+      <p class="section-desc">Per-release lists:
+        {% for v in site.data.apps_versions %}<a href="/apps/android{{ v.version }}/">Android {{ v.version }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}
+      </p>
+      {% endif %}
+
+      {% include app-table.html version=page.version %}
+
+      <p class="section-desc" style="margin-top:32px">Status reflects manual verification on the Digitalis emulator and evolves as fixes land. App and package names are the publishers'; trademarks belong to their respective owners. Listing here indicates translation compatibility only, not affiliation or endorsement. The underlying list lives in <a href="https://github.com/DigitalisX64/digitalisx64.github.io/blob/android-latest-release/_data/apps.yml"><code>_data/apps.yml</code></a>.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  {% include footer.html %}
+
+  {% include app-filter-js.html %}
+
+  <script src="/assets/theme.js" defer></script>
+</body>
+</html>
