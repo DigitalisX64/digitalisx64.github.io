@@ -15,10 +15,13 @@
 #                under /apps/androidNN/, so a release listed here must have a
 #                page and an entry in KNOWN_VERSIONS in
 #                scripts/check-apps-data.py.
-#   tested_on    blocked: the releases this blocked status was determined on.
-#                A launch-gate pass on a newer release is not enough to extend
-#                it -- these entries are blocked on behaviour the launch gate
-#                never exercises, so re-check the blocking behaviour itself.
+#   tested_on    blocked: the releases this blocked status applies to. These
+#                entries are blocked by the test environment rather than by
+#                anything release-specific -- the image ships no GMS and
+#                advertises itself as an emulator on every release -- so the
+#                status carries forward unless the environment changes. A
+#                launch-gate pass does not lift it: the gate never exercises
+#                the behaviour these apps are blocked on.
 #
 # Statuses:
 #   verified  launches and runs with no crash
@@ -590,7 +593,7 @@ blocked:
       <code>vxvyhom.W.run</code>), again after an <code>E&nbsp;Report</code>
       line, again with no native frame, and again byte-identical against a
       translator build from before the current optimizer work
-    tested_on: [16]
+    tested_on: [16, 17]
   - name: 'Into the Dead 2'
     package: com.pikpok.dr2.play
     reason: >-
@@ -599,7 +602,7 @@ blocked:
       <code>AssetPackException: -11</code> (<code>PLAY_STORE_NOT_FOUND</code>): the
       game's content downloads through the Play Store, which the GMS-less emulator
       image does not ship.
-    tested_on: [16]
+    tested_on: [16, 17]
   - name: 'eBay'
     package: com.ebay.mobile
     reason: >-
@@ -609,4 +612,4 @@ blocked:
       reports no Play Store, so no content loads. The vendor-signed x86_64 build
       running natively on the same emulator, with no translation at all, fails
       identically.
-    tested_on: [16]
+    tested_on: [16, 17]
