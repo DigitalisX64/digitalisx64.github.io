@@ -54,11 +54,7 @@ layout: null
 
   <section>
     <div class="container">
-      {% if page.version == "" %}
-      <p class="section-desc">Per-release lists:
-        {% for v in site.data.apps_versions %}<a href="/apps/android{{ v.version }}/">Android {{ v.version }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}
-      </p>
-      {% endif %}
+      {% include release-switch.html section="apps" current=page.version %}
 
       {% include app-table.html version=page.version %}
 

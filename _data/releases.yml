@@ -1,0 +1,14 @@
+# Android releases the site has pages for, oldest first — the last entry is the
+# current one and is what /docs.html shows by default.
+#
+# Adding a release means: an entry here, a page under apps/ and one under docs/,
+# and the version added to KNOWN_VERSIONS in scripts/check-apps-data.py so the
+# app data check accepts it.
+- version: 16
+  name: Android 16
+  api: 36
+  branch: android16
+- version: 17
+  name: Android 17
+  api: 37
+  branch: android17

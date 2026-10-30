@@ -1,0 +1,13 @@
+{%- comment -%}
+  Cross-links between the per-release pages of one section.
+
+  include.section  "apps" or "docs"
+  include.current  the version currently shown, or "" on a hub page
+{%- endcomment -%}
+{%- comment -%} page.version arrives as a string, releases.yml holds integers. {%- endcomment -%}
+{%- assign cur = include.current | plus: 0 -%}
+<p class="section-desc release-switch">Release:
+  {%- for r in site.data.releases %}
+  {% if r.version == cur %}<strong>{{ r.name }}</strong>{% else %}<a href="/{{ include.section }}/android{{ r.version }}/">{{ r.name }}</a>{% endif %}{% unless forloop.last %} &middot;{% endunless %}
+  {%- endfor %}
+</p>

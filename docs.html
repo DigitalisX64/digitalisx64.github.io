@@ -4,6 +4,7 @@ title: Docs
 description: Guided tour, architecture walkthrough, benchmark results and instruction coverage for Digitalis — ARM64-to-x86_64 binary translation for Android.
 permalink: /docs.html
 ---
+{%- assign current = site.data.releases | last -%}
   <!-- Sub-hero -->
   <header class="subhero">
     <div class="container">
@@ -19,33 +20,14 @@ permalink: /docs.html
         <li class="post-card">
           <p class="post-card-meta">Guided tour &middot; 104 slides</p>
           <h2 class="post-card-title"><a href="{{ '/deck/' | relative_url }}">How Digitalis Works</a></h2>
-          <p class="post-card-excerpt">Ten parts, starting from what a CPU actually does and ending at a translated Vulkan frame. Assumes no background: registers, instruction sets, condition flags, why phones are ARM and laptops are not, and the three ways to run code built for another chip. Read it in order.</p>
-        </li>
-        <li class="post-card">
-          <p class="post-card-meta">Reference &middot; 19 sections</p>
-          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/how-it-works.md" target="_blank" rel="noopener">how-it-works.md</a></h2>
-          <p class="post-card-excerpt">The complete walkthrough, written to be searched rather than read through: register mapping, the translation lifecycle, NZCV flag emulation, the syscall path, proxy-library forwarding, and the ARM64 &rarr; x86_64 instruction-mapping reference.</p>
-        </li>
-        <li class="post-card">
-          <p class="post-card-meta">Integration</p>
-          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/integrating-digitalis.md" target="_blank" rel="noopener">Integrating Digitalis into an AOSP&nbsp;16 product</a></h2>
-          <p class="post-card-excerpt">Adding ARM64 translation to your own x86_64 image &mdash; emulator or real device &mdash; through the stock NativeBridge seams: a manifest overlay, four board-config lines, and one product inherit, or a prebuilt binary bundle when you cannot add source projects. Ends with a verification checklist down to the <code>memfd:exec</code> oracle that proves translation is actually executing.</p>
-        </li>
-        <li class="post-card">
-          <p class="post-card-meta">Changelog</p>
-          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/RELEASE_NOTES.md" target="_blank" rel="noopener">Release notes</a></h2>
-          <p class="post-card-excerpt">Every release in one file, newest first: what was fixed, what it broke before it was fixed, and the verification behind each entry &mdash; host tests, both translator builds, the sample suite, the prebuilt-app gate and the benchmark sweep. Written as post-mortems rather than bullet lists, so an entry usually explains the failure as well as the change.</p>
-        </li>
-        <li class="post-card">
-          <p class="post-card-meta">Measurements</p>
-          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/benchmark-results.md" target="_blank" rel="noopener">Benchmark results</a></h2>
-          <p class="post-card-excerpt">Every workload across all three execution tiers, regenerated from a real sweep rather than written by hand. Cells that exceeded a 10% relative interquartile range are marked and must not be quoted; <a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/benchmarking.md" target="_blank" rel="noopener">benchmarking.md</a> covers the methodology and how to read a noisy row.</p>
-        </li>
-        <li class="post-card">
-          <p class="post-card-meta">Coverage</p>
-          <h2 class="post-card-title"><a href="https://github.com/DigitalisX64/digitalis/blob/android-latest-release/docs/unsupported-opcodes.md" target="_blank" rel="noopener">Instruction coverage</a></h2>
-          <p class="post-card-excerpt">What the translator does not implement yet, and what that costs at runtime — a missing JIT case falls back to the interpreter rather than failing, so the list is a performance map as much as a correctness one.</p>
+          <p class="post-card-excerpt">Ten parts, starting from what a CPU actually does and ending at a translated Vulkan frame. Assumes no background: registers, instruction sets, condition flags, why phones are ARM and laptops are not, and the three ways to run code built for another chip. Read it in order. Written against the translator itself, so it applies to every release.</p>
         </li>
       </ul>
+
+      <h2 class="section-title" style="margin-top:32px">Reference, per release</h2>
+      <p class="section-desc">Each document lives in the <code>digitalis</code> repository on its release branch. The links below point at <strong>{{ current.name }}</strong>, the current release; pick another to read that branch instead.</p>
+      {% include release-switch.html section="docs" current="" %}
+
+      {% include doc-list.html release=current %}
     </div>
   </section>
