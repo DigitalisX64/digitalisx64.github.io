@@ -24,6 +24,14 @@ Windows. Meta's own system software, the home environment, system UI, panels and
 on a PC in a desktop window and through SteamVR. It boots to Meta's home environment, opens
 the Universal Menu and launches apps.
 
+<figure class="post-figure">
+  <img src="https://raw.githubusercontent.com/MIXIDtheSilly/Prism/main/img/prism_banner.png"
+       alt="Prism project banner"
+       loading="lazy">
+  <figcaption>Prism's project banner.
+  From <a href="https://github.com/MIXIDtheSilly/Prism/blob/main/img/prism_banner.png">the Prism repository</a>.</figcaption>
+</figure>
+
 Essentially all of that is translated code. From its architecture notes:
 
 > Meta apps (VrShell, SystemUX, ...) — Horizon APKs, arm64 code translated to x86_64
@@ -45,6 +53,14 @@ as a fork of AXRB and has since gone its own way. It runs Meta Quest (Android Op
 a Windows or Linux PC by three routes: the Android Emulator on Windows, Waydroid on Linux, and
 "Refract Native", which it recommends and describes as running "the game's ARM64 code directly
 on the PC".
+
+<figure class="post-figure">
+  <img src="https://raw.githubusercontent.com/MIXIDtheSilly/Refract/main/img/refract_banner.png"
+       alt="Refract project banner"
+       loading="lazy">
+  <figcaption>Refract's project banner.
+  From <a href="https://github.com/MIXIDtheSilly/Refract/blob/main/img/refract_banner.png">the Refract repository</a>.</figcaption>
+</figure>
 
 All three translate with Digitalis, which means three builds of it. Two are Android bundles,
 because the bionic layout has to match whatever is underneath: `prebuilts/digitalis` for the
@@ -76,6 +92,15 @@ src/*.cpp".
 [AXRB](https://github.com/Android-XR-Bridge/AXRB) runs Android-based OpenXR games, Quest-style
 APKs rather than Google's Android XR OS, on Windows through a desktop OpenXR runtime such as
 SteamVR. Android runs in an x86_64 emulator and rendering goes to the host GPU.
+
+<figure class="post-figure">
+  <img src="https://raw.githubusercontent.com/Android-XR-Bridge/AXRB/windows-android16/logo_axrb.png"
+       alt="AXRB project logo"
+       width="200"
+       loading="lazy">
+  <figcaption>AXRB's repository logo.
+  From <a href="https://github.com/Android-XR-Bridge/AXRB/blob/windows-android16/logo_axrb.png">the AXRB repository</a>.</figcaption>
+</figure>
 
 AXRB has a route of the same shape in its own tree. `direct/digitalis/` is a CMake build of
 our
@@ -114,6 +139,15 @@ Linux". The Android guest and the ARM64 translation stay where they are. What ch
 host side, where the GPU, the OpenXR session and the headset output now have to come from
 Linux instead of Windows.
 
+<figure class="post-figure">
+  <img src="https://raw.githubusercontent.com/goingafk/AXRB-Linux/windows-android16/logo_axrb.png"
+       alt="AXRB-Linux project logo"
+       width="200"
+       loading="lazy">
+  <figcaption>AXRB-Linux's repository logo.
+  From <a href="https://github.com/goingafk/AXRB-Linux/blob/windows-android16/logo_axrb.png">the AXRB-Linux repository</a>.</figcaption>
+</figure>
+
 It is early, and its own tree says so. Roughly a third of AXRB's files, with the README and
 most of the scripts still Windows-era, and the Digitalis piece it carries is not the adapter
 but the measurement side. `experimental/digitalis/` runs alternating CPU probes over an
@@ -148,6 +182,14 @@ so some of this has already come back to us.
 windows, on a shared kernel with a real Android userspace and GPU acceleration. Its repository
 description says why translation matters: "running arm64-only apps on x86_64 without closed
 source libraries."
+
+<figure class="post-figure">
+  <img src="https://raw.githubusercontent.com/denialwm/droidloom/main/assets/screenshots/desktop-teto.webp"
+       alt="Three Android games running in separate windows on an x86_64 Linux desktop"
+       loading="lazy">
+  <figcaption>Droidloom's README screenshot showing Android apps in desktop windows.
+  From <a href="https://github.com/denialwm/droidloom/blob/main/assets/screenshots/desktop-teto.webp">the Droidloom repository</a>.</figcaption>
+</figure>
 
 The translator lives in its own repository, [Teto](https://github.com/denialwm/teto),
 "Translation Engine with Target Optimization", which states it is "derived from DigitalisX64
