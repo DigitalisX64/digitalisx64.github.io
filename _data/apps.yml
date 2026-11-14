@@ -461,10 +461,6 @@ verified:
     package: com.td.watcherofrealms
     stack: 'Native (3D RPG engine)'
     verified_on: [16, 17]
-  - name: 'Penguin Isle'
-    package: com.fantome.penguinisle
-    stack: 'Unity'
-    verified_on: [16, 17]
   - name: 'Kinja Run'
     package: com.habby.kinjarun
     stack: 'Unity'
@@ -571,6 +567,19 @@ verified:
 partial: []
 
 blocked:
+  - name: 'Penguin Isle'
+    package: com.fantome.penguinisle
+    reason: >-
+      Needs Google Play services and the Play Store, absent from both AOSP
+      images. 1.73.0 keeps animating its loading screen, but an unhandled
+      Firebase Messaging <code>missing dependency</code> exception in
+      <code>NotificationManager.Initialize</code> aborts
+      <code>IntroControl.Start</code> before scene loading. Traced on Android 17:
+      the game's bundled Google Play availability check returns
+      <code>SERVICE_INVALID (9)</code> and reports the missing Play Store;
+      Firebase rejects this result. Gameplay with Google Play services
+      installed has not been verified.
+    tested_on: [16, 17]
   - name: 'Clash of Clans'
     package: com.supercell.clashofclans
     reason: >-
